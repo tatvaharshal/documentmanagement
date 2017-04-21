@@ -1,0 +1,16 @@
+label.required:after { 
+   content:"*";
+   color:red;
+}
+
+@media (max-width:680px){
+	.header-title{
+	text-align: center;
+	}
+	
+	.header-title a{
+	float: left;
+	width: 100%;
+	text-align: :center;
+	}
+}
