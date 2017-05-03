@@ -8,8 +8,15 @@ public interface DocumentDataService {
 
     public void RegisterOrUpdate(DocumentData document);
 
-    DocumentData getDocumentByID(long documentId);
+	/*Document_Data getDocumentByID(long document_id);*/
 
     public List<DocumentData> getAllDocs();
+
+    public void updateDocument(DocumentData document);
+
+    DocumentData getDocumentByID(long documentId);
+
+    public void delete(long documentId);
+
 
 }
