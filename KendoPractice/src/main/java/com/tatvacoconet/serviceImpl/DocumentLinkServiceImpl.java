@@ -15,7 +15,6 @@ public class DocumentLinkServiceImpl implements DocumentLinkService {
     private DocumentLinkRepository linkRepository;
 
 
-
     @Override
     public List<DocumentLink> getAllDocumentsLink(long documentId) {
 
@@ -27,6 +26,25 @@ public class DocumentLinkServiceImpl implements DocumentLinkService {
     @Override
     public void addDocument(DocumentLink documentLink) {
         linkRepository.save(documentLink);
+
+    }
+
+
+
+    @Override
+    public void updateDocumentLink(DocumentLink documentLink) {
+        linkRepository.save(documentLink);
+
+    }
+
+
+
+    @Override
+    public void deleteAll(long documentId) {
+        //Document_Link list = linkRepository.findOne(document_id);
+        List<DocumentLink> list=linkRepository.findByID(documentId);
+        //linkRepository.deleteById(document_id);
+        linkRepository.delete(list);
 
     }
 
