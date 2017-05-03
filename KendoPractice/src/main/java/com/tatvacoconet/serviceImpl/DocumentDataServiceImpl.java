@@ -14,8 +14,6 @@ import com.tatvacoconet.service.DocumentDataService;
 public class DocumentDataServiceImpl implements DocumentDataService {
     @Autowired
     private DocumentDataRepository dataRepository;
-    @Autowired
-    private DocumentLinkRepository linkRepository;
 
     @Override
     public void RegisterOrUpdate(DocumentData document) {
@@ -28,11 +26,28 @@ public class DocumentDataServiceImpl implements DocumentDataService {
 
         return dataRepository.findAll();
     }
+    @Override
+    public void updateDocument(DocumentData document) {
+        dataRepository.save(document);
+
+    }
+
+/*	@Override
+	public List<Document_Data> getDocumentByID(long document_id) {
+
+		 return dataRepository.findByID(document_id);
+	}*/
+
+    @Override
+    public void delete(long documentId) {
+        dataRepository.delete(documentId);
+    }
 
     @Override
     public DocumentData getDocumentByID(long documentId) {
-
         return dataRepository.findOne(documentId);
     }
+
+
 
 }
