@@ -22,6 +22,7 @@ var DocumentList;
             _this.$modal = $modal;
             _this.DocumentListService = DocumentListService;
             _this.$filter = $filter;
+            $scope.vm = _this;
             _this.DocumentListService.GetUserList(_this.$scope).then(function (data) {
                 $scope.userChandniList = data;
                 $scope.mainGridOptions = {
@@ -53,8 +54,27 @@ var DocumentList;
                         }]
                 };
             });
+            $scope.vm.uploadFiles = function (file, errFiles) {
+                alert("File size: " + file.size + "KB");
+            };
             return _this;
         }
+        DocumentListController.prototype.saveDocument = function () {
+            debugger;
+            this.doc = this.$scope.doc;
+            debugger;
+            this.DocumentListService.SaveDocument(this.$scope, this.doc).then(function (data) {
+                debugger;
+                if (data == 'success') {
+                    /*this.$window.location.href="/saveDocumentVimal";*/
+                }
+            })["catch"](function (err) {
+                debugger;
+                if (err == 409) {
+                    /*this.$window.location.href="/listdocument#/?status=conflict";*/
+                }
+            });
+        };
         return DocumentListController;
     }(DocumentList.BaseDocumentListController));
     DocumentListController.$inject = [

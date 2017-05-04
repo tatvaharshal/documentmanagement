@@ -1,0 +1,152 @@
+body {
+    height: 100%;
+    min-height: 100%;
+    min-width: 320px;
+    background: #FFF;
+    margin: 0;
+    padding: 0;
+    font-size: 13px;
+    font-family: 'Montserrat', arial, sans-serif;
+    color: #555555;
+}
+
+#content {
+    padding-top: 75px;
+    padding-bottom: 50px;
+}
+
+.page-padding {
+    padding: 35px;
+}
+
+.doc-back-image {
+    height: 35px;
+}
+
+.logo-header {
+    height: 75px;
+}
+
+.doc-header {
+    color: #2A3551;
+    font-weight: bold;
+}
+
+.doc-inner-header {
+    color: #2A3551;
+    font-weight: bold;
+    padding-top: 20px;
+}
+
+.doc-tab {
+    height: 50px;
+    padding: 20px 0 0 20px;
+    background: #F0F0F0;
+}
+
+.doc-form-div {
+    padding: 20px;
+    background: #F0F0F0;
+}
+
+.doc-form-div label {
+    font-weight: bold;
+}
+
+.custom-style {
+    height: 30px;
+    width: 300px;
+}
+
+.k-button .k-image {
+    height: 16px;
+}
+
+.doc-import-button {
+    height: 48px;
+    float: left;
+    width: 50px;
+    padding: 7px;
+}
+
+#header {
+    background: #E6E6E6;
+    top: 0;
+    left: 0;
+    height: 41px;
+    width: 100%;
+    position: fixed;
+    z-index: 10000;
+    min-width: 320px;
+    background-image: url("../../Document/Images/Header.png");
+    background-repeat: no-repeat;
+}
+
+.doc-red-btn{
+    background: red;
+}
+
+.doc-upload-button{
+    width: 300px;
+    height: 50px;
+    background: transparent;
+    border: 7px solid white;
+    text-align: left;
+    padding-left: 30px;
+}
+
+/*Media Query*/
+
+@media(max-width:1400px) {
+    .custom-style {
+        width: 250px;
+    }
+}
+
+@media(max-width:1200px) {
+    .custom-style {
+        width: 230px;
+    }
+}
+
+@media(max-width:1100px) {
+    .custom-style {
+        width: 200px;
+    }
+}
+
+@media(max-width:1000px) {
+    .custom-style {
+        width: 175px;
+    }
+}
+
+@media(max-width:900px) {
+    .custom-style {
+        width: 150px;
+    }
+}
+
+@media(max-width:767px) {
+    .custom-style {
+        width: 100%;
+    }
+}
+
+@media only screen and (min-device-width: 767px) and (max-device-width: 1111px) {
+    .doc-tab {
+        max-width: 30% !important;
+    }
+}
+
+@media(max-width:410px) {
+    .doc-upload-button {
+        width: 250px;
+    }
+}
+
+@media(max-width:360px) {
+    .doc-upload-button {
+        width: 210px;
+    }
+}

@@ -1,0 +1,25 @@
+.k-grid .k-header,
+.k-grid-header
+{
+    background:#1c3560;
+    color:white;
+}
+
+.k-grid th.k-header,
+.k-grid th.k-header .k-link
+{
+    color:white;
+}
+
+.btn {
+    float:right;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0px;
+    font-family: Arial;
+    color: #403c40;
+    font-size: 20px;
+    background: #b4b4b4;
+    padding: 10px 20px 10px 20px;
+    text-decoration: none;
+}
