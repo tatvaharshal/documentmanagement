@@ -20,6 +20,7 @@ import com.tatvacoconet.entity.DocumentData;
 import com.tatvacoconet.entity.DocumentLink;
 import com.tatvacoconet.service.DocumentDataService;
 import com.tatvacoconet.service.DocumentLinkService;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * Created by pca48 on 5/2/2017.
@@ -42,6 +43,17 @@ import com.tatvacoconet.service.DocumentLinkService;
                 "yyyy-MM-dd HH:mm:ss");
 
 
+/*
+    @RequestMapping(value = "/documentList", method = RequestMethod.GET)
+    public ModelAndView displayDocumentList() {
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("DocumentList");
+        return mav;
+    }
+
+*/
+
+
 	/*                      List all Method 					*/
 
         @RequestMapping(value = "/documentList", method = RequestMethod.GET, headers = "Accept=application/json")
@@ -49,19 +61,17 @@ import com.tatvacoconet.service.DocumentLinkService;
             // Retrieve all documents
             List<DocumentData> document = dataService.getAllDocs();
 
-            // Prepare model object
             List<DocumentDTO> documentDTO = new ArrayList<DocumentDTO>();
 
             for (DocumentData doc : document) {
-                // Create new data transfer object
                 DocumentDTO dto = new DocumentDTO();
                 dto.setDocumentData(doc);
                 dto.setDocumentLink(linkService.getAllDocumentsLink(doc.getDocumentId()));
-                // Add to model list
+
                 documentDTO.add(dto);
             }
 
-            // List<DocumentData> document = dataService.getAllDocs();
+            // List<Document_Data> document = dataService.getAllDocs();
             if (documentDTO.isEmpty()) {
                 logger.debug("document does not exists");
                 return new ResponseEntity<List<DocumentDTO>>(HttpStatus.NO_CONTENT);
@@ -71,11 +81,19 @@ import com.tatvacoconet.service.DocumentLinkService;
                 return new ResponseEntity<List<DocumentDTO>>(documentDTO,
                         HttpStatus.OK);
             }
-
         }
+
+    @RequestMapping(value = "/adddocument", method = RequestMethod.GET)
+    public ModelAndView displayAddDocument() {
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("AddDocument");
+        return mav;
+    }
+
+
 	/* 							   Add Method 							      	*/
 
-    @RequestMapping(value = "/addDocument", method = RequestMethod.POST, headers = "Accept=application/json")
+    @RequestMapping(value = "/AddDocument", method = RequestMethod.POST, headers = "Accept=application/json")
     public ResponseEntity<MasterDocumentDTO> addDocument(@RequestBody MasterDocumentDTO masterDocumentDTO1,
                                                          @ModelAttribute DocumentData document,
                                                          @ModelAttribute DocumentLink document_link,
@@ -174,6 +192,11 @@ import com.tatvacoconet.service.DocumentLinkService;
     @RequestMapping(value="/updateDocument", method = RequestMethod.PUT, headers="Accept=application/json")
     public void updateDocument(@RequestBody MasterDocumentDTO masterDocumentDTO1, @ModelAttribute DocumentData document,@ModelAttribute DocumentLink documentLink)
     {
+        DocumentDTO documentDTO=new DocumentDTO();
+        documentDTO.setDocumentData(dataService.getDocumentByID(masterDocumentDTO1.getDocumentId()));
+
+        document=documentDTO.getDocumentData();
+
         document.setDocumentId(masterDocumentDTO1.getDocumentId());
         document.setDocumentDescription(masterDocumentDTO1.getDocumentDescription());
         document.setDocumentName(masterDocumentDTO1.getDocumentName());
