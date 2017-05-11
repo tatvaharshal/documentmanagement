@@ -1,32 +1,18 @@
-package com.tatvacoconet.entity;
+package com.tatvacoconet.dto;
 
-import org.hibernate.validator.constraints.NotEmpty;
+import com.tatvacoconet.entity.AddressScope;
+import com.tatvacoconet.entity.DocumentData;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+/**
+ * Created by pca48 on 5/10/2017.
+ */
+public class DocumentLinkDTO {
 
-@Entity
-@Table(name = "DocumentLink")
-public class DocumentLink {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "documentLinkId", unique = true, nullable = false)
     private long documentLinkId;
-
-    @Column(name = "userId")
     private long userId;
-
-
-    @Column(name = "groupDetails")
     private String groupDetails;
-
-
-    @Column(name = "roleDetails")
     private String roleDetails;
 
-
-    @ManyToOne
     private DocumentData documentData;
 
     public long getDocumentLinkId() {
@@ -61,7 +47,7 @@ public class DocumentLink {
         this.roleDetails = roleDetails;
     }
 
-    public DocumentData getDocumentData() {
+      public DocumentData getDocumentData() {
         return documentData;
     }
 

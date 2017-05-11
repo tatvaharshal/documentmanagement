@@ -1,4 +1,5 @@
 package com.tatvacoconet.config;
+
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -31,11 +32,11 @@ public class WebMVCConfig extends WebMvcConfigurerAdapter{
         return resolver;
     }
     
-    @Bean
+    /*@Bean
     public FilterRegistrationBean filterRegistrationBean () {
         FilterRegistrationBean registrationBean = new FilterRegistrationBean();
         registrationBean.setFilter(new CORSFilter());
         return registrationBean;
-    }
+    }*/
 
 }

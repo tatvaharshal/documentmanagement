@@ -2,6 +2,7 @@
 module DocumentList {
     export interface IDocumentListService {
         GetUserList: ($scope: IDocumentListScope) => ng.IPromise<Array<any>>;
-        SaveDocument:($scope: IDocumentListScope, docMaster : DocumentListModel)=> ng.IPromise<string>;
+        SaveDocument:($scope: IDocumentListScope, docMaster : MasterDocumentDTO)=> ng.IPromise<string>;
+        UploadDocument :($scope: IDocumentListScope, docMaster : FileListModel)=> ng.IPromise<string>;
     }
 }

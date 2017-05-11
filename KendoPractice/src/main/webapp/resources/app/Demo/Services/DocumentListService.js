@@ -15,13 +15,22 @@ var DocumentList;
             this._http = http;
             this.$q = $q;
         }
+        //Getting The list
         DocumentListService.prototype.GetUserList = function ($scope) {
-            return this._http.get('/chandni/chandniGetUserList')
+            return this._http.get('./DocumentList')
                 .then(this.success)["catch"](this.fail);
         };
+        //Saving The document
         DocumentListService.prototype.SaveDocument = function ($scope, documentMaster) {
             debugger;
-            return this._http.post("/saveDocumentVimal/", documentMaster)
+            alert("in service");
+            return this._http.post("./DocumentAdd/", documentMaster)
+                .then(this.success)["catch"](this.fail);
+        };
+        //uploading the doc
+        DocumentListService.prototype.UploadDocument = function ($scope, fileMaster) {
+            debugger;
+            return this._http.post("./fileUpload/", fileMaster)
                 .then(this.success)["catch"](this.fail);
         };
         return DocumentListService;

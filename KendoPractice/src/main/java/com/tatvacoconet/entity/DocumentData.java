@@ -2,16 +2,11 @@ package com.tatvacoconet.entity;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
 @Table(name = "DocumentData")
@@ -21,11 +16,14 @@ public class DocumentData {
     @Column(name = "documentId", unique = true, nullable = false)
     private long documentId;
 
+
     @Column(name = "documentName", length = 255)
     private String documentName;
 
+
     @Column(name = "documentDescription", length = 100)
     private String documentDescription;
+
 
     @Column(name = "filePath")
     private byte[] filePath;
@@ -33,29 +31,43 @@ public class DocumentData {
     @Column(name = "fileSize")
     private long fileSize;
 
-    @CreationTimestamp
+
     @Column(name = "creationDate")
     private Date creationDate;
 
-    @CreationTimestamp
+
+
+    @Column(name = "importDate")
+    private Date importDate;
+
+
     @Column(name = "validFrom")
     private Date validFrom;
 
-    @CreationTimestamp
+
     @Column(name = "validTo")
     private Date validTo;
+
 
     @Enumerated(EnumType.STRING)
     private VerticalData verticalData;
 
+
+
     @Enumerated(EnumType.STRING)
     private DocumentStatus documentStatus;
+
 
     @Enumerated(EnumType.STRING)
     private DocumentType documentType;
 
+
+    @Column(name = "documentTag")
+    private String documentTag;
+
+
     @Enumerated(EnumType.STRING)
-    private DocumentTag documentTag;
+    private AddressScope addressScope;
 
 	/*@OneToMany(mappedBy="document_data", cascade = CascadeType.ALL)
 	private Set<Document_Link> Document_Link;*/
@@ -148,12 +160,28 @@ public class DocumentData {
         this.documentType = documentType;
     }
 
-    public DocumentTag getDocumentTag() {
+    public String getDocumentTag() {
         return documentTag;
     }
 
-    public void setDocumentTag(DocumentTag documentTag) {
+    public void setDocumentTag(String documentTag) {
         this.documentTag = documentTag;
+    }
+
+    public Date getImportDate() {
+        return importDate;
+    }
+
+    public void setImportDate(Date importDate) {
+        this.importDate = importDate;
+    }
+
+    public AddressScope getAddressScope() {
+        return addressScope;
+    }
+
+    public void setAddressScope(AddressScope addressScope) {
+        this.addressScope = addressScope;
     }
 
     public DocumentData() {

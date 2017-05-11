@@ -24,8 +24,8 @@ public class DocumentLinkServiceImpl implements DocumentLinkService {
 
 
     @Override
-    public void addDocument(DocumentLink documentLink) {
-        linkRepository.save(documentLink);
+    public DocumentLink addDocument(DocumentLink documentLink) {
+        return linkRepository.save(documentLink);
 
     }
 

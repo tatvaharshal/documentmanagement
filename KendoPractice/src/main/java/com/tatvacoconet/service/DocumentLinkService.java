@@ -6,7 +6,7 @@ import com.tatvacoconet.entity.DocumentLink;
 
 public interface DocumentLinkService {
 
-    void addDocument(DocumentLink documentLink);
+    DocumentLink addDocument(DocumentLink documentLink);
 
     List<DocumentLink> getAllDocumentsLink(long documentId);
 

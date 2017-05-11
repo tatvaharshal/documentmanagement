@@ -7,8 +7,8 @@
 <body>
 	<h2>Main Demo Page</h2>
 	<hr/>
-	<h3><a href="documentList">Test Savan</a></h3>
-	<h3><a href="adddocument">Test Vimal</a></h3>
-
+	<h3><a href="./DocumentList">View Document List</a></h3>
+	<h3><a href="./DocumentAdd">Add Document</a></h3>
+	<h3><a href="./DocumentDetail">Edit/Delete/Download Document</a></h3>
 </body>
 </html>

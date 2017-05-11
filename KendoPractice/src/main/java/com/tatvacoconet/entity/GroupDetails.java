@@ -1,3 +1,4 @@
+/*
 package com.tatvacoconet.entity;
 
 public enum GroupDetails {
@@ -9,3 +10,4 @@ public enum GroupDetails {
     AustriaMULTIVERSAIFP;
 
 }
+*/

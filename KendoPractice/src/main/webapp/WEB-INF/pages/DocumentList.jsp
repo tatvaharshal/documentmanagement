@@ -16,6 +16,9 @@
     <script src="${pageContext.request.contextPath}/resources/app/Chart.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/app/angular-chart.js"></script>
 
+    <script src="${pageContext.request.contextPath}/resources/app/Demo/Document/ng-file-upload.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/app/Demo/Document/ng-file-upload-shim.js"></script>
+
     <script src="${pageContext.request.contextPath}/resources/app/Demo/DocumentListApp.js"></script>
     <script src="${pageContext.request.contextPath}/resources/app/Demo/Services/DocumentListService.js"></script>
     <script src="${pageContext.request.contextPath}/resources/app/Demo/Controller/BaseDocumentListController.js"></script>
@@ -23,10 +26,10 @@
     <script src="https://kendo.cdn.telerik.com/2017.1.223/js/kendo.all.min.js"></script>
 </head>
 <body ng-app="DocumentList">
+<header id="header"></header>
 <div  ng-controller="DocumentListController as ctrl" >
-    <br><br><br>
     <h2 style="color:#2d4265">Documents
-        <a href="./adddocument" class="btn">+ Document Upload</a>
+        <a href="./AddDocument" class="btn">+ Document Upload</a>
     </h2>
     <br>
     <kendo-grid options="mainGridOptions">

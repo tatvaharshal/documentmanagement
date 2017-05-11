@@ -2,7 +2,6 @@
 
 module DocumentList {
     'use strict';
-
     export class DocumentListModel {
         public userId: any;
         public userFullName: any;
@@ -23,7 +22,9 @@ module DocumentList {
         public userAddress: any;
         public userImage: any;
 
-        //============
+        //===========
+        public docFile:any;
+        public docSize:number;
         public docAddressScope: string;
         public docType: string;
         public docUser: string;
@@ -38,8 +39,6 @@ module DocumentList {
         public docTags: Array<any>;
         public docName: string;
         public Isvalid: boolean = false;
-
-        constructor(
-            ) { }
+        constructor() { }
     }
 }

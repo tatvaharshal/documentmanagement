@@ -7,7 +7,7 @@ module DocumentList
         userChandniList: DocumentListModel[];
         mainGridOptions :any;
         vm: any;
-        doc:any;
+        doc:MasterDocumentDTO;
     }
 
 }

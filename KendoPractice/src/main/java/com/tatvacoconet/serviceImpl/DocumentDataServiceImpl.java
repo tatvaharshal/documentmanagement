@@ -12,12 +12,13 @@ import com.tatvacoconet.service.DocumentDataService;
 
 @Service
 public class DocumentDataServiceImpl implements DocumentDataService {
+
     @Autowired
     private DocumentDataRepository dataRepository;
 
     @Override
-    public void RegisterOrUpdate(DocumentData document) {
-        dataRepository.save(document);
+    public DocumentData RegisterOrUpdate(DocumentData document) {
+        return dataRepository.save(document);
 
     }
 

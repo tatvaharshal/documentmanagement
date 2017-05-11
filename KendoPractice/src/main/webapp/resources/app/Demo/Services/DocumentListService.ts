@@ -10,19 +10,30 @@ module DocumentList {
             this.$q = $q;
         }
 
+        //Getting The list
         public GetUserList($scope: IDocumentListScope): ng.IHttpPromise<UserChandni[]> {
-            return this._http.get('/documentList')
+            return this._http.get('./DocumentList')
                 .then(this.success)
                 .catch(this.fail);
         }
 
-
-        public SaveDocument($scope: IDocumentListScope, documentMaster : DocumentListModel): ng.IHttpPromise<string> {
+        //Saving The document
+        public SaveDocument($scope: IDocumentListScope, documentMaster : MasterDocumentDTO): ng.IHttpPromise<string> {
             debugger;
-            return this._http.post("/saveDocumentVimal/", documentMaster)
+            alert("in service");
+            return this._http.post("./DocumentAdd/", documentMaster)
                 .then(this.success)
                 .catch(this.fail);
         }
+
+        //uploading the doc
+        public UploadDocument($scope: IDocumentListScope, fileMaster : FileListModel): ng.IHttpPromise<string> {
+            debugger;
+            return this._http.post("./fileUpload/", fileMaster)
+                .then(this.success)
+                .catch(this.fail);
+        }
+
 
         //define Succses And fail
         private success: (response: any) => {} = (response) => response.data;

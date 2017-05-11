@@ -1,3 +1,4 @@
+/*
 package com.tatvacoconet.entity;
 
 
@@ -9,3 +10,4 @@ public enum DocumentTag {
 
 
 }
+*/

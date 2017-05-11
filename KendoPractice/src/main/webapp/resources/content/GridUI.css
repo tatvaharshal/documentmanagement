@@ -23,3 +23,16 @@
     padding: 10px 20px 10px 20px;
     text-decoration: none;
 }
+
+#header {
+    background: #E6E6E6;
+    top: 0;
+    left: 0;
+    height: 41px;
+    width: 100%;
+    position: fixed;
+    z-index: 10000;
+    min-width: 320px;
+    background-image: url("/resources/content/Document/Images/Header.png");
+    background-repeat: no-repeat;
+}

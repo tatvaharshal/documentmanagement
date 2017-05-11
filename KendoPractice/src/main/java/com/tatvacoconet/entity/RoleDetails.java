@@ -1,3 +1,4 @@
+/*
 package com.tatvacoconet.entity;
 
 public enum RoleDetails {
@@ -12,3 +13,4 @@ public enum RoleDetails {
 
 
 }
+*/
