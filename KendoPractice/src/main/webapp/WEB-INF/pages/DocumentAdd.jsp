@@ -59,7 +59,7 @@
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-md-7 col-lg-7">
-                                        <h4 class="doc-header"><a href="/DocumentList"><img
+                                        <h4 class="doc-header"><a href="./DocumentList"><img
                                                 src="${pageContext.request.contextPath}/resources/content/Document/Images/back.png"
                                                 class="doc-back-image"/></a>Document upload
                                         </h4>
@@ -73,9 +73,9 @@
                                                                     src="${pageContext.request.contextPath}/resources/content/Document/Images/delete-icon.png"
                                                                     class="doc-import-button"/></span>
                                                         </span>
-                                                    <button class="form-control"
+                                                    <button class="form-control" type="reset"
                                                             style="height:100%;width:100%;background-color:#F0F0F0;padding-left:25px;"
-                                                            ng-click="ctlr.TestData(ctlr)">Discard
+                                                          value="Reset">Discard
                                                     </button>
                                                 </div>
                                             </div>
@@ -106,11 +106,11 @@
                             <%--Form    --%>
                             <div class="doc-form-div">
 
-                                <div class="form-group">
+                                <div class="form-group" style="width: 250px;">
                                     <label for="file">File*</label><br/>
-                                    <input class="doc-upload-button" type="file" id="file"
-                                           ngf-select="ctlr.uploadFiles($file)"
-                                           accept="application/pdf" ngf-max-height="1000" ngf-max-size="5MB">
+                                    <input class="form-control" type="file" id="file" file-upload="myFile" ng-model="myFile"
+                                           ngf-select="ctlr.validateFiles($file)"  name="file"
+                                           accept="application/pdf" ngf-max-height="1000" ngf-max-size="5MB" required>
                                     </input>
                                 </div>
 
@@ -119,8 +119,7 @@
                                 <div class="form-group">
                                     <label for="ddlAddressScope">Address Scope<span>*</span></label>
                                     <div class="form-group">
-                                        <select class="custom-style" id="ddlAddressScope" ng-model="doc.addressScope"
-                                                >
+                                        <select class="custom-style" id="ddlAddressScope" ng-model="doc.addressScope">
                                             <option selected="selected" value="">None</option>
                                             <option value="UserId">UserId</option>
                                             <option value="Group">Group</option>
@@ -138,26 +137,10 @@
                                         </div>
                                     </div>
 
-                                    <%--<div class="col-md-3 col-lg-3" id="divGroup" style="display: none">--%>
-                                        <%--<label for="selectGroup">Groups<span>*</span></label>--%>
-                                        <%--<div class="form-group">--%>
-                                            <%--<select kendo-multi-select k-ng-model="doc.groupDetails"--%>
-                                                    <%--data-placeholder="Please select ..." id="selectGroup">--%>
-                                                <%--<option value="GermanyCards">GermanyCards</option>--%>
-                                                <%--<option value="ItalyMULTIVERSAIFP">ItalyMULTIVERSAIFP</option>--%>
-                                                <%--<option value="FranceCards">FranceCards</option>--%>
-                                                <%--<option value="GrermanyMULTIVERSAIFP">GrermanyMULTIVERSAIFP</option>--%>
-                                                <%--<option value="AustriaMULTIVERSAIFP">AustriaMULTIVERSAIFP</option>--%>
-                                            <%--</select>--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
-
-
                                     <div class="col-md-3 col-lg-3" id="divGroup" style="display: none">
                                         <label for="groupDetails">Groups<span>*</span></label>
                                         <div class="form-group">
-                                            <select class="custom-style" id="groupDetails" ng-model="doc.groupDetails"
-                                                    >
+                                            <select kendo-multi-select id="groupDetails" k-ng-model="doc.groupDetails" data-placeholder="Please select ..."  multiple="multiple">
                                                 <option value="GermanyCards">GermanyCards</option>
                                                 <option value="ItalyMULTIVERSAIFP">ItalyMULTIVERSAIFP</option>
                                                 <option value="FranceCards">FranceCards</option>
@@ -167,28 +150,10 @@
                                         </div>
                                     </div>
 
-                                    <%--<div class="col-md-3 col-lg-3" id="divRole" style="display: none">--%>
-                                        <%--<label for="selectRole">Role<span>*</span></label>--%>
-                                        <%--<div class="form-group">--%>
-                                            <%--<select kendo-multi-select k-ng-model="doc.roleDetails"--%>
-
-                                                    <%--data-placeholder="Please select ..." id="selectRole">--%>
-                                                <%--<option value="ALLUsers">ALLUsers</option>--%>
-                                                <%--<option value="Attentionwidget">Attentionwidget</option>--%>
-                                                <%--<option value="Balancewidget">Balancewidget</option>--%>
-                                                <%--<option value="Favouritewidget">Favouritewidget</option>--%>
-                                                <%--<option value="Liquiditywidget">Liquiditywidget</option>--%>
-                                                <%--<option value="Paymentcreation">Paymentcreation</option>--%>
-                                                <%--<option value="Paymentwidget">Paymentwidget</option>--%>
-                                            <%--</select>--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
-
                                     <div class="col-md-3 col-lg-3" id="divRole" style="display: none">
                                         <label for="roleDetails">Role<span>*</span></label>
                                         <div class="form-group">
-                                            <select class="custom-style" id="roleDetails" ng-model="doc.roleDetails"
-                                                    >
+                                            <select kendo-multi-select id="roleDetails" k-ng-model="doc.roleDetails" data-placeholder="Please select ..." multiple="multiple">
                                                 <option value="ALLUsers">ALLUsers</option>
                                                 <option value="Attentionwidget">Attentionwidget</option>
                                                 <option value="Balancewidget">Balancewidget</option>
@@ -200,13 +165,10 @@
                                         </div>
                                     </div>
 
-
-
                                     <div class="col-md-3 col-lg-3">
                                         <label for="documenttype">Document type<span>*</span></label>
                                         <div class="form-group">
-                                            <select class="custom-style" id="documenttype" ng-model="doc.documentType"
-                                                    >
+                                            <select class="custom-style" id="documenttype" ng-model="doc.documentType" required>
                                                 <option selected="selected" value="">None</option>
                                                 <option value="Contract">Contract</option>
                                                 <option value="Account_Statement">Account_Statement</option>
@@ -228,24 +190,21 @@
                                     <div class="col-md-3 col-lg-3">
                                         <label for="txtcreationDate">Creation date</label>
                                         <div class="form-group">
-                                            <input type="text" id="txtcreationDate" class="custom-style"
-                                                   placeholder="Creation date" ng-model="doc.creationDate"/>
+                                            <input type="text" id="txtcreationDate" class="custom-style" placeholder="Creation date" ng-model="doc.creationDate"/>
                                         </div>
                                     </div>
 
                                     <div class="col-md-3 col-lg-3">
                                         <label for="txtvalidFromDate">Valid from</label>
                                         <div class="form-group">
-                                            <input type="text" id="txtvalidFromDate" class="custom-style"
-                                                   placeholder="Valid from" ng-model="doc.validFrom"/>
+                                            <input type="text" id="txtvalidFromDate" class="custom-style" placeholder="Valid from" ng-model="doc.validFrom"/>
                                         </div>
                                     </div>
 
                                     <div class="col-md-3 col-lg-3">
                                         <label for="txtvalidToDate">Valid to</label>
                                         <div class="form-group">
-                                            <input type="text" id="txtvalidToDate" class="custom-style"
-                                                   placeholder="Valid To" ng-model="doc.validTo"/>
+                                            <input type="text" id="txtvalidToDate" class="custom-style" placeholder="Valid To" ng-model="doc.validTo"/>
                                         </div>
                                     </div>
                                 </div>
@@ -253,48 +212,28 @@
                                 <hr style="color: #CFCFCF;border: 1px solid;"/>
 
                                 <div class="form-group">
-                                    <label for="txtdocumentName">Document Name</label>
+                                    <label for="txtName">Document Name<span>*</span></label>
                                     <div class="form-group">
-                                        <input type="text" class="custom-style"
-                                               ng-model="doc.documentName"
-                                               id="txtdocumentName" placeholder="Document Name"
-                                              >
+                                        <input  type="text" class="custom-style"  name="docName" ng-model="doc.documentName" data-ng-pattern="/^[a-zA-Z0-9]*$/" id="txtName" placeholder="Document Name" data-ng-minlength="0" data-ng-maxlength="255" maxlength="255">
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="txtDescription">Description</label>
                                     <div class="form-group">
-                                            <input type="text" style="width: 100%;"
-                                                      ng-model="doc.documentDescription" id="txtDescription"
-                                                      placeholder="Description" >
+                                        <input type="text" style="width: 100%;" name="docName" ng-model="doc.documentDescription" id="txtDescription" placeholder="Description" data-ng-minlength="0" data-ng-maxlength="1000" maxlength="1000"></input>
                                     </div>
                                 </div>
-
-                                <%--<div class="form-group">--%>
-                                    <%--<label for="selectDocumentTags">Document tags</label>--%>
-                                    <%--<div class="form-group">--%>
-                                        <%--<select kendo-multi-select k-ng-model="doc.documentTag"--%>
-                                                <%--data-placeholder="Please select ..." id="selectDocumentTags">--%>
-                                            <%--<option value="ProjectA">ProjectA</option>--%>
-                                            <%--<option value="ProjectB">ProjectB</option>--%>
-                                            <%--<option value="ProjectC">ProjectC</option>--%>
-                                        <%--</select>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
-
                                 <div class="col-md-3 col-lg-3">
-                                    <label for="documentTag">Document type<span>*</span></label>
+                                    <label for="documentTag">Document Tags<span>*</span></label>
                                     <div class="form-group">
-                                        <select class="custom-style" id="documentTag" ng-model="doc.documentTag"
-                                                >
-                                            <option value="ProjectA">ProjectA</option>
+                                        <select kendo-multi-select id="documentTag"k-ng-model="list.documentTags" data-placeholder="Please select ..." multiple="multiple">
+                                            <option value="ProjectA" >ProjectA</option>
                                             <option value="ProjectB">ProjectB</option>
                                             <option value="ProjectC">ProjectC</option>
                                         </select>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -303,26 +242,23 @@
         </div>
     </section>
 </div>
-
-
-
-
 <script>
     $('#txtcreationDate').datepicker({
-        format: 'yyyy-mm-dd',
+        dateFormat: 'yy-mm-dd',
         autoclose: true,
         maxDate: 0
     });
     $('#txtvalidFromDate').datepicker({
-        format: 'yyyy-mm-dd',
+        dateFormat: 'yy-mm-dd',
         autoclose: true,
         minDate: 0
     });
     $('#txtvalidToDate').datepicker({
-        format: 'yyyy-mm-dd',
+        dateFormat: 'yy-mm-dd',
         autoclose: true,
         maxDate: 0
     });
+
     $("#ddlAddressScope").change(function () {
       $("select option:selected").each(function () {
         if ($(this).attr("value") == "UserId") {

@@ -8,9 +8,13 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+/**
+ * Created by pca43 on 11-May-17.
+ */
 /// <reference path='../../_allDocumentList.ts' />
 var DocumentList;
 (function (DocumentList) {
+    //  import BaseDocumentListController = DocumentList.BaseDocumentListController;
     var DocumentListController = (function (_super) {
         __extends(DocumentListController, _super);
         /// Conctructor
@@ -23,64 +27,20 @@ var DocumentList;
             _this.DocumentListService = DocumentListService;
             _this.$filter = $filter;
             _this.fileUploadService = fileUploadService;
-            //uloadPDF
-            // uploadFiles = function (file) {
-            //      debugger;
-            //      if(file.size>5242880)
-            //      {
-            //          alert("File Size Should Not bE greter then 5 MB")
-            //      }
-            //      else {
-            //          alert("File size: "+file.size + "Bit");
-            //          this.file = file;
-            //          alert(file);
-            //          this.DocumentListService.UploadDocument(this.$scope, this.file).then((data) =>{
-            //              debugger;
-            //              if(data == 'success'){
-            //              }
-            //          }).catch(err =>{
-            //              if(err == 409){
-            //              }
-            //          });
-            //      }
-            //  }
-            // saveDocument(){
-            //     debugger;
-            //     this.doc = this.$scope.doc;
-            //
-            //     this.DocumentListService.SaveDocument(this.$scope, this.doc).then((data) =>{
-            //         if(data.success == 'success'){
-            //             alert("Succses");
-            //             //this.$window.location.href="/userChirag/userList#/?status=save";
-            //         }
-            //     }).catch(err =>{
-            //         alert("Fail");
-            //         if(err == 409){
-            //             //this.$window.location.href="/userChirag/userList#/?status=conflict";
-            //         }
-            //     });
-            // }
-            //uloadPDF
-            _this.uploadFiles = function (file) {
+            _this.isUploaded = false;
+            //uloadPDF Validation
+            _this.validateFiles = function (file) {
                 debugger;
                 if (file.size > 5242880) {
                     alert("File Size Should Not bE greter then 5 MB");
                 }
                 else {
-                    if (file != null || file != undefined) {
-                        // var name = file.name;
-                        // var uploadUrl = "./fileUpload";
-                        // file.filePath = file;
-                        // file.fileSize = file.size;
-                        // file.documentName = file.name;
-                        // file.documentDescription = file.type;
-                        this.fileUploadService.uploadFile(file, "./fileUpload");
-                    }
+                    return true;
                 }
             };
             $scope.vm = _this;
-            _this.DocumentListService.GetUserList(_this.$scope).then(function (data) {
-                $scope.userChandniList = data;
+            _this.DocumentListService.GetDocumentList(_this.$scope).then(function (data) {
+                debugger;
                 $scope.mainGridOptions = {
                     dataSource: {
                         type: "json",
@@ -93,66 +53,108 @@ var DocumentList;
                     sortable: true,
                     pageable: true,
                     columns: [{
-                            field: "documentData.documentName",
+                            field: "documentName",
                             title: "Document name"
                         }, {
-                            field: "documentData.creationDate",
-                            title: "Creation date"
+                            field: "creationDate",
+                            title: "Creation date",
+                            template: function (dataitem) {
+                                var d = new Date(dataitem.creationDate);
+                                var formattedDate = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear();
+                                return formattedDate;
+                            }
                         }, {
-                            field: "documentData.validFrom",
-                            title: "Valid From"
+                            field: "importDate",
+                            title: "import Date",
+                            template: function (dataitem) {
+                                var d = new Date(dataitem.importDate);
+                                var formattedDate = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear();
+                                return formattedDate;
+                            }
                         }, {
-                            field: "documentData.fileSize",
+                            field: "fileSize",
                             title: "File size(KB)"
                         }, {
-                            field: "documentData.documentDescription",
+                            field: "documentDescription",
                             title: "description"
                         },
                         {
-                            field: "documentData.documentStatus",
+                            field: "documentStatus",
                             title: "Document status"
                         },
                         {
-                            field: "documentData.documentType",
+                            field: "documentType",
                             title: "Document Type"
                         },
                         {
-                            field: "documentData.addressScope",
+                            field: "addressScope",
                             title: "Addres scope"
                         }, {
-                            field: "documentData.verticalData",
+                            field: "verticalData",
                             title: "Vertical Id"
                         }, {
-                            field: "documentData.validFrom",
-                            title: "Valid from"
+                            field: "validFrom",
+                            title: "Valid from",
+                            template: function (dataitem) {
+                                var d = new Date(dataitem.validFrom);
+                                var formattedDate = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear();
+                                return formattedDate;
+                            }
                         }, {
-                            field: "documentData.validTo",
-                            title: "Valid to"
+                            field: "validTo",
+                            title: "Valid to",
+                            template: function (dataitem) {
+                                var d = new Date(dataitem.validTo);
+                                var formattedDate = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear();
+                                return formattedDate;
+                            }
                         },
                         {
-                            field: "documentData.documentTag",
+                            field: "documentTag",
                             title: "Document tag"
                         },
                         {
-                            field: "documentData.importDate",
-                            title: "import Date"
+                            title: "Edit",
+                            template: '<a href="./DocumentDetail?DocumentId=#: documentId #">Edit</a>'
                         }
                     ]
                 };
             });
             return _this;
-            // $scope.vm.uploadFiles = function (file, errFiles) {
-            //     alert("File size: "+file.size + "Bit");
-            // }
         }
-        // saving Document
+        //Methods
+        //convert date
+        DocumentListController.prototype.convertDate = function (timestamp) {
+            var d = new Date(timestamp);
+            var formattedDate = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear();
+            return formattedDate;
+        };
+        // Init
+        DocumentListController.prototype.initialiseEditPage = function (id, $scope) {
+            var _this = this;
+            debugger;
+            this.DocumentListService.GetDocumentByID(id).then(function (data) {
+                debugger;
+                _this.doc = data;
+                _this.$scope.doc = data;
+                //this.$scope.list.documentTags = this.doc.documentTag.split(",");
+            });
+        };
+        //SaveDocument
         DocumentListController.prototype.saveDocument = function () {
+            var _this = this;
             debugger;
             this.doc = this.$scope.doc;
+            this.list = this.$scope.list;
+            if (this.list != undefined) {
+                this.doc.documentTag = this.$scope.list.documentTags.join(", ");
+            }
             this.DocumentListService.SaveDocument(this.$scope, this.doc).then(function (data) {
-                debugger;
-                if (data == 'CREATED') {
+                _this.doc = data;
+                alert(_this.doc.documentId);
+                if (data.success == 'success') {
                     alert("file uploadede succsesfully");
+                    // this.$window.location.href="/userChirag/userList#/?status=save";
                 }
                 else {
                     alert("fail");
@@ -160,9 +162,52 @@ var DocumentList;
             })["catch"](function (err) {
                 if (err == 409) {
                     alert("erro ocured");
+                    // this.$window.location.href="/userChirag/userList#/?status=conflict";
+                }
+            });
+            var file = this.$scope.myFile;
+            if (file != null || file != undefined) {
+                this.fileUploadService.uploadFile(file, "./fileUpload");
+            }
+        };
+        //updateDocument
+        DocumentListController.prototype.updateDocument = function () {
+            debugger;
+            alert("in save docmethod");
+            this.doc = this.$scope.doc;
+            this.list = this.$scope.list;
+            if (this.list != undefined) {
+                this.doc.documentTag = this.$scope.list.documentTags.join(", ");
+            }
+            this.DocumentListService.UpdateDocument(this.$scope, this.doc).then(function (data) {
+                debugger;
+                if (data == 'success') {
+                    alert("file uploadede succsesfully");
+                    // this.$window.location.href="/userChirag/userList#/?status=save";
+                }
+                else {
+                    alert("fail");
+                }
+            })["catch"](function (err) {
+                if (err == 409) {
+                    alert("erro ocured");
+                    // this.$window.location.href="/userChirag/userList#/?status=conflict";
                 }
             });
         };
+        //onDelete
+        DocumentListController.prototype.onDelete = function (id, name) {
+            var _this = this;
+            var options = {
+                template: '<div class="modal-header"><h3 class="modal-title">Delete Document</h3></div><div class="modal-body">The Document With Name ' + name + ' will be deleted.Are you sure you want to continue?</div><div class="modal-footer"><button class="btn btn-primary" type="button" ng-click="Dctrl.save(' + id + ')">Ok</button><button class="btn btn-default" type="button" ng-click="Dctrl.cancel()">Cancel</button></div>',
+                controller: 'DocumentPopupController as Dctrl',
+                windowClass: 'app-modal-window',
+                resolve: {}
+            };
+            this.$modal.open(options).result
+                .then(function (updatedItem) { return _this.onConfirm(updatedItem); });
+        };
+        DocumentListController.prototype.onConfirm = function (item) { };
         return DocumentListController;
     }(BaseDocumentListController));
     DocumentListController.$inject = [

@@ -9,6 +9,5 @@
 	<hr/>
 	<h3><a href="./DocumentList">View Document List</a></h3>
 	<h3><a href="./DocumentAdd">Add Document</a></h3>
-	<h3><a href="./DocumentDetail">Edit/Delete/Download Document</a></h3>
 </body>
 </html>

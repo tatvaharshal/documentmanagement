@@ -16,21 +16,33 @@ var DocumentList;
             this.$q = $q;
         }
         //Getting The list
-        DocumentListService.prototype.GetUserList = function ($scope) {
-            return this._http.get('./DocumentList')
+        DocumentListService.prototype.GetDocumentList = function ($scope) {
+            debugger;
+            return this._http.get('./documentList')
                 .then(this.success)["catch"](this.fail);
         };
         //Saving The document
         DocumentListService.prototype.SaveDocument = function ($scope, documentMaster) {
             debugger;
-            alert("in service");
             return this._http.post("./DocumentAdd/", documentMaster)
+                .then(this.success)["catch"](this.fail);
+        };
+        //Update The Document
+        DocumentListService.prototype.UpdateDocument = function ($scope, documentMaster) {
+            debugger;
+            return this._http.put("./updateDocument/", documentMaster)
                 .then(this.success)["catch"](this.fail);
         };
         //uploading the doc
         DocumentListService.prototype.UploadDocument = function ($scope, fileMaster) {
             debugger;
             return this._http.post("./fileUpload/", fileMaster)
+                .then(this.success)["catch"](this.fail);
+        };
+        //Get Document By Id
+        DocumentListService.prototype.GetDocumentByID = function (id) {
+            debugger;
+            return this._http.get('./documentListByID/' + id)
                 .then(this.success)["catch"](this.fail);
         };
         return DocumentListService;

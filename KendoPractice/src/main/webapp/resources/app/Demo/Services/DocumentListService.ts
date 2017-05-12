@@ -11,8 +11,9 @@ module DocumentList {
         }
 
         //Getting The list
-        public GetUserList($scope: IDocumentListScope): ng.IHttpPromise<UserChandni[]> {
-            return this._http.get('./DocumentList')
+        public GetDocumentList($scope: IDocumentListScope): ng.IHttpPromise<doc[]> {
+            debugger;
+            return this._http.get('./documentList')
                 .then(this.success)
                 .catch(this.fail);
         }
@@ -20,8 +21,15 @@ module DocumentList {
         //Saving The document
         public SaveDocument($scope: IDocumentListScope, documentMaster : MasterDocumentDTO): ng.IHttpPromise<string> {
             debugger;
-            alert("in service");
             return this._http.post("./DocumentAdd/", documentMaster)
+                .then(this.success)
+                .catch(this.fail);
+        }
+
+        //Update The Document
+        public UpdateDocument($scope: IDocumentListScope, documentMaster : MasterDocumentDTO): ng.IHttpPromise<string> {
+            debugger;
+            return this._http.put("./updateDocument/", documentMaster)
                 .then(this.success)
                 .catch(this.fail);
         }
@@ -34,6 +42,13 @@ module DocumentList {
                 .catch(this.fail);
         }
 
+        //Get Document By Id
+        public GetDocumentByID(id:number): ng.IHttpPromise<any> {
+            debugger;
+            return this._http.get('./documentListByID/'+id)
+                .then(this.success)
+                .catch(this.fail);
+        }
 
         //define Succses And fail
         private success: (response: any) => {} = (response) => response.data;

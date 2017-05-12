@@ -10,14 +10,12 @@ var DocumentList;
             this._http = http;
         }
         FileUploadService.prototype.uploadFile = function (file, uploadUrl) {
+            debugger;
             var fd = new FormData();
             fd.append('file', file);
-            alert("fd " + uploadUrl);
-            this._http.post(uploadUrl, fd, {
-                transformRequest: angular.identity,
-                headers: { 'Content-Type': undefined }
-            }).success(function () { })
-                .error(function (data) { });
+            this._http.post(uploadUrl, fd).success(function (response) {
+                alert(response.data);
+            });
         };
         return FileUploadService;
     }());

@@ -16,14 +16,13 @@ module DocumentList	 {
         }
 
         public uploadFile(file: any, uploadUrl: any) {
+            debugger;
             var fd = new FormData();
             fd.append('file', file);
-            alert("fd "+uploadUrl);
-            this._http.post(uploadUrl, fd, {
-                transformRequest: angular.identity,
-                headers: { 'Content-Type': undefined }
-            }).success(function () { })
-                .error(function (data) { });
+            this._http.post(uploadUrl, fd).success(function(response) {
+               alert(response.data);
+            });
+
         }
     }
     angular.module("DocumentList").service("fileUploadService", FileUploadService);
