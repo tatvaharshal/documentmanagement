@@ -13,4 +13,6 @@ public interface DocumentLinkService {
     void updateDocumentLink(DocumentLink documentLink);
 
     void deleteAll(long documentId);
+
+    DocumentLink getAllDocumentsById(long documentId);
 }

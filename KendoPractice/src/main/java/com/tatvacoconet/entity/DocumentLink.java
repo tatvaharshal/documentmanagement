@@ -29,6 +29,7 @@ public class DocumentLink {
     @ManyToOne
     private DocumentData documentData;
 
+
     public long getDocumentLinkId() {
         return documentLinkId;
     }

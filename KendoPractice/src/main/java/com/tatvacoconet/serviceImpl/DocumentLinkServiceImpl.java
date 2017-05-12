@@ -48,6 +48,10 @@ public class DocumentLinkServiceImpl implements DocumentLinkService {
 
     }
 
+    @Override
+    public DocumentLink getAllDocumentsById(long documentId) {
+        return linkRepository.findById(documentId);
+    }
 
 
 

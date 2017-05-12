@@ -20,4 +20,8 @@ public interface DocumentLinkRepository extends JpaRepository<DocumentLink, Long
    @Query( "select n from DocumentLink n where n.documentData.documentId =:documentId")
    List<DocumentLink> findByID(@Param("documentId")long documentId);
 
+
+    @Query( "select n from DocumentLink n where n.documentData.documentId = :documentId")
+    DocumentLink findById(@Param("documentId")long documentId);
+
 }

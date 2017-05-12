@@ -14,20 +14,20 @@ public class DocumentMapper {
     public DocumentDTO convertToDocumentDto(DocumentData document) {
         //DocumentDTO documentDTO = documentMapper.map(document, DocumentDTO.class);
         DocumentDTO documentDTO = new DocumentDTO();
-        documentDTO.setCreationDate(document.getCreationDate());
-        documentDTO.setDocumentId(document.getDocumentId());
-        documentDTO.setDocumentDescription(document.getDocumentDescription());
-        documentDTO.setDocumentName(document.getDocumentName());
-        documentDTO.setDocumentStatus(document.getDocumentStatus());
-        documentDTO.setDocumentTag(document.getDocumentTag());
-        documentDTO.setDocumentType(document.getDocumentType());
-        documentDTO.setFilePath(document.getFilePath());
-        documentDTO.setFileSize(document.getFileSize());
-        documentDTO.setImportDate(document.getImportDate());
-        documentDTO.setValidFrom(document.getValidFrom());
-        documentDTO.setValidTo(document.getValidTo());
-        documentDTO.setVerticalData(document.getVerticalData());
-        documentDTO.setAddressScope(document.getAddressScope());
+          documentDTO.setAddressScope(document.getAddressScope());
+          documentDTO.setDocumentType(document.getDocumentType());
+          documentDTO.setDocumentStatus(document.getDocumentStatus());
+          documentDTO.setCreationDate(document.getCreationDate());
+          documentDTO.setDocumentId(document.getDocumentId());
+          documentDTO.setValidFrom(document.getValidFrom());
+          documentDTO.setValidTo(document.getValidTo());
+          documentDTO.setImportDate(document.getImportDate());
+          documentDTO.setDocumentTag(document.getDocumentTag());
+          documentDTO.setDocumentName(document.getDocumentName());
+          documentDTO.setDocumentDescription(document.getDocumentDescription());
+          documentDTO.setFilePath(document.getFilePath());
+          documentDTO.setFileSize(document.getFileSize());
+          documentDTO.setVerticalData(document.getVerticalData());
 
         return documentDTO;
     }
@@ -37,21 +37,43 @@ public class DocumentMapper {
     public DocumentData convertToDocumentEntity(DocumentDTO documentDTO) {
         // Document_Data document = documentMapper.map(documentDTO,Document_Data.class);
         DocumentData document = new DocumentData();
-        document.setCreationDate(documentDTO.getCreationDate());
-        document.setDocumentId(documentDTO.getDocumentId());
-        document.setDocumentDescription(documentDTO.getDocumentDescription());
-        document.setDocumentName(documentDTO.getDocumentName());
-        document.setDocumentStatus(documentDTO.getDocumentStatus());
-        document.setDocumentTag(documentDTO.getDocumentTag());
-        document.setDocumentType(documentDTO.getDocumentType());
-        document.setFilePath(documentDTO.getFilePath());
-        document.setFileSize(documentDTO.getFileSize());
-        document.setImportDate(documentDTO.getImportDate());
-        document.setValidFrom(documentDTO.getValidFrom());
-        document.setValidTo(documentDTO.getValidTo());
-        document.setVerticalData(documentDTO.getVerticalData());
-        document.setAddressScope(documentDTO.getAddressScope());
 
+        if(documentDTO.getDocumentName()!=null)
+        {   document.setDocumentName(documentDTO.getDocumentName());}
+
+        if(documentDTO.getDocumentDescription()!=null)
+        {   document.setDocumentDescription(documentDTO.getDocumentDescription());}
+
+        if(documentDTO.getAddressScope()!=null)
+        {   document.setAddressScope(documentDTO.getAddressScope());}
+
+        if(documentDTO.getDocumentType()!=null)
+        {   document.setDocumentType(documentDTO.getDocumentType());}
+
+        if(documentDTO.getDocumentStatus()!=null)
+        {   document.setDocumentStatus(documentDTO.getDocumentStatus());}
+
+        if(documentDTO.getCreationDate()!=null)
+        {   document.setCreationDate(documentDTO.getCreationDate());}
+
+        if(documentDTO.getValidFrom()!=null)
+        {   document.setValidFrom(documentDTO.getValidFrom());}
+
+        if(documentDTO.getValidTo()!=null)
+        {   document.setValidTo(documentDTO.getValidTo());}
+
+        if(documentDTO.getDocumentTag()!=null)
+        {  document.setDocumentTag(documentDTO.getDocumentTag());}
+
+        if(documentDTO.getFilePath()!=null)
+        {  document.setFilePath(documentDTO.getFilePath());}
+
+        if(documentDTO.getFileSize()!='\0')
+        {  document.setFileSize(documentDTO.getFileSize());}
+
+        document.setImportDate(documentDTO.getImportDate());
+        document.setDocumentId(documentDTO.getDocumentId());
+        document.setVerticalData(documentDTO.getVerticalData());
         return document;
     }
 
@@ -64,7 +86,6 @@ public class DocumentMapper {
         documentLinkDTO.setRoleDetails(documentLink.getRoleDetails());
         documentLinkDTO.setUserId(documentLink.getUserId());
        // documentLinkDTO.setDocumentData(documentLink.getDocumentData());
-
         return documentLinkDTO;
     }
 

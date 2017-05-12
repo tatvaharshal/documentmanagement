@@ -69,6 +69,27 @@ public class DocumentData {
     @Enumerated(EnumType.STRING)
     private AddressScope addressScope;
 
+
+    public DocumentData() {
+    }
+
+    public DocumentData(String documentName,String documentDescription,long fileSize,Date creationDate,
+                        Date importDate,Date validFrom,Date validTo,VerticalData verticalData,
+                        DocumentStatus documentStatus,DocumentType documentType,AddressScope addressScope) {
+        this.documentName=documentName;
+        this.documentDescription=documentDescription;
+        this.fileSize=fileSize;
+        this.creationDate=creationDate;
+        this.importDate=importDate;
+        this.validFrom=validFrom;
+        this.validTo=validTo;
+        this.verticalData=verticalData;
+        this.documentStatus=documentStatus;
+        this.documentType=documentType;
+        this.addressScope=addressScope;
+
+
+    }
 	/*@OneToMany(mappedBy="document_data", cascade = CascadeType.ALL)
 	private Set<Document_Link> Document_Link;*/
 
@@ -184,7 +205,5 @@ public class DocumentData {
         this.addressScope = addressScope;
     }
 
-    public DocumentData() {
-    }
 
 }
