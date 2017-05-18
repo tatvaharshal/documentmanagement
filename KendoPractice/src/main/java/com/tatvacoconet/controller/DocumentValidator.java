@@ -5,6 +5,7 @@ package com.tatvacoconet.controller;
  */
 import java.util.Date;
 
+import com.tatvacoconet.entity.AddressScope;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
@@ -18,6 +19,7 @@ import com.tatvacoconet.entity.VerticalData;
 public class DocumentValidator implements Validator{
     Date date=new Date();
     String prefix="=,/,*";
+    final int permitedSize = 5242880;  //~ 5 MB in bytes
     @Override
     public boolean supports(Class<?> aClass) {
         return DocumentDTO.class.equals(aClass);
@@ -27,96 +29,63 @@ public class DocumentValidator implements Validator{
     public void validate(Object obj, Errors errors) {
         DocumentDTO documentDTO = (DocumentDTO) obj;
 
-        Date creationDate=documentDTO.getCreationDate();
-        Date importDate=documentDTO.getImportDate();
-        Date validFrom=documentDTO.getValidFrom();
-        Date validTo=documentDTO.getValidTo();
-        String documentName=documentDTO.getDocumentName();
-        String documentDescription=documentDTO.getDocumentDescription();
-        DocumentStatus documentStatus=documentDTO.getDocumentStatus();
-        String documentTag=documentDTO.getDocumentTag();
-        DocumentType documentType=documentDTO.getDocumentType();
-       // VerticalData vertical_data=documentDTO.getVerticalData();
+        // Vertical_Data vertical_data=documentDTO.getVertical_data();
         //long file_size =multipartFile.getSize();
-
-
-
-        if(documentName==null)
-        {
-            errors.reject("documentName", "errors.documentName");
+        if (documentDTO== null) {
+            errors.rejectValue("documentDTO", "error.documentDTO");
         }
+        if (documentDTO.getCreationDate() == null|| documentDTO.getCreationDate().after(new Date())) {
+            errors.rejectValue("creationDate", "error.creationDate");
 
-
-        if ((!documentDescription.equals("application/pdf"))) {
-
-            errors.reject("type", "errors.documentDescription");
         }
-
-
-
-        if(creationDate.before(date))
-        {
-            errors.reject("creationDate", "errors.creationDate");
-        }
-        if(importDate.before(date))
-        {
-            errors.reject("importDate", "errors.importDate");
-        }
-        if(validFrom.before(creationDate))
-        {
-            errors.reject("validFrom","errors.validFrom");
-        }
-        if(validTo.before(validFrom))
-        {
-            errors.reject("validTo","errors.validTo");
-        }
-
-        if(documentStatus==null)
-        {
-            errors.reject("documentStatus","errors.documentStatus");
-        }
-        if(documentTag==null)
-        {
-            errors.reject("documentTag","errors.documentTag");
-        }
-        if(documentType==null)
-        {
-            errors.reject("documentType","errors.documentType");
-        }
-       /* if(verticalData==null)
-        {
-            errors.reject("verticalData","errors.verticalData");
+      /*  if (documentDTO.getImportDate().before(new Date())) {
+            errors.rejectValue("importDate", "error.importDate");
         }*/
-
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "Document_Status.documentStatus",
-                "error.documentStatus", "Required field");
-
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "documentTag",
-                "error.documentTag", "Required field");
-
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "documentType",
-                "error.documentType", "Required field");
-
-      /*  ValidationUtils.rejectIfEmptyOrWhitespace(errors, "vertical_data",
-                "error.vertical_data", "Required field");*/
-
-
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "documentName",
-                "error.documentName", "Required field");
-
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "documentDescription",
-                "error.documentDescription", "Required field");
-
-        if(documentName.startsWith(prefix))
-        {
-            errors.reject("documentName","errors.documentName");
+        if (documentDTO.getValidFrom() == null|| documentDTO.getValidFrom().before(documentDTO.getCreationDate())) {
+            errors.rejectValue("validFrom", "error.validFrom");
+        }
+        if (documentDTO.getValidTo() == null|| documentDTO.getValidTo().before(documentDTO.getValidFrom())) {
+            errors.rejectValue("validTo", "error.validTo");
+        }
+        if (documentDTO.getDocumentStatus() == null||documentDTO.getDocumentStatus()!=DocumentStatus.ForYourInformation) {
+            errors.rejectValue("documentStatus", "error.documentStatus");
+        }
+        if (documentDTO.getDocumentTag() == null) {
+            errors.rejectValue("documentTag", "error.documentTag");
+        }
+        if (documentDTO.getDocumentType() == null&&
+                !documentDTO.getDocumentType().name().equals(DocumentType.Account_Statement.name())&&
+                !documentDTO.getDocumentType().name().equals(DocumentType.Contract.name())&&
+                !documentDTO.getDocumentType().name().equals(DocumentType.Information.name())&&
+                !documentDTO.getDocumentType().name().equals(DocumentType.Offer.name())){
+            errors.rejectValue("documentType", "error.documentType");
         }
 
-        if(documentDescription.startsWith(prefix))
-        {
-            errors.reject("documentDescription","errors.documentDescription");
+        if (documentDTO.getAddressScope() == null&&
+                !documentDTO.getAddressScope().name().equals(AddressScope.Group.name()) &&
+                !documentDTO.getAddressScope().name().equals(AddressScope.Role.name())&&
+                !documentDTO.getAddressScope().name().equals(AddressScope.UserId.name()) &&
+                !documentDTO.getAddressScope().name().equals(AddressScope.None.name())) {
+            errors.rejectValue("addressScope", "error.addressScope");
         }
 
+    }
+    public void validateFileDetails(Object obj, Errors errors) {
+        DocumentDTO documentDTO = (DocumentDTO) obj;
+
+        if (documentDTO.getDocumentName().startsWith(prefix)) {
+            errors.rejectValue("documentName", "error.documentName");
         }
+        if (documentDTO.getDocumentDescription().startsWith(prefix)) {
+            errors.rejectValue("documentDescription", "error.documentDescription");
+        }
+
+        if (documentDTO.getFileSize()> permitedSize) {
+            errors.rejectValue("fileSize", "error.fileSize");
+        }
+
+
+    }
+
 
 }

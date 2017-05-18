@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -16,12 +17,15 @@ import javax.ws.rs.Produces;
 import com.tatvacoconet.dto.DocumentDTO;
 import com.tatvacoconet.dto.DocumentLinkDTO;
 import com.tatvacoconet.dto.DocumentMapper;
+import com.tatvacoconet.entity.AddressScope;
+import com.tatvacoconet.entity.FileUpload;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -110,53 +114,46 @@ import org.springframework.web.servlet.ModelAndView;
         return mav;
     }
 
-    @RequestMapping(value = "/DocumentAdd", method = RequestMethod.POST, headers = "Accept=application/json")
+    @RequestMapping(value = "/AddDocument", method = RequestMethod.POST, headers = "Accept=application/json")
     public ResponseEntity<DocumentDTO> addDocument(@RequestBody @Valid DocumentDTO documentDTO,
                                                    @ModelAttribute DocumentData document,
                                                    @ModelAttribute DocumentLink documentLink,
-                                                   BindingResult result, HttpSession session, Model model,
-                                                   HttpServletRequest request) {
+                                                   Errors errors,Model model,
+                                                   HttpServletRequest request) throws ParseException{
 
         // public String postAdd(@ModelAttribute("documentAttribute") Document_Data document,HttpSession session) {
         logger.debug("Received request to add new record");
-        documentValidator.validate(documentDTO, result);
-        if (result.hasErrors()) {
-            return new ResponseEntity<DocumentDTO>(HttpStatus.BAD_REQUEST);
+
+        documentValidator.validate(documentDTO, errors);
+        if (errors.hasErrors()) {
+            dataService.delete(documentDTO.getDocumentId());
         }
-        document = documentMapper.convertToDocumentEntity(documentDTO);
 
-        DocumentData document2=dataService.getDocumentByID(document.getDocumentId());
+        else {
+           document=dataService.getDocumentByID(documentDTO.getDocumentId());
+            document.setCreationDate(documentDTO.getCreationDate());
+            //document2.setImportDate(document.getImportDate());
+         /*   document.setDocumentDescription(documentDTO.getDocumentDescription());
+            document.setDocumentName(documentDTO.getDocumentName());*/
+            document.setDocumentStatus(documentDTO.getDocumentStatus());
+            document.setDocumentTag(documentDTO.getDocumentTag());
+            document.setDocumentType(documentDTO.getDocumentType());
+            document.setValidFrom(documentDTO.getValidFrom());
+            document.setValidTo(documentDTO.getValidTo());
+            document.setAddressScope(documentDTO.getAddressScope());
+            dataService.updateDocument(document);
 
-
-        long documentId = document.getDocumentId();
-
-        if (document != null) {
-            document2.setCreationDate(document.getCreationDate());
-            document2.setImportDate(document.getImportDate());
-            document2.setDocumentDescription(document.getDocumentDescription());
-            document2.setDocumentName(document.getDocumentName());
-            document2.setDocumentStatus(document.getDocumentStatus());
-            document2.setDocumentTag(document.getDocumentTag());
-            document2.setDocumentType(document.getDocumentType());
-            document2.setValidFrom(document.getValidFrom());
-            document2.setValidTo(document.getValidTo());
-            document2.setAddressScope(document.getAddressScope());
-            dataService.updateDocument(document2);
-
-        } else {
-            dataService.delete(documentId);
         }
 
         List<DocumentLinkDTO> documentlinkdto = documentDTO.getDocumentLinkDTO();
+        for (DocumentLinkDTO documentLinkDTO : documentlinkdto) {
+            documentLinkValidator.validate(documentLinkDTO, errors);
+            if(errors.hasErrors()){
+                dataService.delete(document.getDocumentId());
+            }
 
-        documentLinkValidator.validate(documentlinkdto, result);
-        if (result.hasErrors()) {
-            return new ResponseEntity<DocumentDTO>(HttpStatus.BAD_REQUEST);
-        }
-
-        for (DocumentLinkDTO doclist : documentlinkdto) {
-            doclist.setDocumentData(document);
-            documentLink = documentMapper.convertToDocumentLinkEntity(doclist);
+            documentLinkDTO.setDocumentData(document);
+            documentLink=documentMapper.convertToDocumentLinkEntity(documentLinkDTO);
             linkService.addDocument(documentLink);
         }
         logger.debug("Added:: " + document);
@@ -168,59 +165,29 @@ import org.springframework.web.servlet.ModelAndView;
     @Produces("application/json")
     @Consumes("application/pdf")
 
-    public ResponseEntity<DocumentDTO> uploadDocument(@RequestPart("file") MultipartFile multipartFile, BindingResult result,
-                                                      HttpSession session, HttpServletResponse response) throws IOException {
+    public ResponseEntity<DocumentDTO> uploadDocument(@Valid FileUpload file, Errors errors,
+                                                      HttpSession session) throws IOException {
 
         DocumentDTO documentDTO = new DocumentDTO();
-
         DocumentDTO documentDTO1 = new DocumentDTO();
-
         DocumentData document = new DocumentData();
 		/* null the session */
-
-
-
 		/* Fill the values into session */
-
+        MultipartFile multipartFile = file.getFile();
         if (!multipartFile.isEmpty()) {
-            try {
-                if (multipartFile.getOriginalFilename() == null) {
-                    result.rejectValue("documentName", "error.documentName");
-                    error = true;
-                } else {
-                    documentDTO.setDocumentName(multipartFile.getOriginalFilename());
-                }
-                response.setContentType("application/pdf");
-                String type = multipartFile.getContentType();
-                if ((type.equals("application/pdf"))) {
-                    documentDTO.setDocumentDescription(multipartFile.getContentType());
-                } else {
-                    result.rejectValue("documentDescription", "error.documentDescription");
-                    error = true;
-                }
+            documentDTO.setDocumentName(multipartFile.getOriginalFilename());
+            documentDTO.setDocumentDescription(multipartFile.getContentType());
+            documentDTO.setFileSize(multipartFile.getSize() / 1024);
+            documentDTO.setFilePath(multipartFile.getBytes());
 
-                long filesize = multipartFile.getSize() / 1024;
-
-                if (filesize < permitedSize) {
-                    documentDTO.setFileSize(multipartFile.getSize() / 1024);
-                } else {
-                    result.rejectValue("fileSize", "error.fileSize");
-                    error = true;
-                }
-                documentDTO.setFilePath(multipartFile.getBytes());
-
-                documentValidator.validate(documentDTO, result);
-                if (result.hasErrors()) {
-                    return new ResponseEntity<DocumentDTO>(HttpStatus.BAD_REQUEST);
-                }
-
-                document = documentMapper.convertToDocumentEntity(documentDTO);
-                DocumentData document2 = dataService.RegisterOrUpdate(document);
-                documentDTO1 = documentMapper.convertToDocumentDto(document2);
-
-            } catch (Exception e) {
-                return new ResponseEntity<DocumentDTO>(HttpStatus.BAD_REQUEST);
+            documentValidator.validateFileDetails(documentDTO, errors);
+            if(errors.hasErrors()){
+                return new ResponseEntity<DocumentDTO>(documentDTO1, HttpStatus.BAD_REQUEST);
             }
+            document = documentMapper.convertToDocumentEntity(documentDTO);
+
+            DocumentData documentUpload=dataService.RegisterOrUpdate(document);
+            documentDTO1=documentMapper.convertToDocumentDto(documentUpload);
         }
         return new ResponseEntity<DocumentDTO>(documentDTO1, HttpStatus.CREATED);
     }
@@ -234,7 +201,6 @@ import org.springframework.web.servlet.ModelAndView;
         documentDTO = documentMapper.convertToDocumentDto(document);
 
         List<DocumentLink> documentLink = linkService.getAllDocumentsLink(documentId);
-
         List<DocumentLinkDTO> documentLinkDTO = new ArrayList<DocumentLinkDTO>();
         for (DocumentLink doclist : documentLink) {
 
@@ -263,64 +229,69 @@ import org.springframework.web.servlet.ModelAndView;
         outputStream.flush();
         outputStream.close();
     }
-    @RequestMapping(value = "/updateDocument", method = RequestMethod.PUT, headers = "Accept=application/json")
+    @RequestMapping(value = "/updateDocument", method = RequestMethod.POST, headers = "Accept=application/json")
     public ResponseEntity<DocumentDTO> updateDocument(@RequestBody @Valid DocumentDTO documentDTO,
                                                       @ModelAttribute DocumentData document,
-                                                      @ModelAttribute DocumentLink documentLink, BindingResult result) {
+                                                      @ModelAttribute DocumentLink documentLink, Errors errors) {
 
         //DocumentDTO documentDTO1=new DocumentDTO();
-        documentValidator.validate(documentDTO, result);
-        if (result.hasErrors()) {
+        documentValidator.validate(documentDTO, errors);
+        if (errors.hasErrors()) {
             return new ResponseEntity<DocumentDTO>(HttpStatus.BAD_REQUEST);
         }
 
-        document = documentMapper.convertToDocumentEntity(documentDTO);
-        DocumentData document2=dataService.getDocumentByID(document.getDocumentId());
-        if(document2.getAddressScope()==null)
+       // document = documentMapper.convertToDocumentEntity(documentDTO);
+         document=dataService.getDocumentByID(documentDTO.getDocumentId());
+        if(document.getAddressScope()== AddressScope.None)
         {
-            document2.setCreationDate(document.getCreationDate());
-            document2.setImportDate(document.getImportDate());
-            document2.setDocumentDescription(document.getDocumentDescription());
-            document2.setDocumentName(document.getDocumentName());
-            document2.setDocumentStatus(document.getDocumentStatus());
-            document2.setDocumentTag(document.getDocumentTag());
-            document2.setDocumentType(document.getDocumentType());
-            document2.setValidFrom(document.getValidFrom());
-            document2.setValidTo(document.getValidTo());
-            document2.setAddressScope(document.getAddressScope());
-            dataService.updateDocument(document2);
+            document.setCreationDate(documentDTO.getCreationDate());
+            document.setImportDate(documentDTO.getImportDate());
+            document.setDocumentDescription(documentDTO.getDocumentDescription());
+            document.setDocumentName(documentDTO.getDocumentName());
+            document.setDocumentStatus(documentDTO.getDocumentStatus());
+            document.setDocumentTag(documentDTO.getDocumentTag());
+            document.setDocumentType(documentDTO.getDocumentType());
+            document.setValidFrom(documentDTO.getValidFrom());
+            document.setValidTo(documentDTO.getValidTo());
+            document.setAddressScope(documentDTO.getAddressScope());
+            dataService.updateDocument(document);
 
             //List<Document_Link> documentLink=linkService.getAllDocumentsLink(document.getDocument_id());
 
             DocumentLink documentLink1=linkService.getAllDocumentsById(document.getDocumentId());
             List<DocumentLinkDTO> documentlinkdto=documentDTO.getDocumentLinkDTO();
 
-            List<DocumentLinkDTO> documentLinkDTO = new ArrayList<DocumentLinkDTO>();
-            for (DocumentLinkDTO doclist : documentlinkdto) {
+            List<DocumentLinkDTO> linkDTO = new ArrayList<DocumentLinkDTO>();
+            for (DocumentLinkDTO documentLinkDTO : documentlinkdto) {
 
-                documentLink=documentMapper.convertToDocumentLinkEntity(doclist);
+                documentLinkValidator.validate(documentLinkDTO, errors);
+                if(errors.hasErrors()){
+                    return new ResponseEntity<DocumentDTO>(documentDTO, HttpStatus.BAD_REQUEST);
+                }
+
+                documentLink=documentMapper.convertToDocumentLinkEntity(documentLinkDTO);
                 documentLink1.setGroupDetails(documentLink.getGroupDetails());
                 documentLink1.setRoleDetails(documentLink.getRoleDetails());
                 documentLink1.setUserId(documentLink.getUserId());
                 linkService.addDocument(documentLink1);
 
 
-                doclist=documentMapper.convertToDocumentLinkDto(documentLink1);
+                documentLinkDTO=documentMapper.convertToDocumentLinkDto(documentLink1);
 
-                documentLinkDTO.add(doclist);
-                documentDTO.setDocumentLinkDTO(documentLinkDTO);
+                linkDTO.add(documentLinkDTO);
+                documentDTO.setDocumentLinkDTO(linkDTO);
 
             }
         }
 
         else
         {
-            document2.setDocumentStatus(document.getDocumentStatus());
-            document2.setValidFrom(document.getValidFrom());
-            document2.setValidTo(document.getValidTo());
-            document2.setDocumentDescription(document.getDocumentDescription());
-            document2.setDocumentTag(document.getDocumentTag());
-            dataService.updateDocument(document2);
+            document.setDocumentStatus(documentDTO.getDocumentStatus());
+            document.setValidFrom(documentDTO.getValidFrom());
+            document.setValidTo(documentDTO.getValidTo());
+            document.setDocumentDescription(documentDTO.getDocumentDescription());
+            document.setDocumentTag(documentDTO.getDocumentTag());
+            dataService.updateDocument(document);
 
         }
 
@@ -328,17 +299,14 @@ import org.springframework.web.servlet.ModelAndView;
         return new ResponseEntity<DocumentDTO>(documentDTO, HttpStatus.CREATED);
     }
     @RequestMapping(value = "/deleteDocument/{documentId}", method = RequestMethod.GET)
-    public ResponseEntity<DocumentDTO> getDelete(@Valid @PathVariable("documentId") long documentId, BindingResult result) {
-        logger.debug("Received request to delete record");
+    public ResponseEntity<DocumentDTO> getDelete(@PathVariable("documentId") long documentId) {
 
-        if (documentId == '\0') {
-            result.rejectValue("documentId", "error.documentId");
-            error = true;
-        } else {
-            linkService.deleteAll(documentId);
+        if (documentId=='\0') {
+            return new ResponseEntity<DocumentDTO>(HttpStatus.BAD_REQUEST);
+        }
+        linkService.deleteAll(documentId);
+        dataService.delete(documentId);
 
-            dataService.delete(documentId);
-        }
-            return new ResponseEntity<DocumentDTO>(HttpStatus.NO_CONTENT);
-        }
+        return new ResponseEntity<DocumentDTO>(HttpStatus.NO_CONTENT);
+    }
     }

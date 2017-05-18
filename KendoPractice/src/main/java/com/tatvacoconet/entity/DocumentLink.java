@@ -14,8 +14,8 @@ public class DocumentLink {
     @Column(name = "documentLinkId", unique = true, nullable = false)
     private long documentLinkId;
 
-    @Column(name = "userId")
-    private long userId;
+    @Enumerated(EnumType.STRING)
+    private UserId userId;
 
 
     @Column(name = "groupDetails")
@@ -38,11 +38,11 @@ public class DocumentLink {
         this.documentLinkId = documentLinkId;
     }
 
-    public long getUserId() {
+    public UserId getUserId() {
         return userId;
     }
 
-    public void setUserId(long userId) {
+    public void setUserId(UserId userId) {
         this.userId = userId;
     }
 

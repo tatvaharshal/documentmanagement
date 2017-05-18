@@ -38,40 +38,18 @@ public class DocumentMapper {
         // Document_Data document = documentMapper.map(documentDTO,Document_Data.class);
         DocumentData document = new DocumentData();
 
-        if(documentDTO.getDocumentName()!=null)
-        {   document.setDocumentName(documentDTO.getDocumentName());}
-
-        if(documentDTO.getDocumentDescription()!=null)
-        {   document.setDocumentDescription(documentDTO.getDocumentDescription());}
-
-        if(documentDTO.getAddressScope()!=null)
-        {   document.setAddressScope(documentDTO.getAddressScope());}
-
-        if(documentDTO.getDocumentType()!=null)
-        {   document.setDocumentType(documentDTO.getDocumentType());}
-
-        if(documentDTO.getDocumentStatus()!=null)
-        {   document.setDocumentStatus(documentDTO.getDocumentStatus());}
-
-        if(documentDTO.getCreationDate()!=null)
-        {   document.setCreationDate(documentDTO.getCreationDate());}
-
-        if(documentDTO.getValidFrom()!=null)
-        {   document.setValidFrom(documentDTO.getValidFrom());}
-
-        if(documentDTO.getValidTo()!=null)
-        {   document.setValidTo(documentDTO.getValidTo());}
-
-        if(documentDTO.getDocumentTag()!=null)
-        {  document.setDocumentTag(documentDTO.getDocumentTag());}
-
-        if(documentDTO.getFilePath()!=null)
-        {  document.setFilePath(documentDTO.getFilePath());}
-
-        if(documentDTO.getFileSize()!='\0')
-        {  document.setFileSize(documentDTO.getFileSize());}
-
-        document.setImportDate(documentDTO.getImportDate());
+        document.setDocumentName(documentDTO.getDocumentName());
+        document.setDocumentDescription(documentDTO.getDocumentDescription());
+        document.setAddressScope(documentDTO.getAddressScope());
+        document.setDocumentType(documentDTO.getDocumentType());
+        document.setDocumentStatus(documentDTO.getDocumentStatus());
+        document.setCreationDate(documentDTO.getCreationDate());
+        document.setValidFrom(documentDTO.getValidFrom());
+        document.setValidTo(documentDTO.getValidTo());
+        document.setDocumentTag(documentDTO.getDocumentTag());
+        document.setFilePath(documentDTO.getFilePath());
+        document.setFileSize(documentDTO.getFileSize());
+        document.setImportDate(document.getCreationDate());
         document.setDocumentId(documentDTO.getDocumentId());
         document.setVerticalData(documentDTO.getVerticalData());
         return document;

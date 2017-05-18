@@ -26,6 +26,24 @@ public class DocumentDTO {
     private AddressScope addressScope;
     private List<DocumentLinkDTO> documentLinkDTO;
 
+
+    public DocumentDTO(){}
+    public DocumentDTO(String documentTag,Date creationDate,
+                       Date importDate,Date validFrom,Date validTo,VerticalData verticalData,
+                       DocumentStatus documentStatus,DocumentType documentType,AddressScope addressScope,List<DocumentLinkDTO> documentLinkDTO) {
+        this.documentTag=documentTag;
+        this.creationDate=creationDate;
+        this.importDate=importDate;
+        this.validFrom=validFrom;
+        this.validTo=validTo;
+        this.verticalData=verticalData;
+        this.documentStatus=documentStatus;
+        this.documentType=documentType;
+        this.addressScope=addressScope;
+        this.documentLinkDTO=documentLinkDTO;
+    }
+
+
     public long getDocumentId() {
         return documentId;
     }
