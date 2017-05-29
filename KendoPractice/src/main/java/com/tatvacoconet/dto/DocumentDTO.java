@@ -24,13 +24,14 @@ public class DocumentDTO {
     private DocumentType documentType;
     private String documentTag;
     private AddressScope addressScope;
-    private List<DocumentLinkDTO> documentLinkDTO;
+    private List<FieldErrorDTO> fieldErrorDTO;
+    private DocumentLinkDTO documentLinkDTO;
 
 
     public DocumentDTO(){}
     public DocumentDTO(String documentTag,Date creationDate,
                        Date importDate,Date validFrom,Date validTo,VerticalData verticalData,
-                       DocumentStatus documentStatus,DocumentType documentType,AddressScope addressScope,List<DocumentLinkDTO> documentLinkDTO) {
+                       DocumentStatus documentStatus,DocumentType documentType,AddressScope addressScope,DocumentLinkDTO documentLinkDTO) {
         this.documentTag=documentTag;
         this.creationDate=creationDate;
         this.importDate=importDate;
@@ -148,13 +149,13 @@ public class DocumentDTO {
         this.documentTag = documentTag;
     }
 
-    public List<DocumentLinkDTO> getDocumentLinkDTO() {
-        return documentLinkDTO;
-    }
+    public List<FieldErrorDTO> getFieldErrorDTO() { return fieldErrorDTO; }
 
-    public void setDocumentLinkDTO(List<DocumentLinkDTO> documentLinkDTO) {
-        this.documentLinkDTO = documentLinkDTO;
-    }
+    public void setFieldErrorDTO(List<FieldErrorDTO> fieldErrorDTO) { this.fieldErrorDTO = fieldErrorDTO;}
+
+    public DocumentLinkDTO getDocumentLinkDTO() { return documentLinkDTO; }
+
+    public void setDocumentLinkDTO(DocumentLinkDTO documentLinkDTO) { this.documentLinkDTO = documentLinkDTO; }
 
     public AddressScope getAddressScope() {
         return addressScope;

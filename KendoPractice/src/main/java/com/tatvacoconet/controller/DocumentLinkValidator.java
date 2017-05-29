@@ -1,58 +1,60 @@
 package com.tatvacoconet.controller;
 
-/**
- * Created by pca48 on 5/11/2017.
- */
-import com.tatvacoconet.entity.UserId;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import org.springframework.stereotype.Component;
-import org.springframework.validation.Errors;
-import org.springframework.validation.ValidationUtils;
-import org.springframework.validation.Validator;
 
 import com.tatvacoconet.dto.DocumentLinkDTO;
+import com.tatvacoconet.dto.FieldErrorDTO;
+import com.tatvacoconet.entity.GroupDetails;
+import com.tatvacoconet.entity.RoleDetails;
+import com.tatvacoconet.entity.UserId;
+
 @Component
-public class DocumentLinkValidator implements Validator{
-
-    @Override
-    public boolean supports(Class<?> aClass) {
-        return DocumentLinkDTO.class.equals(aClass);
-    }
-
-    @Override
-    public void validate(Object obj, Errors errors) {
+public class DocumentLinkValidator{
+    private List<FieldErrorDTO> fieldErrors = new ArrayList<>();
+    public List<FieldErrorDTO> validateDocumentLink(Object obj) {
         DocumentLinkDTO documentLinkDTO = (DocumentLinkDTO) obj;
-
-        if(documentLinkDTO==null){
-            errors.reject("documentLinkDTO", "errors.documentLinkDTO");
+        if(documentLinkDTO.getGroupDetails()==null &&
+                (documentLinkDTO.getRoleDetails()==null && documentLinkDTO.getUserId()==null)){
+            addFieldError("groupDetails","groupDetails can not be blank");
         }
-        if(documentLinkDTO.getRoleDetails()==null && documentLinkDTO.getUserId()==null&&
-                !documentLinkDTO.getGroupDetails().equals("GermanyCards")&&
-                !documentLinkDTO.getGroupDetails().equals("ItalyMULTIVERSAIFP")&&
-                !documentLinkDTO.getGroupDetails().equals("FranceCards")&&
-                !documentLinkDTO.getGroupDetails().equals("GrermanyMULTIVERSAIFP")&&
-                !documentLinkDTO.getGroupDetails().equals("AustriaMULTIVERSAIFP")){
-            errors.reject("groupDetails", "errors.groupDetails");
+        if(documentLinkDTO.getGroupDetails()!=null){
+            String group[]= documentLinkDTO.getGroupDetails().split(",");
+            List<String> groupEnums = Stream.of(GroupDetails.values())
+                    .map(GroupDetails::name).collect(Collectors.toList());
+            for(String groupdetails:group)
+                if (!groupEnums.contains(groupdetails)){
+                    addFieldError("groupDetails","Select proper groupDetails from option");
+                }
         }
-        if(documentLinkDTO.getGroupDetails()==null&&documentLinkDTO.getUserId()==null&&
-                !documentLinkDTO.getRoleDetails().equals("ALLUsers")&&
-                !documentLinkDTO.getRoleDetails().equals("Attentionwidget")&&
-                !documentLinkDTO.getRoleDetails().equals("Balancewidget")&&
-                !documentLinkDTO.getRoleDetails().equals("Favouritewidget")&&
-                !documentLinkDTO.getRoleDetails().equals("Liquiditywidget")&&
-                !documentLinkDTO.getRoleDetails().equals("Paymentcreation")&&
-                !documentLinkDTO.getRoleDetails().equals("Paymentwidget")){
-            errors.reject("roleDetails", "errors.roleDetails");
+        if(documentLinkDTO.getRoleDetails()==null &&
+                (documentLinkDTO.getGroupDetails()==null && documentLinkDTO.getUserId()==null)){
+            addFieldError("roleDetails","roleDetails can not be blank");
+        }
+        if(documentLinkDTO.getRoleDetails()!=null){
+            String group[]= documentLinkDTO.getRoleDetails().split(",");
+            List<String> roleEnums = Stream.of(RoleDetails.values())
+                    .map(RoleDetails::name).collect(Collectors.toList());
+            for(String groupdetails:group)
+                if (!roleEnums.contains(groupdetails)){
+                    addFieldError("roleDetails","Select proper roleDetails from option");
+                }
         }
         if(documentLinkDTO.getGroupDetails()==null&&documentLinkDTO.getRoleDetails()==null&&
                 !documentLinkDTO.getUserId().name().equals(UserId.Bhavin.name())&&
                 !documentLinkDTO.getUserId().name().equals(UserId.Harshal.name())&&
                 !documentLinkDTO.getUserId().name().equals(UserId.Savan.name())&&
                 !documentLinkDTO.getUserId().name().equals(UserId.Vimal.name())){
-            errors.reject("userId", "errors.userId");
+            addFieldError("userId","userId can not be blank Or Select proper from option");
         }
-
+        return  fieldErrors;
     }
-
+    public void addFieldError(String path, String message) {
+        FieldErrorDTO error = new FieldErrorDTO(path, message);
+        fieldErrors.add(error);
+    }
 }
-
-

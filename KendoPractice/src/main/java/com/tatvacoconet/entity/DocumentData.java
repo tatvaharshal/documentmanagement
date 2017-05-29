@@ -21,7 +21,7 @@ public class DocumentData {
     private String documentName;
 
 
-    @Column(name = "documentDescription", length = 100)
+    @Column(name = "documentDescription", length = 1000)
     private String documentDescription;
 
 
