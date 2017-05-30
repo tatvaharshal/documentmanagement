@@ -1,5 +1,4 @@
 /// <reference path='../../_allDocumentList.ts' />
-
 module DocumentList {
     'use strict';
     export class MasterDocumentDTO {
@@ -22,6 +21,7 @@ module DocumentList {
         public roleDetails: string;
         public addressScope: string;
         public importDate: Date;
+        public documentLinkDTO:string ;
         constructor() { }
     }
 }

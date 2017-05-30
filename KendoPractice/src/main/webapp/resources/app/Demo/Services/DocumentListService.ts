@@ -18,8 +18,16 @@ module DocumentList {
                 .catch(this.fail);
         }
 
+        //Get Document By Id
+        public GetDocumentByID(id:number): ng.IHttpPromise<any> {
+            debugger;
+            return this._http.get('./documentListByID/'+id)
+                .then(this.success)
+                .catch(this.fail);
+        }
+
         //Saving The document
-        public SaveDocument($scope: IDocumentListScope, documentMaster : MasterDocumentDTO): ng.IHttpPromise<string> {
+        public SaveDocument($scope: IDocumentListScope, documentMaster : MasterDocumentDTO): ng.IHttpPromise<MasterDocumentDTO> {
             debugger;
             return this._http.post("./DocumentAdd/", documentMaster)
                 .then(this.success)
@@ -29,29 +37,15 @@ module DocumentList {
         //Update The Document
         public UpdateDocument($scope: IDocumentListScope, documentMaster : MasterDocumentDTO): ng.IHttpPromise<string> {
             debugger;
-            return this._http.put("./updateDocument/", documentMaster)
-                .then(this.success)
-                .catch(this.fail);
-        }
-
-        //uploading the doc
-        public UploadDocument($scope: IDocumentListScope, fileMaster : FileListModel): ng.IHttpPromise<string> {
-            debugger;
-            return this._http.post("./fileUpload/", fileMaster)
-                .then(this.success)
-                .catch(this.fail);
-        }
-
-        //Get Document By Id
-        public GetDocumentByID(id:number): ng.IHttpPromise<any> {
-            debugger;
-            return this._http.get('./documentListByID/'+id)
+            return this._http.post("./updateDocument/", documentMaster)
                 .then(this.success)
                 .catch(this.fail);
         }
 
         //define Succses And fail
         private success: (response: any) => {} = (response) => response.data;
+       // private fail: (error: any) => {} = (error) => error.data;
+
         private fail: (error: any) => {} = (error) => {
             var msg = error.data.message;
             var reason = 'query for people failed.';

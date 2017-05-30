@@ -6,9 +6,14 @@ module DocumentList
         mainGridOptions :any;
         vm: any;
         doc:MasterDocumentDTO;
+        docLink:DocumentLinkDTO;
         list:Multivalue;
-       myFile:any;
+        file:any;
         documentTags:string[];
+        flag:boolean;
+        creationDate:string;
+        validFrom:string;
+        validTo:string;
     }
 
 }

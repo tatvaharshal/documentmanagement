@@ -14,7 +14,6 @@ var __extends = (this && this.__extends) || (function () {
 /// <reference path='../../_allDocumentList.ts' />
 var DocumentList;
 (function (DocumentList) {
-    //  import BaseDocumentListController = DocumentList.BaseDocumentListController;
     var DocumentListController = (function (_super) {
         __extends(DocumentListController, _super);
         /// Conctructor
@@ -34,13 +33,9 @@ var DocumentList;
                 if (file.size > 5242880) {
                     alert("File Size Should Not bE greter then 5 MB");
                 }
-                else {
-                    return true;
-                }
             };
             $scope.vm = _this;
             _this.DocumentListService.GetDocumentList(_this.$scope).then(function (data) {
-                debugger;
                 $scope.mainGridOptions = {
                     dataSource: {
                         type: "json",
@@ -48,16 +43,35 @@ var DocumentList;
                         pageSize: 5
                     },
                     columnMenu: true,
-                    filterable: true,
+                    filterable: {
+                        extra: false,
+                        operators: {
+                            string: {
+                                contains: "Contains",
+                                isempty: "Is empty"
+                            }
+                        }
+                    },
                     groupable: true,
                     sortable: true,
                     pageable: true,
+                    selectable: "raw",
                     columns: [{
                             field: "documentName",
                             title: "Document name"
                         }, {
                             field: "creationDate",
                             title: "Creation date",
+                            filterable: {
+                                ui: "datetimepicker",
+                                extra: false,
+                                operators: {
+                                    string: {
+                                        gte: "is After or equel to",
+                                        lte: "is Before or equel to"
+                                    }
+                                }
+                            },
                             template: function (dataitem) {
                                 var d = new Date(dataitem.creationDate);
                                 var formattedDate = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear();
@@ -66,6 +80,16 @@ var DocumentList;
                         }, {
                             field: "importDate",
                             title: "import Date",
+                            filterable: {
+                                ui: "datetimepicker",
+                                extra: false,
+                                operators: {
+                                    string: {
+                                        gte: "is After or equel to",
+                                        lte: "is Before or equel to"
+                                    }
+                                }
+                            },
                             template: function (dataitem) {
                                 var d = new Date(dataitem.importDate);
                                 var formattedDate = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear();
@@ -84,10 +108,16 @@ var DocumentList;
                         },
                         {
                             field: "documentType",
+                            filterable: {
+                                multi: true
+                            },
                             title: "Document Type"
                         },
                         {
                             field: "addressScope",
+                            filterable: {
+                                multi: true
+                            },
                             title: "Addres scope"
                         }, {
                             field: "verticalData",
@@ -95,6 +125,16 @@ var DocumentList;
                         }, {
                             field: "validFrom",
                             title: "Valid from",
+                            filterable: {
+                                ui: "datetimepicker",
+                                extra: false,
+                                operators: {
+                                    string: {
+                                        gte: "is After or equel to",
+                                        lte: "is Before or equel to"
+                                    }
+                                }
+                            },
                             template: function (dataitem) {
                                 var d = new Date(dataitem.validFrom);
                                 var formattedDate = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear();
@@ -103,6 +143,16 @@ var DocumentList;
                         }, {
                             field: "validTo",
                             title: "Valid to",
+                            filterable: {
+                                ui: "datetimepicker",
+                                extra: false,
+                                operators: {
+                                    string: {
+                                        gte: "is After or equel to",
+                                        lte: "is Before or equel to"
+                                    }
+                                }
+                            },
                             template: function (dataitem) {
                                 var d = new Date(dataitem.validTo);
                                 var formattedDate = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear();
@@ -112,10 +162,6 @@ var DocumentList;
                         {
                             field: "documentTag",
                             title: "Document tag"
-                        },
-                        {
-                            title: "Edit",
-                            template: '<a href="./DocumentDetail?DocumentId=#: documentId #">Edit</a>'
                         }
                     ]
                 };
@@ -123,12 +169,6 @@ var DocumentList;
             return _this;
         }
         //Methods
-        //convert date
-        DocumentListController.prototype.convertDate = function (timestamp) {
-            var d = new Date(timestamp);
-            var formattedDate = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear();
-            return formattedDate;
-        };
         // Init
         DocumentListController.prototype.initialiseEditPage = function (id, $scope) {
             var _this = this;
@@ -137,62 +177,123 @@ var DocumentList;
                 debugger;
                 _this.doc = data;
                 _this.$scope.doc = data;
-                //this.$scope.list.documentTags = this.doc.documentTag.split(",");
+                _this.$scope.creationDate = _this.convertDate(_this.doc.creationDate);
+                _this.$scope.validFrom = _this.convertDate(_this.doc.validFrom);
+                _this.$scope.validTo = _this.convertDate(_this.doc.validTo);
+                var temp = _this.$scope.doc.documentTag.split(",");
+                _this.$scope.documentTags = _this.$scope.doc.documentTag.split(",");
+                if (_this.doc.addressScope == "None") {
+                    _this.$scope.flag = false;
+                }
+                else {
+                    _this.$scope.flag = true;
+                }
             });
         };
         //SaveDocument
         DocumentListController.prototype.saveDocument = function () {
             var _this = this;
             debugger;
-            this.doc = this.$scope.doc;
-            this.list = this.$scope.list;
-            if (this.list != undefined) {
-                this.doc.documentTag = this.$scope.list.documentTags.join(", ");
-            }
-            this.DocumentListService.SaveDocument(this.$scope, this.doc).then(function (data) {
-                _this.doc = data;
-                alert(_this.doc.documentId);
-                if (data.success == 'success') {
-                    alert("file uploadede succsesfully");
-                    // this.$window.location.href="/userChirag/userList#/?status=save";
-                }
-                else {
-                    alert("fail");
-                }
-            })["catch"](function (err) {
-                if (err == 409) {
-                    alert("erro ocured");
-                    // this.$window.location.href="/userChirag/userList#/?status=conflict";
-                }
-            });
-            var file = this.$scope.myFile;
+            var file = this.$scope.file;
             if (file != null || file != undefined) {
-                this.fileUploadService.uploadFile(file, "./fileUpload");
+                this.fileUploadService.uploadFile(file, "./fileUpload").then(function (data) {
+                    debugger;
+                    var fileData = JSON.parse(data);
+                    _this.doc = _this.$scope.doc;
+                    _this.docLink = _this.$scope.docLink;
+                    _this.doc.documentId = fileData.documentId;
+                    _this.doc.filePath = fileData.filePath;
+                    _this.doc.fileSize = fileData.fileSize;
+                    if (_this.$scope.doc.addressScope == "UserId") {
+                        _this.docLink.userId = _this.$scope.docLink.userId;
+                        var objToString = JSON.stringify(_this.docLink);
+                        // var final ="["+objToString+"]";
+                        _this.doc.documentLinkDTO = JSON.parse(objToString);
+                    }
+                    if (_this.$scope.doc.addressScope == "Group") {
+                        _this.docLink.groupDetail = _this.$scope.docLink.groupDetails.join(",");
+                        var something = _this.docLink.groupDetail;
+                        var formated = "{" + '"groupDetails"' + ":" + '"' + something + '"' + "}";
+                        //   var final ="["+formated+"]";
+                        _this.doc.documentLinkDTO = JSON.parse(formated);
+                    }
+                    if (_this.$scope.doc.addressScope == "Role") {
+                        _this.docLink.roleDetail = _this.$scope.docLink.roleDetails.join(",");
+                        var something = _this.docLink.roleDetail;
+                        var formated = "{" + '"roleDetails"' + ":" + '"' + something + '"' + "}";
+                        //  var final ="["+formated+"]";
+                        _this.doc.documentLinkDTO = JSON.parse(formated);
+                    }
+                    if (_this.$scope.list != undefined) {
+                        _this.doc.documentTag = _this.$scope.list.documentTags.join(",");
+                    }
+                    _this.DocumentListService.SaveDocument(_this.$scope, _this.doc).then(function (response) {
+                        debugger;
+                        alert(response.status);
+                        if (data != undefined) {
+                            alert("Data Submitted Succsesfully!");
+                            _this.$window.location.href = "./DocumentList";
+                        }
+                        else {
+                            alert("Somwthing Went Wrong");
+                        }
+                    })["catch"](function (err) {
+                        debugger;
+                        alert("error: " + err);
+                    });
+                });
+            }
+            else {
+                alert("File is undefined");
             }
         };
         //updateDocument
         DocumentListController.prototype.updateDocument = function () {
+            var _this = this;
             debugger;
-            alert("in save docmethod");
+            alert("in updaet");
             this.doc = this.$scope.doc;
             this.list = this.$scope.list;
-            if (this.list != undefined) {
-                this.doc.documentTag = this.$scope.list.documentTags.join(", ");
+            this.docLink = this.$scope.docLink;
+            this.documentTags = this.$scope.documentTags;
+            var creationDate = new Date(this.$scope.creationDate);
+            var validFrom = new Date(this.$scope.validFrom);
+            var validTo = new Date(this.$scope.validTo);
+            this.doc.creationDate = creationDate;
+            this.doc.validFrom = validFrom;
+            this.doc.validTo = validTo;
+            if (this.$scope.doc.addressScope == "UserId" && this.$scope.docLink != undefined) {
+                this.docLink.userId = this.$scope.docLink.userId;
+                var objToString = JSON.stringify(this.docLink);
+                this.doc.documentLinkDTO = JSON.parse(objToString);
+            }
+            if (this.$scope.doc.addressScope == "Group" && this.$scope.docLink != undefined) {
+                this.docLink.groupDetail = this.$scope.docLink.groupDetails.join(",");
+                var something = this.docLink.groupDetail;
+                var formated = "{" + '"groupDetails"' + ":" + '"' + something + '"' + "}";
+                this.doc.documentLinkDTO = JSON.parse(formated);
+            }
+            if (this.$scope.doc.addressScope == "Role" && this.$scope.docLink != undefined) {
+                this.docLink.roleDetail = this.$scope.docLink.roleDetails.join(",");
+                var something = this.docLink.roleDetail;
+                var formated = "{" + '"roleDetails"' + ":" + '"' + something + '"' + "}";
+                this.doc.documentLinkDTO = JSON.parse(formated);
+            }
+            if (this.documentTags != undefined) {
+                this.doc.documentTag = this.$scope.documentTags.join(",");
             }
             this.DocumentListService.UpdateDocument(this.$scope, this.doc).then(function (data) {
                 debugger;
-                if (data == 'success') {
-                    alert("file uploadede succsesfully");
-                    // this.$window.location.href="/userChirag/userList#/?status=save";
+                if (data != undefined) {
+                    alert("Changes updated succesesfully");
+                    _this.$window.location.href = "./DocumentList";
                 }
                 else {
-                    alert("fail");
+                    alert("Something went wrong");
                 }
             })["catch"](function (err) {
-                if (err == 409) {
-                    alert("erro ocured");
-                    // this.$window.location.href="/userChirag/userList#/?status=conflict";
-                }
+                debugger;
+                alert("erro ocured : " + err);
             });
         };
         //onDelete
@@ -208,8 +309,22 @@ var DocumentList;
                 .then(function (updatedItem) { return _this.onConfirm(updatedItem); });
         };
         DocumentListController.prototype.onConfirm = function (item) { };
+        //convert date
+        DocumentListController.prototype.convertDate = function (timestamp) {
+            var d = new Date(timestamp);
+            var formattedDate = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+            return formattedDate;
+        };
+        //handle Click Event on grid raw
+        DocumentListController.prototype.onRawClick = function (num) {
+            var grid = $("#kGrid").data().kendoGrid;
+            var selectedRow = grid.select();
+            var selectedDataItem = grid.dataItem(selectedRow);
+            var docId = selectedDataItem.documentId;
+            this.$window.location.href = "DocumentDetail?DocumentId=" + docId + "";
+        };
         return DocumentListController;
-    }(BaseDocumentListController));
+    }(DocumentList.BaseDocumentListController));
     DocumentListController.$inject = [
         '$scope',
         '$location',

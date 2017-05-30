@@ -7,6 +7,7 @@ var DocumentList;
             var _this = this;
             //define Succses And fail
             this.success = function (response) { return response.data; };
+            // private fail: (error: any) => {} = (error) => error.data;
             this.fail = function (error) {
                 var msg = error.data.message;
                 var reason = 'query for people failed.';
@@ -21,6 +22,12 @@ var DocumentList;
             return this._http.get('./documentList')
                 .then(this.success)["catch"](this.fail);
         };
+        //Get Document By Id
+        DocumentListService.prototype.GetDocumentByID = function (id) {
+            debugger;
+            return this._http.get('./documentListByID/' + id)
+                .then(this.success)["catch"](this.fail);
+        };
         //Saving The document
         DocumentListService.prototype.SaveDocument = function ($scope, documentMaster) {
             debugger;
@@ -30,19 +37,7 @@ var DocumentList;
         //Update The Document
         DocumentListService.prototype.UpdateDocument = function ($scope, documentMaster) {
             debugger;
-            return this._http.put("./updateDocument/", documentMaster)
-                .then(this.success)["catch"](this.fail);
-        };
-        //uploading the doc
-        DocumentListService.prototype.UploadDocument = function ($scope, fileMaster) {
-            debugger;
-            return this._http.post("./fileUpload/", fileMaster)
-                .then(this.success)["catch"](this.fail);
-        };
-        //Get Document By Id
-        DocumentListService.prototype.GetDocumentByID = function (id) {
-            debugger;
-            return this._http.get('./documentListByID/' + id)
+            return this._http.post("./updateDocument/", documentMaster)
                 .then(this.success)["catch"](this.fail);
         };
         return DocumentListService;

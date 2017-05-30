@@ -6,7 +6,6 @@
 module DocumentList {
     export class DocumentPopupController {
         'use strict';
-
         static $inject = ['$modalInstance', "$http", "$q",'$window'];
         private _http: ng.IHttpService;
         private $q: ng.IQService;

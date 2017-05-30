@@ -4,18 +4,18 @@
 /// <reference path='../../_allDocumentList.ts' />
 module DocumentList {
     import Upload = kendo.ui.Upload;
-    //  import BaseDocumentListController = DocumentList.BaseDocumentListController;
-
     export class DocumentListController extends BaseDocumentListController {
         //variables
         'use strict';
         doc : MasterDocumentDTO;
-        status : any;
+        docLink:DocumentLinkDTO;
         list:Multivalue;
         isUploaded:any = false;
-        //  file:any;
+        documentTags:string[];
+
         public _window: any;
         public _filter: any;
+        status : any;
         public static $inject = [
             '$scope',
             '$location',
@@ -24,7 +24,6 @@ module DocumentList {
             'DocumentListService',
             '$filter',
             'fileUploadService'
-
         ];
 
         /// Conctructor
@@ -33,7 +32,6 @@ module DocumentList {
             super($scope);
             $scope.vm = this;
             this.DocumentListService.GetDocumentList(this.$scope).then((data) => {
-                debugger;
                 $scope.mainGridOptions = {
                     dataSource: {
                         type:"json",
@@ -41,16 +39,35 @@ module DocumentList {
                         pageSize: 5,
                     },
                     columnMenu: true,
-                    filterable:true,
+                    filterable:{
+                        extra: false,
+                        operators: {
+                            string: {
+                                contains: "Contains",
+                                isempty: "Is empty",
+                            }
+                        }
+                    },
                     groupable: true,
                     sortable: true,
                     pageable: true,
+                    selectable: "raw",
                     columns: [{
                         field: "documentName",
                         title:"Document name"
                     },{
                         field: "creationDate",
                         title:"Creation date",
+                        filterable: {
+                            ui: "datetimepicker",
+                            extra: false,
+                            operators: {
+                                string: {
+                                    gte: "is After or equel to",
+                                    lte: "is Before or equel to",
+                                }
+                            }
+                        },
                         template:function (dataitem) {
                             var d = new Date(dataitem.creationDate);
                             var formattedDate = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear();
@@ -59,6 +76,16 @@ module DocumentList {
                     },{
                         field: "importDate",
                         title:"import Date",
+                        filterable: {
+                            ui: "datetimepicker",
+                            extra: false,
+                            operators: {
+                                string: {
+                                    gte: "is After or equel to",
+                                    lte: "is Before or equel to",
+                                }
+                            }
+                        },
                         template:function (dataitem) {
                             var d = new Date(dataitem.importDate);
                             var formattedDate = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear();
@@ -77,10 +104,16 @@ module DocumentList {
                         },
                         {
                             field: "documentType",
+                            filterable: {
+                                multi: true
+                            },
                             title:"Document Type"
                         },
                         {
                             field: "addressScope",
+                            filterable: {
+                                multi: true
+                            },
                             title:"Addres scope"
                         },{
                             field: "verticalData",
@@ -88,6 +121,16 @@ module DocumentList {
                         },{
                             field: "validFrom",
                             title:"Valid from",
+                            filterable: {
+                                ui: "datetimepicker",
+                                extra: false,
+                                operators: {
+                                    string: {
+                                        gte: "is After or equel to",
+                                        lte: "is Before or equel to",
+                                    }
+                                }
+                            },
                             template:function (dataitem) {
                                 var d = new Date(dataitem.validFrom);
                                 var formattedDate = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear();
@@ -96,6 +139,16 @@ module DocumentList {
                         },{
                             field: "validTo",
                             title:"Valid to",
+                            filterable: {
+                                ui: "datetimepicker",
+                                extra: false,
+                                operators: {
+                                    string: {
+                                        gte: "is After or equel to",
+                                        lte: "is Before or equel to",
+                                    }
+                                }
+                            },
                             template:function (dataitem) {
                                 var d = new Date(dataitem.validTo);
                                 var formattedDate = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear();
@@ -105,26 +158,13 @@ module DocumentList {
                         {
                             field: "documentTag",
                             title:"Document tag"
-                        },
-                        {
-                            title:"Edit",
-                            template: '<a href="./DocumentDetail?DocumentId=#: documentId #">Edit</a>'
                         }
                     ]
-
                 };
             });
         }
 
-
         //Methods
-
-        //convert date
-      public convertDate(timestamp: any) {
-        var d = new Date(timestamp);
-        var formattedDate = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear();
-        return formattedDate;
-    }
 
         // Init
         initialiseEditPage(id:number,$scope) {
@@ -133,74 +173,143 @@ module DocumentList {
                 debugger;
                 this.doc = data;
                 this.$scope.doc = data;
-                //this.$scope.list.documentTags = this.doc.documentTag.split(",");
+
+                this.$scope.creationDate = this.convertDate(this.doc.creationDate);
+                this.$scope.validFrom = this.convertDate(this.doc.validFrom);
+                this.$scope.validTo = this.convertDate(this.doc.validTo);
+
+                var temp = this.$scope.doc.documentTag.split(",");
+                this.$scope.documentTags =this.$scope.doc.documentTag.split(",");
+                if(this.doc.addressScope=="None") {
+                    this.$scope.flag= false;
+                }
+                else {
+                    this.$scope.flag= true;
+                }
             });
         }
 
         //SaveDocument
         saveDocument() {
             debugger;
-            this.doc = this.$scope.doc;
-            this.list = this.$scope.list;
-            if(this.list!=undefined) {
-                this.doc.documentTag = this.$scope.list.documentTags.join(", ");
-            }
-            this.DocumentListService.SaveDocument(this.$scope, this.doc).then((data) =>{
-                this.doc = data;
-                alert(this.doc.documentId);
-                if(data.success == 'success'){
-                    alert("file uploadede succsesfully");
-                    // this.$window.location.href="/userChirag/userList#/?status=save";
-                } else{alert("fail");}
-            }).catch(err =>{
-                if(err == 409){
-                    alert("erro ocured");
-                    // this.$window.location.href="/userChirag/userList#/?status=conflict";
-                }
-            });
-
-
-            var file = this.$scope.myFile;
+            let file = this.$scope.file;
             if (file != null || file != undefined) {
-                this.fileUploadService.uploadFile(file, "./fileUpload");
+                this.fileUploadService.uploadFile(file, "./fileUpload").then((data:string) => {
+                    debugger;
+                    let fileData:MasterDocumentDTO = JSON.parse(data);
+                    this.doc = this.$scope.doc;
+                    this.docLink =this.$scope.docLink;
+
+                    this.doc.documentId = fileData.documentId;
+                    this.doc.filePath = fileData.filePath;
+                    this.doc.fileSize = fileData.fileSize;
+
+                    if(this.$scope.doc.addressScope =="UserId") {
+                        this.docLink.userId = this.$scope.docLink.userId;
+                        var objToString= JSON.stringify(this.docLink);
+                        // var final ="["+objToString+"]";
+                        this.doc.documentLinkDTO = JSON.parse(objToString);
+                    }
+
+                    if(this.$scope.doc.addressScope =="Group") {
+                        this.docLink.groupDetail = this.$scope.docLink.groupDetails.join(",");
+                        var something = this.docLink.groupDetail;
+                        var formated = "{"+'"groupDetails"'+":"+'"'+something+'"'+"}";
+                        //   var final ="["+formated+"]";
+                        this.doc.documentLinkDTO  = JSON.parse(formated);
+                    }
+
+                    if(this.$scope.doc.addressScope =="Role") {
+                        this.docLink.roleDetail = this.$scope.docLink.roleDetails.join(",");
+                        var something = this.docLink.roleDetail;
+                        var formated = "{"+'"roleDetails"'+":"+'"'+something+'"'+"}";
+                        //  var final ="["+formated+"]";
+                        this.doc.documentLinkDTO  = JSON.parse(formated);
+                    }
+
+                    if(this.$scope.list!=undefined) {
+                        this.doc.documentTag = this.$scope.list.documentTags.join(",");
+                    }
+
+                    this.DocumentListService.SaveDocument(this.$scope, this.doc).then((response) =>{
+                        debugger;
+                        alert(response.status);
+                        if(data !=undefined) {
+                            alert("Data Submitted Succsesfully!");
+                            this.$window.location.href="./DocumentList";
+                        }else {
+                            alert("Somwthing Went Wrong");
+                        }
+                    }).catch((err:string) =>{
+                        debugger;
+                        alert("error: "+err);
+                    });
+                });
+            }
+            else{
+                alert("File is undefined");
             }
         }
-
 
         //updateDocument
         updateDocument(){
             debugger;
-            alert("in save docmethod");
+            alert("in updaet");
             this.doc = this.$scope.doc;
             this.list = this.$scope.list;
-            if(this.list!=undefined) {
-                this.doc.documentTag = this.$scope.list.documentTags.join(", ");
+            this.docLink =this.$scope.docLink;
+            this.documentTags = this.$scope.documentTags;
+
+            var creationDate = new Date(this.$scope.creationDate);
+            var validFrom = new Date(this.$scope.validFrom);
+            var validTo = new Date(this.$scope.validTo);
+
+            this.doc.creationDate = creationDate;
+            this.doc.validFrom = validFrom;
+            this.doc.validTo = validTo;
+
+            if(this.$scope.doc.addressScope =="UserId" && this.$scope.docLink != undefined) {
+                this.docLink.userId = this.$scope.docLink.userId;
+                var objToString= JSON.stringify(this.docLink);
+                this.doc.documentLinkDTO = JSON.parse(objToString);
+            }
+
+            if(this.$scope.doc.addressScope =="Group" && this.$scope.docLink != undefined) {
+                this.docLink.groupDetail = this.$scope.docLink.groupDetails.join(",");
+                var something = this.docLink.groupDetail;
+                var formated = "{"+'"groupDetails"'+":"+'"'+something+'"'+"}";
+                this.doc.documentLinkDTO  = JSON.parse(formated);
+            }
+
+            if(this.$scope.doc.addressScope =="Role" && this.$scope.docLink != undefined) {
+                this.docLink.roleDetail = this.$scope.docLink.roleDetails.join(",");
+                var something = this.docLink.roleDetail;
+                var formated = "{"+'"roleDetails"'+":"+'"'+something+'"'+"}";
+                this.doc.documentLinkDTO  = JSON.parse(formated);
+            }
+
+            if(this.documentTags!=undefined) {
+                this.doc.documentTag = this.$scope.documentTags.join(",");
             }
 
             this.DocumentListService.UpdateDocument(this.$scope, this.doc).then((data) =>{
                 debugger;
-                if(data == 'success'){
-                    alert("file uploadede succsesfully");
-                    // this.$window.location.href="/userChirag/userList#/?status=save";
-                } else{alert("fail");}
+                if(data != undefined){
+                    alert("Changes updated succesesfully");
+                    this.$window.location.href="./DocumentList";
+                } else{alert("Something went wrong");}
             }).catch(err =>{
-                if(err == 409){
-                    alert("erro ocured");
-                    // this.$window.location.href="/userChirag/userList#/?status=conflict";
-                }
+                debugger;
+                alert("erro ocured : "+err);
             });
         }
 
-
-
         //uloadPDF Validation
-        validateFiles = function (file:any) {
+        public validateFiles = function (file:any) {
             debugger;
-            if(file.size>5242880)
-            {
+            if(file.size>5242880) {
                 alert("File Size Should Not bE greter then 5 MB")
             }
-            else{return true;}
         }
 
         //onDelete
@@ -211,16 +320,30 @@ module DocumentList {
                 windowClass: 'app-modal-window',
                 resolve: {}
             };
-
             this.$modal.open(options).result
                 .then(updatedItem => this.onConfirm(updatedItem));
         }
-
         onConfirm(item:any):void {}
 
+
+        //convert date
+        public convertDate(timestamp: any) {
+            var d = new Date(timestamp);
+            var formattedDate =  d.getFullYear()+ "-" + (d.getMonth() + 1) + "-" + d.getDate();
+            return formattedDate;
+        }
+
+
+        //handle Click Event on grid raw
+        public onRawClick(num:any) {
+            var grid = $("#kGrid").data().kendoGrid;
+            var selectedRow = grid.select();
+            var selectedDataItem = grid.dataItem(selectedRow);
+            var docId = selectedDataItem.documentId;
+            this.$window.location.href ="DocumentDetail?DocumentId="+docId+""
+        }
     }
     angular.module("DocumentList").controller("DocumentListController", DocumentListController);
-
 }
 
 

@@ -5,6 +5,7 @@
 //=====================================================
 /// <reference path='Demo/Controller/DocumentPopupController.ts' />
 /// <reference path='Demo/Models/MasterDocumentDTO.ts' />
+/// <reference path='Demo/Models/DocumentLinkDTO.ts' />
 /// <reference path='Demo/Interface/IDocumentListScope.ts' />
 
 /// <reference path='Demo/Services/IFileUploadService.ts' />
