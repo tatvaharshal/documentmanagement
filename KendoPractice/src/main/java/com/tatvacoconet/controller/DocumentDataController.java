@@ -95,7 +95,7 @@ public class DocumentDataController {
         mav.setViewName("DocumentAdd");
         return mav;
     }
-    @RequestMapping(value = "/DocumentAdd", method = RequestMethod.POST)
+    @RequestMapping(value = "/addDocument", method = RequestMethod.POST)
     public ResponseEntity<DocumentDTO> addDocument(@RequestBody DocumentDTO documentDTO,
                                                    @ModelAttribute DocumentData document,
                                                    @ModelAttribute DocumentLink documentLink,
@@ -128,9 +128,6 @@ public class DocumentDataController {
             document.setCreationDate(documentDTO.getCreationDate());
             document.setImportDate(documentDTO.getCreationDate());
             document.setDocumentDescription(documentDTO.getDocumentDescription());
-			/*if(documentDTO.getDocumentDescription()!=null){
-			   document.setDocumentDescription(documentDTO.getDocumentDescription());
-			}*/
             if(documentDTO.getDocumentName()!=null) {
                 document.setDocumentName(documentDTO.getDocumentName());
             }
@@ -186,7 +183,7 @@ public class DocumentDataController {
         List<FieldErrorDTO> fieldErrors = new ArrayList<>();
 
         MultipartFile multipartFile = file.getFile();
-        if (!multipartFile.isEmpty()&& multipartFile.getContentType()=="application/pdf") {
+        if (!multipartFile.isEmpty()&& multipartFile.getContentType().equalsIgnoreCase("application/pdf")) {
             Random r = new Random();
             int random = r.nextInt(50);
             documentDTO.setDocumentName(random+"-"+multipartFile.getOriginalFilename());
@@ -342,6 +339,7 @@ public class DocumentDataController {
             document.setDocumentStatus(documentDTO.getDocumentStatus());
             document.setValidFrom(documentDTO.getValidFrom());
             document.setValidTo(documentDTO.getValidTo());
+            document.setDocumentDescription(documentDTO.getDocumentDescription());
             document.setDocumentTag(documentDTO.getDocumentTag());
             dataService.updateDocument(document);
             logger.info("DocumentData Updated successfully");
@@ -378,4 +376,3 @@ public class DocumentDataController {
         return new ResponseEntity<DocumentDTO>(HttpStatus.NO_CONTENT);
     }
 }
-
