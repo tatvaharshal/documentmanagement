@@ -9,12 +9,11 @@ import java.util.List;
  * Created by pca48 on 5/3/2017.
  */
 public class DocumentDTO {
-
     private long documentId;
     private String documentName;
     private String documentDescription;
-    private byte[] filePath;
     private long fileSize;
+    private byte[] filePath;
     private Date importDate;
     private Date creationDate;
     private Date validFrom;
@@ -26,12 +25,13 @@ public class DocumentDTO {
     private AddressScope addressScope;
     private List<FieldErrorDTO> fieldErrorDTO;
     private DocumentLinkDTO documentLinkDTO;
-
-
     public DocumentDTO(){}
-    public DocumentDTO(String documentTag,Date creationDate,
-                       Date importDate,Date validFrom,Date validTo,VerticalData verticalData,
-                       DocumentStatus documentStatus,DocumentType documentType,AddressScope addressScope,DocumentLinkDTO documentLinkDTO) {
+    public DocumentDTO(String documentDescription,String documentTag,Date creationDate,
+                       Date importDate,Date validFrom,Date validTo,
+                       VerticalData verticalData,DocumentStatus documentStatus,
+                       DocumentType documentType,AddressScope addressScope,
+                       DocumentLinkDTO documentLinkDTO) {
+        this.documentDescription=documentDescription;
         this.documentTag=documentTag;
         this.creationDate=creationDate;
         this.importDate=importDate;
@@ -43,7 +43,6 @@ public class DocumentDTO {
         this.addressScope=addressScope;
         this.documentLinkDTO=documentLinkDTO;
     }
-
 
     public long getDocumentId() {
         return documentId;
