@@ -6,17 +6,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>Document Add</title>
-
     <%--Load css--%>
     <link href="${pageContext.request.contextPath}/resources/content/Document/css/bootstrap.min.css" rel="stylesheet"/>
-    <link href="${pageContext.request.contextPath}/resources/content/Document/css/bootstrap-select.css"
-          rel="stylesheet"/>
+    <link href="${pageContext.request.contextPath}/resources/content/Document/css/bootstrap-select.css" rel="stylesheet"/>
     <link href="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker3.css" rel="stylesheet"/>
     <link rel="stylesheet" href="//cdn.kendostatic.com/2014.2.716/styles/kendo.common.min.css">
     <link rel="stylesheet" href="//cdn.kendostatic.com/2014.2.716/styles/kendo.default.min.css">
     <link href="${pageContext.request.contextPath}/resources/content/Document/css/custom.css" rel="stylesheet"/>
     <link href="${pageContext.request.contextPath}/resources/content/Document/css/font-awesome.css" rel="stylesheet"/>
-
     <%--Load Js--%>
     <script src="${pageContext.request.contextPath}/resources/app/Demo/Document/jquery-1.10.2.js"></script>
     <script src="${pageContext.request.contextPath}/resources/app/angular.js"></script>
@@ -34,21 +31,18 @@
     <script src="${pageContext.request.contextPath}/resources/app/Demo/Document/ng-file-upload.js"></script>
     <script src="${pageContext.request.contextPath}/resources/app/Demo/Document/ng-file-upload-shim.js"></script>
 
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <%--Load App JS Files--%>
     <script src="${pageContext.request.contextPath}/resources/app/Demo/DocumentListApp.js"></script>
     <script src="${pageContext.request.contextPath}/resources/app/Demo/Services/DocumentListService.js"></script>
     <script src="${pageContext.request.contextPath}/resources/app/Demo/Services/FileUploadService.js"></script>
     <script src="${pageContext.request.contextPath}/resources/app/Demo/Controller/BaseDocumentListController.js"></script>
     <script src="${pageContext.request.contextPath}/resources/app/Demo/Controller/DocumentListController.js"></script>
-
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
-
 </head>
 <body>
 <div id="wrapper" ng-app="DocumentList">
-    <header id="header"></header>
+    <header id="header1"></header>
     <section id="content">
         <div class="page-content">
             <div class="page-padding" ng-controller="DocumentListController as ctlr">
@@ -73,19 +67,14 @@
                                                                     src="${pageContext.request.contextPath}/resources/content/Document/Images/delete-icon.png"
                                                                     class="doc-import-button"/></span>
                                                         </span>
-                                                    <button class="form-control" type="reset"
-                                                            style="height:100%;width:100%;background-color:#F0F0F0;padding-left:25px;"
-                                                          value="Reset">Discard
-                                                    </button>
+                                                    <button class="form-control" type="reset" style="height:100%;width:100%;background-color:#F0F0F0;padding-left:25px;" value="Reset">Discard</button>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="input-group form-group" style="height:48px;"
                                                      ng-class="{'disable-btn': !(ctlr.Isvalid)}">
                                                         <span class="input-group-btn">
-                                                            <span style="height:48px;background-color:#E6E6E6;"><img
-                                                                    src="${pageContext.request.contextPath}/resources/content/Document/Images/Tick.png"
-                                                                    class="doc-import-button"/></span>
+                                                            <span style="height:48px;background-color:#E6E6E6;"><img src="${pageContext.request.contextPath}/resources/content/Document/Images/Tick.png" class="doc-import-button"/></span>
                                                         </span>
                                                     <span>{{ctlr.Isvalid}}</span>
                                                     <button class="form-control"
@@ -99,6 +88,7 @@
                                 </div>
 
                             </div>
+                                <span style="color: #2d672d">alert</span>
                             <%--headerline--%>
                             <div class="col-md-2 col-md-offset-10 doc-tab">
                                 <h6 class="doc-header" style="font-size:1.1rem">Document data</h6>
@@ -108,39 +98,36 @@
 
                                 <div class="form-group" style="width: 250px;">
                                     <label for="file">File*</label><br/>
-                                    <input class="form-control" type="file" id="file" file-upload="myFile" ng-model="myFile"
+                                    <input class="form-control" type="file" id="file" file-upload="file" ng-model="file"
                                            ngf-select="ctlr.validateFiles($file)"  name="file"
                                            accept="application/pdf" ngf-max-height="1000" ngf-max-size="5MB" required>
                                     </input>
                                 </div>
 
                                 <hr style="color: #CFCFCF;border: 1px solid;"/>
-
                                 <div class="form-group">
                                     <label for="ddlAddressScope">Address Scope<span>*</span></label>
                                     <div class="form-group">
                                         <select class="custom-style" id="ddlAddressScope" ng-model="doc.addressScope">
-                                            <option selected="selected" value="">None</option>
+                                            <option selected="selected" value="None">None</option>
                                             <option value="UserId">UserId</option>
                                             <option value="Group">Group</option>
                                             <option value="Role">Role</option>
                                         </select>
                                     </div>
                                 </div>
-
                                 <div class="row">
                                     <div class="col-md-3 col-lg-3" id="divUserid" style="display: none">
                                         <label for="txtUserId">UserID<span>*</span></label>
                                         <div class="form-group">
-                                            <input type="text" id="txtUserId" class="custom-style"
-                                                   placeholder="Please Enter.." ng-model="doc.userId"/>
+                                            <input type="text" id="txtUserId" class="custom-style" placeholder="Please Enter.." ng-model="docLink.userId"/>
                                         </div>
                                     </div>
 
                                     <div class="col-md-3 col-lg-3" id="divGroup" style="display: none">
                                         <label for="groupDetails">Groups<span>*</span></label>
                                         <div class="form-group">
-                                            <select kendo-multi-select id="groupDetails" k-ng-model="doc.groupDetails" data-placeholder="Please select ..."  multiple="multiple">
+                                            <select kendo-multi-select id="groupDetails" k-ng-model="docLink.groupDetails" data-placeholder="Please select ..."  multiple="multiple">
                                                 <option value="GermanyCards">GermanyCards</option>
                                                 <option value="ItalyMULTIVERSAIFP">ItalyMULTIVERSAIFP</option>
                                                 <option value="FranceCards">FranceCards</option>
@@ -153,7 +140,7 @@
                                     <div class="col-md-3 col-lg-3" id="divRole" style="display: none">
                                         <label for="roleDetails">Role<span>*</span></label>
                                         <div class="form-group">
-                                            <select kendo-multi-select id="roleDetails" k-ng-model="doc.roleDetails" data-placeholder="Please select ..." multiple="multiple">
+                                            <select kendo-multi-select id="roleDetails" k-ng-model="docLink.roleDetails" data-placeholder="Please select ..." multiple="multiple">
                                                 <option value="ALLUsers">ALLUsers</option>
                                                 <option value="Attentionwidget">Attentionwidget</option>
                                                 <option value="Balancewidget">Balancewidget</option>
@@ -182,7 +169,7 @@
                                         <label for="documentStatus">Document Status</label>
                                         <div class="form-group">
                                             <select class="custom-style" id="documentStatus" ng-model="doc.documentStatus">
-                                                <option selected="selected" value="ForYourInformation">ForYourInformation</option>
+                                                <option selected value="ForYourInformation">ForYourInformation</option>
                                             </select>
                                         </div>
                                     </div>
@@ -212,7 +199,7 @@
                                 <hr style="color: #CFCFCF;border: 1px solid;"/>
 
                                 <div class="form-group">
-                                    <label for="txtName">Document Name<span>*</span></label>
+                                    <label for="txtName">Document Name</label>
                                     <div class="form-group">
                                         <input  type="text" class="custom-style"  name="docName" ng-model="doc.documentName" data-ng-pattern="/^[a-zA-Z0-9]*$/" id="txtName" placeholder="Document Name" data-ng-minlength="0" data-ng-maxlength="255" maxlength="255">
                                     </div>
@@ -224,10 +211,10 @@
                                         <input type="text" style="width: 100%;" name="docName" ng-model="doc.documentDescription" id="txtDescription" placeholder="Description" data-ng-minlength="0" data-ng-maxlength="1000" maxlength="1000"></input>
                                     </div>
                                 </div>
-                                <div class="col-md-3 col-lg-3">
-                                    <label for="documentTag">Document Tags<span>*</span></label>
+                                <div class="form-group">
+                                    <label for="documentTag">Document Tags</label>
                                     <div class="form-group">
-                                        <select kendo-multi-select id="documentTag"k-ng-model="list.documentTags" data-placeholder="Please select ..." multiple="multiple">
+                                        <select kendo-multi-select id="documentTag" k-ng-model="list.documentTags" data-placeholder="Please select ..." multiple="multiple">
                                             <option value="ProjectA" >ProjectA</option>
                                             <option value="ProjectB">ProjectB</option>
                                             <option value="ProjectC">ProjectC</option>
@@ -237,52 +224,77 @@
                             </div>
                         </div>
                     </div>
-                </form>
-            </div>
+            </form>
         </div>
-    </section>
+</div>
+</section>
 </div>
 <script>
     $('#txtcreationDate').datepicker({
         dateFormat: 'yy-mm-dd',
         autoclose: true,
-        maxDate: 0
+        maxDate: 0,
     });
+
     $('#txtvalidFromDate').datepicker({
         dateFormat: 'yy-mm-dd',
         autoclose: true,
-        minDate: 0
-    });
-    $('#txtvalidToDate').datepicker({
-        dateFormat: 'yy-mm-dd',
-        autoclose: true,
-        maxDate: 0
+        minDate: 0,
+        onClose: function( selectedDate ) {
+            $( "#txtvalidToDate" ).datepicker( "option", "minDate", selectedDate );
+        }
     });
 
+    $('#txtvalidToDate').datepicker({
+        dateFormat: 'yy-mm-dd',
+        autoclose: true
+    });
+
+    $("#txtvalidFromDate").on('click', function(){
+        if($('#txtcreationDate').val()=="") {
+            alert("Please Select creation date first");
+            $('#txtcreationDate').focus();
+        }
+    });
+
+    $("#txtvalidToDate").on('click', function(){
+        if($('#txtcreationDate').val()=="" || $('#txtvalidFromDate').val() =="") {
+            if($('#txtcreationDate').val()=="") {
+                alert("Please Select creation date first");
+                $('#txtcreationDate').focus();
+                return false;
+            }
+            if($('#txtvalidFromDate').val()=="") {
+                alert("Please Select ValidFrom date first");
+                $('#txtvalidFromDate').focus();
+            }
+        }
+    });
+
+
     $("#ddlAddressScope").change(function () {
-      $("select option:selected").each(function () {
-        if ($(this).attr("value") == "UserId") {
-            $("#divUserid").show();
-            $("#divGroup").hide();
-            $("#divRole").hide();
-        }
-        if ($(this).attr("value") == "Group") {
-            debugger;
-            $("#divUserid").hide();
-            $("#divGroup").show();
-            $("#divRole").hide();
-        }
-        if ($(this).attr("value") == "Role") {
-            $("#divUserid").hide();
-            $("#divGroup").hide();
-            $("#divRole").show();
-        }
-        if ($(this).attr("value") == "y") {
-            $("#divUserid").hide();
-            $("#divGroup").hide();
-            $("#divRole").hide();
-        }
-    } );
+        $("select option:selected").each(function () {
+            if ($(this).attr("value") == "UserId") {
+                $("#divUserid").show();
+                $("#divGroup").hide();
+                $("#divRole").hide();
+            }
+            if ($(this).attr("value") == "Group") {
+                $("#divUserid").hide();
+                $("#divGroup").show();
+                $("#divRole").hide();
+            }
+            if ($(this).attr("value") == "Role") {
+                $("#divUserid").hide();
+                $("#divGroup").hide();
+                $("#divRole").show();
+            }
+            if ($(this).attr("value") == "None") {
+                $("#divUserid").hide();
+                $("#divGroup").hide();
+                $("#divRole").hide();
+            }
+        } );
     }).change();
 </script>
 </body>
