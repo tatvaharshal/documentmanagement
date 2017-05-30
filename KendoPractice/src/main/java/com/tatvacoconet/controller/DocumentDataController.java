@@ -95,7 +95,7 @@ public class DocumentDataController {
         mav.setViewName("DocumentAdd");
         return mav;
     }
-    @RequestMapping(value = "/addDocument", method = RequestMethod.POST)
+    @RequestMapping(value = "/DocumentAdd", method = RequestMethod.POST)
     public ResponseEntity<DocumentDTO> addDocument(@RequestBody DocumentDTO documentDTO,
                                                    @ModelAttribute DocumentData document,
                                                    @ModelAttribute DocumentLink documentLink,

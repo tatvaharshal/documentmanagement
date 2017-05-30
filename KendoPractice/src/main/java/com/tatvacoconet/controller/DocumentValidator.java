@@ -17,7 +17,7 @@ import com.tatvacoconet.entity.DocumentType;
 @Component
 public class DocumentValidator{
     Date date=new Date();
-    String prefix="/^[a-zA-Z0-9]*$/";
+    String prefix="^[a-zA-Z0-9\\s]*$";
     final int permitedSize = 5120;  //~ 5 MB in bytes
 
     private List<FieldErrorDTO> fieldErrors = new ArrayList<>();
@@ -74,7 +74,7 @@ public class DocumentValidator{
             }
         }
         if(documentDTO.getDocumentDescription()!=null){
-            if (documentDTO.getDocumentDescription().startsWith(prefix)) {
+            if (!documentDTO.getDocumentDescription().matches(prefix)) {
                 addFieldError("documentDescription","DocumentDescription  should be proper");
             }
             if (documentDTO.getDocumentDescription().length()>1000) {
@@ -82,7 +82,7 @@ public class DocumentValidator{
             }
         }
         if(documentDTO.getDocumentName()!=null){
-            if (documentDTO.getDocumentName().startsWith(prefix)) {
+            if (!documentDTO.getDocumentName().matches(prefix)) {
                 addFieldError("documentName","DocumentName should be proper");
             }
             if (documentDTO.getDocumentName().length()>255) {
@@ -97,7 +97,7 @@ public class DocumentValidator{
         if (documentDTO == null) {
             addFieldError("documentDTO", "File Upload is mandatory");
         }
-        if (documentDTO.getDocumentName().startsWith(prefix)) {
+        if (!documentDTO.getDocumentName().matches(prefix)) {
             addFieldError("documentName", "DocumentName should be proper");
         }
         if (documentDTO.getDocumentName().length() > 255) {
@@ -154,7 +154,7 @@ public class DocumentValidator{
                 }
 
             if (documentUpdateDTO.getDocumentName() != null) {
-                if (documentUpdateDTO.getDocumentName().startsWith(prefix)) {
+                if (!documentUpdateDTO.getDocumentName().matches(prefix)) {
                     addFieldError("documentName","DocumentName should be proper");
                 }
                 if (documentUpdateDTO.getDocumentName().length() > 255) {
@@ -162,7 +162,7 @@ public class DocumentValidator{
                 }
             }
             if (documentUpdateDTO.getDocumentDescription() != null) {
-                if (documentUpdateDTO.getDocumentDescription().startsWith(prefix)) {
+                if (!documentUpdateDTO.getDocumentDescription().matches(prefix)) {
                     addFieldError("documentDescription","DocumentDescription  should be proper");
                 }
                 if (documentUpdateDTO.getDocumentDescription().length() > 1000) {
@@ -197,7 +197,7 @@ public class DocumentValidator{
                     }
             }
             if (documentUpdateDTO.getDocumentDescription() != null) {
-                if (documentUpdateDTO.getDocumentDescription().startsWith(prefix)) {
+                if (!documentUpdateDTO.getDocumentDescription().matches(prefix)) {
                     addFieldError("documentDescription","DocumentDescription  should be proper");
                 }
                 if (documentUpdateDTO.getDocumentDescription().length() > 1000) {
