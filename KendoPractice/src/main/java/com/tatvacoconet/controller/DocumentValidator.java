@@ -59,13 +59,22 @@ public class DocumentValidator{
 
                 }
         }
-        if (documentDTO.getDocumentType() == null &&
-                !documentDTO.getDocumentType().name().equals(DocumentType.Account_Statement.name())&&
-                !documentDTO.getDocumentType().name().equals(DocumentType.Contract.name())&&
-                !documentDTO.getDocumentType().name().equals(DocumentType.Information.name())&&
-                !documentDTO.getDocumentType().name().equals(DocumentType.Offer.name())){
-            fieldErrors.add(new FieldErrorDTO("documentType","DocumentType can not be blank Or Select proper from option"));
+        if (documentDTO.getDocumentType().equals(DocumentType.None.name())){
+            fieldErrors.add(new FieldErrorDTO("documentType","DocumentType can not be blank"));
         }
+        if(documentDTO.getDocumentType()==null){
+            fieldErrors.add(new FieldErrorDTO("documentType","DocumentType can not be blank"));
+        }
+        if(documentDTO.getDocumentType()!=null){
+
+            String docType= documentDTO.getDocumentType();
+            List<String> docTypeEnums = Stream.of(DocumentType.values())
+                    .map(DocumentType::name).collect(Collectors.toList());
+            if (!docTypeEnums.contains(docType)){
+                fieldErrors.add(new FieldErrorDTO("documentType","Select proper from option"));
+            }
+        }
+
         if(documentDTO.getAddressScope()!=null){
             if (!documentDTO.getAddressScope().name().equals(AddressScope.Group.name()) &&
                     !documentDTO.getAddressScope().name().equals(AddressScope.Role.name())&&
@@ -124,13 +133,24 @@ public class DocumentValidator{
                 fieldErrors.add(new FieldErrorDTO("addressScope","addressScope can not be blank Or Select proper from option"));
             }
         }
-        if (documentUpdateDTO.getDocumentType() == null
-                && !documentUpdateDTO.getDocumentType().name().equals(DocumentType.Account_Statement.name())
-                && !documentUpdateDTO.getDocumentType().name().equals(DocumentType.Contract.name())
-                && !documentUpdateDTO.getDocumentType().name().equals(DocumentType.Information.name())
-                && !documentUpdateDTO.getDocumentType().name().equals(DocumentType.Offer.name())) {
-            fieldErrors.add(new FieldErrorDTO("documentType","DocumentType can not be blank Or Select proper from option"));
+        if (documentUpdateDTO.getDocumentType().equals(DocumentType.None.name())){
+            fieldErrors.add(new FieldErrorDTO("documentType","DocumentType can not be blank"));
         }
+
+
+        if(documentUpdateDTO.getDocumentType()==null){
+            fieldErrors.add(new FieldErrorDTO("documentType","DocumentType can not be blank"));
+        }
+        if(documentUpdateDTO.getDocumentType()!=null){
+
+            String docType= documentUpdateDTO.getDocumentType();
+            List<String> docTypeEnums = Stream.of(DocumentType.values())
+                    .map(DocumentType::name).collect(Collectors.toList());
+            if (!docTypeEnums.contains(docType)){
+                fieldErrors.add(new FieldErrorDTO("documentType","Select proper from option"));
+            }
+        }
+
         if(documentUpdateDTO.getDocumentStatus()!=null){
             if (documentUpdateDTO.getDocumentStatus() != DocumentStatus.ForYourInformation) {
                 fieldErrors.add(new FieldErrorDTO("documentStatus", "DocumentStatus can not be blank"));

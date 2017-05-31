@@ -37,22 +37,28 @@ public class DocumentLinkValidator{
             fieldErrors.add(new FieldErrorDTO("roleDetails","roleDetails can not be blank"));
         }
         if(documentLinkDTO.getRoleDetails()!=null){
-            String group[]= documentLinkDTO.getRoleDetails().split(",");
+            String role[]= documentLinkDTO.getRoleDetails().split(",");
             List<String> roleEnums = Stream.of(RoleDetails.values())
                     .map(RoleDetails::name).collect(Collectors.toList());
-            for(String groupdetails:group)
-                if (!roleEnums.contains(groupdetails)){
+            for(String roledetails:role)
+                if (!roleEnums.contains(roledetails)){
                     fieldErrors.add(new FieldErrorDTO("roleDetails","Select proper roleDetails from option"));
                 }
         }
-        if(documentLinkDTO.getGroupDetails()==null&&documentLinkDTO.getRoleDetails()==null&&
-                !documentLinkDTO.getUserId().name().equals(UserId.Bhavin.name())&&
-                !documentLinkDTO.getUserId().name().equals(UserId.Harshal.name())&&
-                !documentLinkDTO.getUserId().name().equals(UserId.Savan.name())&&
-                !documentLinkDTO.getUserId().name().equals(UserId.Vimal.name())){
-            fieldErrors.add(new FieldErrorDTO("userId","userId can not be blank Or Select proper from option"));
+        if(documentLinkDTO.getUserId()==null &&
+                (documentLinkDTO.getGroupDetails()==null && documentLinkDTO.getRoleDetails()==null)){
+            fieldErrors.add(new FieldErrorDTO("userId","userId can not be blank"));
+        }
+        if(documentLinkDTO.getUserId()!=null){
+            //String user[]= documentLinkDTO.getUserId().split(",");
+            String user= documentLinkDTO.getUserId();
+            List<String> userEnums = Stream.of(UserId.values())
+                    .map(UserId::name).collect(Collectors.toList());
+            if (!userEnums.contains(user)){
+                fieldErrors.add(new FieldErrorDTO("userId","Select proper from Bhavin,Harshal,Savan,Vimal"));
+            }
         }
         return  fieldErrors;
-    }
 
+    }
 }

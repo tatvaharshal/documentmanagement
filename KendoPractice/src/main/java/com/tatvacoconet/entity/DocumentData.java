@@ -18,10 +18,10 @@ public class DocumentData {
 
     @Column(name = "documentName", length = 255)
     private String documentName;
-
-    @Column(name = "documentDescription", length = 1000)
+    @Column(name = "documentDescription",length = 1000)
     private String documentDescription;
 
+    @NotNull
     @Column(name = "filePath")
     private byte[] filePath;
 
@@ -46,8 +46,8 @@ public class DocumentData {
     @Enumerated(EnumType.STRING)
     private DocumentStatus documentStatus;
 
-    @Enumerated(EnumType.STRING)
-    private DocumentType documentType;
+    @Column(name = "documentType")
+    private String documentType;
 
     @Column(name = "documentTag")
     private String documentTag;
@@ -59,7 +59,7 @@ public class DocumentData {
     }
     public DocumentData(String documentName,String documentDescription,long fileSize,Date creationDate,
                         Date importDate,Date validFrom,Date validTo,VerticalData verticalData,
-                        DocumentStatus documentStatus,DocumentType documentType,AddressScope addressScope) {
+                        DocumentStatus documentStatus,String documentType,AddressScope addressScope) {
         this.documentName=documentName;
         this.documentDescription=documentDescription;
         this.fileSize=fileSize;
@@ -152,13 +152,9 @@ public class DocumentData {
         this.documentStatus = documentStatus;
     }
 
-    public DocumentType getDocumentType() {
-        return documentType;
-    }
+    public String getDocumentType() { return documentType; }
 
-    public void setDocumentType(DocumentType documentType) {
-        this.documentType = documentType;
-    }
+    public void setDocumentType(String documentType) { this.documentType = documentType;}
 
     public String getDocumentTag() {
         return documentTag;

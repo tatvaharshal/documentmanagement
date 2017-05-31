@@ -10,16 +10,14 @@ import com.tatvacoconet.entity.UserId;
 public class DocumentLinkDTO {
 
     private long documentLinkId;
-    private UserId userId;
+    private String userId;
     private String groupDetails;
     private String roleDetails;
-
     private DocumentData documentData;
 
     public DocumentLinkDTO(){}
-
-    public DocumentLinkDTO(UserId userId,
-                           String groupDetails,String roleDetails) {
+    public DocumentLinkDTO(String userId,String groupDetails,
+                           String roleDetails) {
         this.userId=userId;
         this.groupDetails=groupDetails;
         this.roleDetails=roleDetails;
@@ -32,13 +30,9 @@ public class DocumentLinkDTO {
         this.documentLinkId = documentLinkId;
     }
 
-    public UserId getUserId() {
-        return userId;
-    }
+    public String getUserId() { return userId; }
 
-    public void setUserId(UserId userId) {
-        this.userId = userId;
-    }
+    public void setUserId(String userId) { this.userId = userId; }
 
     public String getGroupDetails() {
         return groupDetails;

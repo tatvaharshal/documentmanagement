@@ -20,7 +20,7 @@ public class DocumentDTO {
     private Date validTo;
     private VerticalData verticalData;
     private DocumentStatus documentStatus;
-    private DocumentType documentType;
+    private String documentType;
     private String documentTag;
     private AddressScope addressScope;
     private List<FieldErrorDTO> fieldErrorDTO;
@@ -29,7 +29,7 @@ public class DocumentDTO {
     public DocumentDTO(String documentDescription,String documentTag,Date creationDate,
                        Date importDate,Date validFrom,Date validTo,
                        VerticalData verticalData,DocumentStatus documentStatus,
-                       DocumentType documentType,AddressScope addressScope,
+                       String documentType,AddressScope addressScope,
                        DocumentLinkDTO documentLinkDTO) {
         this.documentDescription=documentDescription;
         this.documentTag=documentTag;
@@ -132,13 +132,9 @@ public class DocumentDTO {
         this.documentStatus = documentStatus;
     }
 
-    public DocumentType getDocumentType() {
-        return documentType;
-    }
+    public String getDocumentType() { return documentType; }
 
-    public void setDocumentType(DocumentType documentType) {
-        this.documentType = documentType;
-    }
+    public void setDocumentType(String documentType) { this.documentType = documentType;}
 
     public String getDocumentTag() {
         return documentTag;
