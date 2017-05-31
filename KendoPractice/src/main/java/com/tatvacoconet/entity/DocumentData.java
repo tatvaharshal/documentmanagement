@@ -16,14 +16,11 @@ public class DocumentData {
     @Column(name = "documentId", unique = true, nullable = false)
     private long documentId;
 
-
     @Column(name = "documentName", length = 255)
     private String documentName;
 
-
     @Column(name = "documentDescription", length = 1000)
     private String documentDescription;
-
 
     @Column(name = "filePath")
     private byte[] filePath;
@@ -31,48 +28,35 @@ public class DocumentData {
     @Column(name = "fileSize")
     private long fileSize;
 
-
     @Column(name = "creationDate")
     private Date creationDate;
-
-
 
     @Column(name = "importDate")
     private Date importDate;
 
-
     @Column(name = "validFrom")
     private Date validFrom;
-
 
     @Column(name = "validTo")
     private Date validTo;
 
-
     @Enumerated(EnumType.STRING)
     private VerticalData verticalData;
-
-
 
     @Enumerated(EnumType.STRING)
     private DocumentStatus documentStatus;
 
-
     @Enumerated(EnumType.STRING)
     private DocumentType documentType;
-
 
     @Column(name = "documentTag")
     private String documentTag;
 
-
     @Enumerated(EnumType.STRING)
     private AddressScope addressScope;
 
-
     public DocumentData() {
     }
-
     public DocumentData(String documentName,String documentDescription,long fileSize,Date creationDate,
                         Date importDate,Date validFrom,Date validTo,VerticalData verticalData,
                         DocumentStatus documentStatus,DocumentType documentType,AddressScope addressScope) {
@@ -87,12 +71,7 @@ public class DocumentData {
         this.documentStatus=documentStatus;
         this.documentType=documentType;
         this.addressScope=addressScope;
-
-
     }
-	/*@OneToMany(mappedBy="document_data", cascade = CascadeType.ALL)
-	private Set<Document_Link> Document_Link;*/
-
     public long getDocumentId() {
         return documentId;
     }
@@ -204,6 +183,5 @@ public class DocumentData {
     public void setAddressScope(AddressScope addressScope) {
         this.addressScope = addressScope;
     }
-
 
 }

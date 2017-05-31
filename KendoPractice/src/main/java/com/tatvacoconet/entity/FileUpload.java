@@ -11,7 +11,6 @@ public class FileUpload {
         this.file = file;
     }
     public FileUpload(){}
-
     public FileUpload(MultipartFile file)
     {
         this.file = file;

@@ -15,12 +15,13 @@ import com.tatvacoconet.entity.UserId;
 
 @Component
 public class DocumentLinkValidator{
-    private List<FieldErrorDTO> fieldErrors = new ArrayList<>();
+
     public List<FieldErrorDTO> validateDocumentLink(Object obj) {
+        List<FieldErrorDTO> fieldErrors = new ArrayList<>();
         DocumentLinkDTO documentLinkDTO = (DocumentLinkDTO) obj;
         if(documentLinkDTO.getGroupDetails()==null &&
                 (documentLinkDTO.getRoleDetails()==null && documentLinkDTO.getUserId()==null)){
-            addFieldError("groupDetails","groupDetails can not be blank");
+            fieldErrors.add(new FieldErrorDTO("groupDetails","groupDetails can not be blank"));
         }
         if(documentLinkDTO.getGroupDetails()!=null){
             String group[]= documentLinkDTO.getGroupDetails().split(",");
@@ -28,12 +29,12 @@ public class DocumentLinkValidator{
                     .map(GroupDetails::name).collect(Collectors.toList());
             for(String groupdetails:group)
                 if (!groupEnums.contains(groupdetails)){
-                    addFieldError("groupDetails","Select proper groupDetails from option");
+                    fieldErrors.add(new FieldErrorDTO("groupDetails","Select proper groupDetails from option"));
                 }
         }
         if(documentLinkDTO.getRoleDetails()==null &&
                 (documentLinkDTO.getGroupDetails()==null && documentLinkDTO.getUserId()==null)){
-            addFieldError("roleDetails","roleDetails can not be blank");
+            fieldErrors.add(new FieldErrorDTO("roleDetails","roleDetails can not be blank"));
         }
         if(documentLinkDTO.getRoleDetails()!=null){
             String group[]= documentLinkDTO.getRoleDetails().split(",");
@@ -41,7 +42,7 @@ public class DocumentLinkValidator{
                     .map(RoleDetails::name).collect(Collectors.toList());
             for(String groupdetails:group)
                 if (!roleEnums.contains(groupdetails)){
-                    addFieldError("roleDetails","Select proper roleDetails from option");
+                    fieldErrors.add(new FieldErrorDTO("roleDetails","Select proper roleDetails from option"));
                 }
         }
         if(documentLinkDTO.getGroupDetails()==null&&documentLinkDTO.getRoleDetails()==null&&
@@ -49,12 +50,9 @@ public class DocumentLinkValidator{
                 !documentLinkDTO.getUserId().name().equals(UserId.Harshal.name())&&
                 !documentLinkDTO.getUserId().name().equals(UserId.Savan.name())&&
                 !documentLinkDTO.getUserId().name().equals(UserId.Vimal.name())){
-            addFieldError("userId","userId can not be blank Or Select proper from option");
+            fieldErrors.add(new FieldErrorDTO("userId","userId can not be blank Or Select proper from option"));
         }
         return  fieldErrors;
     }
-    public void addFieldError(String path, String message) {
-        FieldErrorDTO error = new FieldErrorDTO(path, message);
-        fieldErrors.add(error);
-    }
+
 }

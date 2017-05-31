@@ -17,18 +17,14 @@ public class DocumentLink {
     @Enumerated(EnumType.STRING)
     private UserId userId;
 
-
     @Column(name = "groupDetails")
     private String groupDetails;
-
 
     @Column(name = "roleDetails")
     private String roleDetails;
 
-
     @ManyToOne
     private DocumentData documentData;
-
 
     public long getDocumentLinkId() {
         return documentLinkId;

@@ -2,6 +2,7 @@ package com.tatvacoconet.controller;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -79,9 +80,12 @@ public class DocumentDataController {
             documentDTO.add(dto);
         }
         if (documentDTO.isEmpty()) {
+            logger.debug("document does not exists");
             return new ResponseEntity<List<DocumentDTO>>(HttpStatus.NO_CONTENT);
         }
         else {
+            logger.debug("Found " + documentDTO.size() + " document");
+            logger.debug(Arrays.toString(documentDTO.toArray()));
             return new ResponseEntity<List<DocumentDTO>>(documentDTO,HttpStatus.OK);
         }
     }
@@ -101,6 +105,7 @@ public class DocumentDataController {
                                                    @ModelAttribute DocumentLink documentLink,
                                                    Model model, HttpServletRequest request)
             throws ParseException {
+        logger.debug("Received request to add new record");
         DocumentLinkDTO docLinkDTO =new DocumentLinkDTO();
         DocumentDTO documentErrorDTO= new DocumentDTO();
         DocumentDTO documentIdDTO= new DocumentDTO();
@@ -146,10 +151,10 @@ public class DocumentDataController {
          * Validation Check For DocumentLink Table
          */
         if(documentlinkdto!=null){
-            List<FieldErrorDTO> fieldErrors1=documentLinkValidator.validateDocumentLink(documentlinkdto);
-            if (fieldErrors1.size()>0) {
+            List<FieldErrorDTO> fieldError=documentLinkValidator.validateDocumentLink(documentlinkdto);
+            if (fieldError.size()>0) {
                 dataService.delete(document.getDocumentId());
-                documentLinkErrorDTO.setFieldErrorDTO(fieldErrors1);
+                documentLinkErrorDTO.setFieldErrorDTO(fieldError);
                 logger.info("Validation Error in DocumentLink"+documentLinkErrorDTO);
                 return new ResponseEntity<DocumentDTO>(documentLinkErrorDTO,HttpStatus.BAD_REQUEST);
             }
@@ -276,6 +281,10 @@ public class DocumentDataController {
         else {
             String filename=document.getDocumentName();
             String fileName=filename.substring(filename.lastIndexOf("-") + 1);
+            if(!fileName.endsWith(".pdf"))
+            {
+                fileName = fileName.concat(".pdf");
+            }
             ServletOutputStream outputStream = response.getOutputStream();
             response.setHeader("Content-Disposition", "attachment; filename=\""+ fileName + "\"");
             outputStream.write(document.getFilePath());
@@ -347,12 +356,14 @@ public class DocumentDataController {
         logger.info("DocumentUpdated successfully");
         return new ResponseEntity<DocumentDTO>(documentDTO, HttpStatus.CREATED);
     }
+
     /**
      * Document Delete method
      *
      */
     @RequestMapping(value = "/deleteDocument/{documentId}", method = RequestMethod.GET)
     public ResponseEntity<DocumentDTO> getDelete(@PathVariable("documentId") long documentId) {
+        logger.debug("Received request to delete record");
         List<FieldErrorDTO> fieldErrors = new ArrayList<>();
         DocumentDTO documentDTO = new DocumentDTO();
         if (documentId == '\0') {
