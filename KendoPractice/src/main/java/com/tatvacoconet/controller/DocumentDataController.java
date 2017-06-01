@@ -188,7 +188,7 @@ public class DocumentDataController {
         List<FieldErrorDTO> fieldErrors = new ArrayList<>();
 
         MultipartFile multipartFile = file.getFile();
-        if (!multipartFile.isEmpty()&& multipartFile.getContentType().equalsIgnoreCase("application/pdf")) {
+        if (!multipartFile.isEmpty()) {
             Random r = new Random();
             int random = r.nextInt(50);
             documentDTO.setDocumentName(random+"-"+multipartFile.getOriginalFilename());
@@ -387,3 +387,4 @@ public class DocumentDataController {
         return new ResponseEntity<DocumentDTO>(HttpStatus.NO_CONTENT);
     }
 }
+

@@ -43,8 +43,8 @@ public class DocumentData {
     @Enumerated(EnumType.STRING)
     private VerticalData verticalData;
 
-    @Enumerated(EnumType.STRING)
-    private DocumentStatus documentStatus;
+    @Column(name = "documentStatus")
+    private String documentStatus;
 
     @Column(name = "documentType")
     private String documentType;
@@ -59,7 +59,7 @@ public class DocumentData {
     }
     public DocumentData(String documentName,String documentDescription,long fileSize,Date creationDate,
                         Date importDate,Date validFrom,Date validTo,VerticalData verticalData,
-                        DocumentStatus documentStatus,String documentType,AddressScope addressScope) {
+                        String documentStatus,String documentType,AddressScope addressScope) {
         this.documentName=documentName;
         this.documentDescription=documentDescription;
         this.fileSize=fileSize;
@@ -144,13 +144,9 @@ public class DocumentData {
         this.verticalData = verticalData;
     }
 
-    public DocumentStatus getDocumentStatus() {
-        return documentStatus;
-    }
+    public String getDocumentStatus() { return documentStatus; }
 
-    public void setDocumentStatus(DocumentStatus documentStatus) {
-        this.documentStatus = documentStatus;
-    }
+    public void setDocumentStatus(String documentStatus) { this.documentStatus = documentStatus; }
 
     public String getDocumentType() { return documentType; }
 

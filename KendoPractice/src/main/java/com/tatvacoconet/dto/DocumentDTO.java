@@ -19,7 +19,7 @@ public class DocumentDTO {
     private Date validFrom;
     private Date validTo;
     private VerticalData verticalData;
-    private DocumentStatus documentStatus;
+    private String documentStatus;
     private String documentType;
     private String documentTag;
     private AddressScope addressScope;
@@ -28,7 +28,7 @@ public class DocumentDTO {
     public DocumentDTO(){}
     public DocumentDTO(String documentDescription,String documentTag,Date creationDate,
                        Date importDate,Date validFrom,Date validTo,
-                       VerticalData verticalData,DocumentStatus documentStatus,
+                       VerticalData verticalData,String documentStatus,
                        String documentType,AddressScope addressScope,
                        DocumentLinkDTO documentLinkDTO) {
         this.documentDescription=documentDescription;
@@ -124,13 +124,9 @@ public class DocumentDTO {
         this.verticalData = verticalData;
     }
 
-    public DocumentStatus getDocumentStatus() {
-        return documentStatus;
-    }
+    public String getDocumentStatus() { return documentStatus; }
 
-    public void setDocumentStatus(DocumentStatus documentStatus) {
-        this.documentStatus = documentStatus;
-    }
+    public void setDocumentStatus(String documentStatus) { this.documentStatus = documentStatus; }
 
     public String getDocumentType() { return documentType; }
 

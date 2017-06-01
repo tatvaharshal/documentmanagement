@@ -44,9 +44,16 @@ public class DocumentValidator{
                 fieldErrors.add(new FieldErrorDTO("validTo","ValidTo date is empty Or Past date is not allowed(>=valid_from date)"));
             }
         }
+        if(documentDTO.getDocumentStatus()==null){
+            fieldErrors.add(new FieldErrorDTO("documentStatus","DocumentStatus can not be blank"));
+        }
         if(documentDTO.getDocumentStatus()!=null){
-            if (documentDTO.getDocumentStatus()!=DocumentStatus.ForYourInformation) {
-                fieldErrors.add(new FieldErrorDTO("documentStatus","DocumentStatus can not be blank"));
+
+            String docStatus= documentDTO.getDocumentStatus();
+            List<String> docStatusEnums = Stream.of(DocumentStatus.values())
+                    .map(DocumentStatus::name).collect(Collectors.toList());
+            if (!docStatusEnums.contains(docStatus)){
+                fieldErrors.add(new FieldErrorDTO("documentStatus","Select proper from option"));
             }
         }
         if(documentDTO.getDocumentTag()!=null){
@@ -142,7 +149,6 @@ public class DocumentValidator{
             fieldErrors.add(new FieldErrorDTO("documentType","DocumentType can not be blank"));
         }
         if(documentUpdateDTO.getDocumentType()!=null){
-
             String docType= documentUpdateDTO.getDocumentType();
             List<String> docTypeEnums = Stream.of(DocumentType.values())
                     .map(DocumentType::name).collect(Collectors.toList());
@@ -151,9 +157,15 @@ public class DocumentValidator{
             }
         }
 
+        if(documentUpdateDTO.getDocumentStatus()==null){
+            fieldErrors.add(new FieldErrorDTO("documentStatus","DocumentStatus can not be blank"));
+        }
         if(documentUpdateDTO.getDocumentStatus()!=null){
-            if (documentUpdateDTO.getDocumentStatus() != DocumentStatus.ForYourInformation) {
-                fieldErrors.add(new FieldErrorDTO("documentStatus", "DocumentStatus can not be blank"));
+            String docStatus= documentUpdateDTO.getDocumentStatus();
+            List<String> docStatusEnums = Stream.of(DocumentStatus.values())
+                    .map(DocumentStatus::name).collect(Collectors.toList());
+            if (!docStatusEnums.contains(docStatus)){
+                fieldErrors.add(new FieldErrorDTO("documentStatus","Select proper from option"));
             }
         }
         if (documentUpdateDTO.getValidFrom()!=null){
@@ -194,11 +206,19 @@ public class DocumentValidator{
             }
         }
         if (documentUpdateDTO.getAddressScope() == null) {
-            if (documentUpdateDTO.getDocumentStatus()!=null){
-                if (documentUpdateDTO.getDocumentStatus() != DocumentStatus.ForYourInformation) {
-                    fieldErrors.add(new FieldErrorDTO("documentStatus","DocumentStatus can not be blank"));
+            if(documentUpdateDTO.getDocumentStatus()==null){
+                fieldErrors.add(new FieldErrorDTO("documentStatus","DocumentStatus can not be blank"));
+            }
+            if(documentUpdateDTO.getDocumentStatus()!=null){
+
+                String docStatus= documentUpdateDTO.getDocumentStatus();
+                List<String> docStatusEnums = Stream.of(DocumentStatus.values())
+                        .map(DocumentStatus::name).collect(Collectors.toList());
+                if (!docStatusEnums.contains(docStatus)){
+                    fieldErrors.add(new FieldErrorDTO("documentStatus","Select proper from option"));
                 }
             }
+
             if (documentUpdateDTO.getValidFrom()!=null){
                 if (documentUpdateDTO.getValidFrom().before(new Date())) {
                     fieldErrors.add(new FieldErrorDTO("validFrom","Past date for ValidFrom is not allowed(>=today's date)"));
