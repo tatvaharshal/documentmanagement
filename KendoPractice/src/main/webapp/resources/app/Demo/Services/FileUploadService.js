@@ -19,6 +19,8 @@ var DocumentList;
             this.$q = $q;
         }
         FileUploadService.prototype.uploadFile = function (file, uploadUrl) {
+            debugger;
+            var deferred = this.$q.defer();
             var xhr = new XMLHttpRequest();
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4) {
@@ -30,7 +32,6 @@ var DocumentList;
             var formData = new FormData();
             formData.append("file", file);
             xhr.send(formData);
-            var deferred = this.$q.defer();
             return deferred.promise;
         };
         return FileUploadService;

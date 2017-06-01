@@ -69,6 +69,9 @@ module DocumentList {
                             }
                         },
                         template:function (dataitem) {
+                            if(dataitem.creationDate ==null) {
+                                return "";
+                            }
                             var d = new Date(dataitem.creationDate);
                             var formattedDate = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear();
                             return formattedDate;
@@ -87,6 +90,9 @@ module DocumentList {
                             }
                         },
                         template:function (dataitem) {
+                            if(dataitem.importDate ==null) {
+                                return "";
+                            }
                             var d = new Date(dataitem.importDate);
                             var formattedDate = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear();
                             return formattedDate;
@@ -132,6 +138,9 @@ module DocumentList {
                                 }
                             },
                             template:function (dataitem) {
+                                if(dataitem.validFrom ==null) {
+                                    return "";
+                                }
                                 var d = new Date(dataitem.validFrom);
                                 var formattedDate = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear();
                                 return formattedDate;
@@ -150,6 +159,9 @@ module DocumentList {
                                 }
                             },
                             template:function (dataitem) {
+                                if(dataitem.validTo ==null) {
+                                    return "";
+                                }
                                 var d = new Date(dataitem.validTo);
                                 var formattedDate = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear();
                                 return formattedDate;
@@ -165,7 +177,6 @@ module DocumentList {
         }
 
         //Methods
-
         // Init
         initialiseEditPage(id:number,$scope) {
             debugger;
@@ -174,9 +185,21 @@ module DocumentList {
                 this.doc = data;
                 this.$scope.doc = data;
 
-                this.$scope.creationDate = this.convertDate(this.doc.creationDate);
-                this.$scope.validFrom = this.convertDate(this.doc.validFrom);
-                this.$scope.validTo = this.convertDate(this.doc.validTo);
+                if(this.doc.creationDate ==null){
+                    this.$scope.creationDate ="";
+                }else{
+                    this.$scope.creationDate = this.convertDate(this.doc.creationDate);
+                }
+                if(this.doc.validFrom ==null){
+                    this.$scope.validFrom ="";
+                }else{
+                    this.$scope.validFrom = this.convertDate(this.doc.validFrom);
+                }
+                if(this.doc.validTo ==null){
+                    this.$scope.validTo ="";
+                }else{
+                    this.$scope.validTo = this.convertDate(this.doc.validTo);
+                }
 
                 var temp = this.$scope.doc.documentTag.split(",");
                 this.$scope.documentTags =this.$scope.doc.documentTag.split(",");
@@ -207,7 +230,6 @@ module DocumentList {
                     if(this.$scope.doc.addressScope =="UserId") {
                         this.docLink.userId = this.$scope.docLink.userId;
                         var objToString= JSON.stringify(this.docLink);
-                        // var final ="["+objToString+"]";
                         this.doc.documentLinkDTO = JSON.parse(objToString);
                     }
 
@@ -215,7 +237,6 @@ module DocumentList {
                         this.docLink.groupDetail = this.$scope.docLink.groupDetails.join(",");
                         var something = this.docLink.groupDetail;
                         var formated = "{"+'"groupDetails"'+":"+'"'+something+'"'+"}";
-                        //   var final ="["+formated+"]";
                         this.doc.documentLinkDTO  = JSON.parse(formated);
                     }
 
@@ -223,7 +244,6 @@ module DocumentList {
                         this.docLink.roleDetail = this.$scope.docLink.roleDetails.join(",");
                         var something = this.docLink.roleDetail;
                         var formated = "{"+'"roleDetails"'+":"+'"'+something+'"'+"}";
-                        //  var final ="["+formated+"]";
                         this.doc.documentLinkDTO  = JSON.parse(formated);
                     }
 
@@ -233,16 +253,27 @@ module DocumentList {
 
                     this.DocumentListService.SaveDocument(this.$scope, this.doc).then((response) =>{
                         debugger;
-                        alert(response.status);
-                        if(data !=undefined) {
+                        if(response.status != undefined) {
+                            alert("Error Code : " +response.error);
+                            return false;
+                        }
+                        if(response.fieldErrorDTO != null) {
+                            for (var i = 0; i < response.fieldErrorDTO.length; i++) {
+                                var field = response.fieldErrorDTO[i].field.toString();
+                                var message = response.fieldErrorDTO[i].message.toString();
+                                var id ="#"+field ;
+                                $(id).html (message);
+                            }
+                        }
+                        if(response.documentId != 0) {
                             alert("Data Submitted Succsesfully!");
                             this.$window.location.href="./DocumentList";
                         }else {
                             alert("Somwthing Went Wrong");
                         }
-                    }).catch((err:string) =>{
+                    }).catch((error) =>{
                         debugger;
-                        alert("error: "+err);
+                        alert("error: "+error);
                     });
                 });
             }
@@ -305,12 +336,12 @@ module DocumentList {
         }
 
         //uloadPDF Validation
-        public validateFiles = function (file:any) {
-            debugger;
-            if(file.size>5242880) {
-                alert("File Size Should Not bE greter then 5 MB")
-            }
-        }
+        // public validateFiles = function (file) {
+        //     debugger;
+        //     if(file.size>5242880) {
+        //         alert("File Size Should Not bE greter then 5 MB")
+        //     }
+        // }
 
         //onDelete
         onDelete(id,name) {
@@ -325,14 +356,12 @@ module DocumentList {
         }
         onConfirm(item:any):void {}
 
-
         //convert date
         public convertDate(timestamp: any) {
-            var d = new Date(timestamp);
-            var formattedDate =  d.getFullYear()+ "-" + (d.getMonth() + 1) + "-" + d.getDate();
-            return formattedDate;
+                var d = new Date(timestamp);
+                var formattedDate =  d.getFullYear()+ "-" + (d.getMonth() + 1) + "-" + d.getDate();
+                return formattedDate;
         }
-
 
         //handle Click Event on grid raw
         public onRawClick(num:any) {

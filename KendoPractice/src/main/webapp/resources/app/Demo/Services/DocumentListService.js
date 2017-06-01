@@ -4,15 +4,9 @@ var DocumentList;
     'use strict';
     var DocumentListService = (function () {
         function DocumentListService(http, $q) {
-            var _this = this;
             //define Succses And fail
             this.success = function (response) { return response.data; };
-            // private fail: (error: any) => {} = (error) => error.data;
-            this.fail = function (error) {
-                var msg = error.data.message;
-                var reason = 'query for people failed.';
-                return _this.$q.reject(msg);
-            };
+            this.fail = function (error) { return error.data; };
             this._http = http;
             this.$q = $q;
         }

@@ -27,13 +27,6 @@ var DocumentList;
             _this.$filter = $filter;
             _this.fileUploadService = fileUploadService;
             _this.isUploaded = false;
-            //uloadPDF Validation
-            _this.validateFiles = function (file) {
-                debugger;
-                if (file.size > 5242880) {
-                    alert("File Size Should Not bE greter then 5 MB");
-                }
-            };
             $scope.vm = _this;
             _this.DocumentListService.GetDocumentList(_this.$scope).then(function (data) {
                 $scope.mainGridOptions = {
@@ -73,6 +66,9 @@ var DocumentList;
                                 }
                             },
                             template: function (dataitem) {
+                                if (dataitem.creationDate == null) {
+                                    return "";
+                                }
                                 var d = new Date(dataitem.creationDate);
                                 var formattedDate = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear();
                                 return formattedDate;
@@ -91,6 +87,9 @@ var DocumentList;
                                 }
                             },
                             template: function (dataitem) {
+                                if (dataitem.importDate == null) {
+                                    return "";
+                                }
                                 var d = new Date(dataitem.importDate);
                                 var formattedDate = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear();
                                 return formattedDate;
@@ -136,6 +135,9 @@ var DocumentList;
                                 }
                             },
                             template: function (dataitem) {
+                                if (dataitem.validFrom == null) {
+                                    return "";
+                                }
                                 var d = new Date(dataitem.validFrom);
                                 var formattedDate = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear();
                                 return formattedDate;
@@ -154,6 +156,9 @@ var DocumentList;
                                 }
                             },
                             template: function (dataitem) {
+                                if (dataitem.validTo == null) {
+                                    return "";
+                                }
                                 var d = new Date(dataitem.validTo);
                                 var formattedDate = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear();
                                 return formattedDate;
@@ -177,9 +182,24 @@ var DocumentList;
                 debugger;
                 _this.doc = data;
                 _this.$scope.doc = data;
-                _this.$scope.creationDate = _this.convertDate(_this.doc.creationDate);
-                _this.$scope.validFrom = _this.convertDate(_this.doc.validFrom);
-                _this.$scope.validTo = _this.convertDate(_this.doc.validTo);
+                if (_this.doc.creationDate == null) {
+                    _this.$scope.creationDate = "";
+                }
+                else {
+                    _this.$scope.creationDate = _this.convertDate(_this.doc.creationDate);
+                }
+                if (_this.doc.validFrom == null) {
+                    _this.$scope.validFrom = "";
+                }
+                else {
+                    _this.$scope.validFrom = _this.convertDate(_this.doc.validFrom);
+                }
+                if (_this.doc.validTo == null) {
+                    _this.$scope.validTo = "";
+                }
+                else {
+                    _this.$scope.validTo = _this.convertDate(_this.doc.validTo);
+                }
                 var temp = _this.$scope.doc.documentTag.split(",");
                 _this.$scope.documentTags = _this.$scope.doc.documentTag.split(",");
                 if (_this.doc.addressScope == "None") {
@@ -207,21 +227,18 @@ var DocumentList;
                     if (_this.$scope.doc.addressScope == "UserId") {
                         _this.docLink.userId = _this.$scope.docLink.userId;
                         var objToString = JSON.stringify(_this.docLink);
-                        // var final ="["+objToString+"]";
                         _this.doc.documentLinkDTO = JSON.parse(objToString);
                     }
                     if (_this.$scope.doc.addressScope == "Group") {
                         _this.docLink.groupDetail = _this.$scope.docLink.groupDetails.join(",");
                         var something = _this.docLink.groupDetail;
                         var formated = "{" + '"groupDetails"' + ":" + '"' + something + '"' + "}";
-                        //   var final ="["+formated+"]";
                         _this.doc.documentLinkDTO = JSON.parse(formated);
                     }
                     if (_this.$scope.doc.addressScope == "Role") {
                         _this.docLink.roleDetail = _this.$scope.docLink.roleDetails.join(",");
                         var something = _this.docLink.roleDetail;
                         var formated = "{" + '"roleDetails"' + ":" + '"' + something + '"' + "}";
-                        //  var final ="["+formated+"]";
                         _this.doc.documentLinkDTO = JSON.parse(formated);
                     }
                     if (_this.$scope.list != undefined) {
@@ -229,17 +246,28 @@ var DocumentList;
                     }
                     _this.DocumentListService.SaveDocument(_this.$scope, _this.doc).then(function (response) {
                         debugger;
-                        alert(response.status);
-                        if (data != undefined) {
+                        if (response.status != undefined) {
+                            alert("Error Code : " + response.error);
+                            return false;
+                        }
+                        if (response.fieldErrorDTO != null) {
+                            for (var i = 0; i < response.fieldErrorDTO.length; i++) {
+                                var field = response.fieldErrorDTO[i].field.toString();
+                                var message = response.fieldErrorDTO[i].message.toString();
+                                var id = "#" + field;
+                                $(id).html(message);
+                            }
+                        }
+                        if (response.documentId != 0) {
                             alert("Data Submitted Succsesfully!");
                             _this.$window.location.href = "./DocumentList";
                         }
                         else {
                             alert("Somwthing Went Wrong");
                         }
-                    })["catch"](function (err) {
+                    })["catch"](function (error) {
                         debugger;
-                        alert("error: " + err);
+                        alert("error: " + error);
                     });
                 });
             }
@@ -296,6 +324,13 @@ var DocumentList;
                 alert("erro ocured : " + err);
             });
         };
+        //uloadPDF Validation
+        // public validateFiles = function (file) {
+        //     debugger;
+        //     if(file.size>5242880) {
+        //         alert("File Size Should Not bE greter then 5 MB")
+        //     }
+        // }
         //onDelete
         DocumentListController.prototype.onDelete = function (id, name) {
             var _this = this;

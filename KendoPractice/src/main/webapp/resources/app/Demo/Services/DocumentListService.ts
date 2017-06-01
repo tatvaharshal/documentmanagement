@@ -44,13 +44,13 @@ module DocumentList {
 
         //define Succses And fail
         private success: (response: any) => {} = (response) => response.data;
-       // private fail: (error: any) => {} = (error) => error.data;
+        private fail: (error: any) => {} = (error) => error.data;
 
-        private fail: (error: any) => {} = (error) => {
-            var msg = error.data.message;
-            var reason = 'query for people failed.';
-            return this.$q.reject(msg);
-        }
+        // private fail: (error: any) => {} = (error) => {
+        //     var msg = error.data.message;
+        //     var reason = 'query for people failed.';
+        //     return this.$q.reject(msg);
+        // }
     }
     angular.module("DocumentList").service("DocumentListService", DocumentListService);
 }

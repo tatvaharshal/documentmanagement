@@ -14,6 +14,8 @@ module DocumentList	 {
             this.$q = $q;
         }
         public uploadFile(file: any, uploadUrl: any):ng.IHttpPromise<MasterDocumentDTO> {
+            debugger;
+            let deferred = this.$q.defer();
             let xhr: XMLHttpRequest = new XMLHttpRequest();
             xhr.onreadystatechange = () => {
                 if (xhr.readyState === 4) {
@@ -25,7 +27,6 @@ module DocumentList	 {
             let formData = new FormData();
             formData.append("file", file);
             xhr.send(formData);
-            let deferred = this.$q.defer();
             return deferred.promise;
 
         }
