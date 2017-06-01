@@ -1,4 +1,4 @@
-/*package com.tatvacoconet.controller;
+package com.tatvacoconet.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
@@ -38,15 +38,15 @@ import com.tatvacoconet.entity.VerticalData;
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class DocumentDataControllerTest {
-    public static DocumentLinkDTO documentlinkDTO = new DocumentLinkDTO(UserId.Vimal,null,null);
+    public static DocumentLinkDTO documentlinkDTO = new DocumentLinkDTO("Vimal",null,null);
     public static DocumentDTO documentDTO = new DocumentDTO( "pdf file","ProjectA",
-            DateUtil.parseDatetime("2017-05-29T00:00:00.000Z"),
-            DateUtil.parseDatetime("2017-05-29T00:00:00.000Z"),
-            DateUtil.parseDatetime("2017-05-31T00:00:00.000Z"),
-            DateUtil.parseDatetime("2017-06-11T00:00:00.000Z"),
-            VerticalData.BOI,DocumentStatus.ForYourInformation,
-            DocumentType.Account_Statement,AddressScope.UserId,
-            documentlinkDTO);
+                                                              DateUtil.parseDatetime("2017-05-31T00:00:00.000Z"),
+                                                              DateUtil.parseDatetime("2017-06-02T00:00:00.000Z"),
+                                                              DateUtil.parseDatetime("2017-06-02T00:00:00.000Z"),
+                                                              DateUtil.parseDatetime("2017-06-11T00:00:00.000Z"),
+                                                              VerticalData.BOI,"ForYourInformation",
+                                                             "Account_Statement",AddressScope.UserId,
+                                                              documentlinkDTO);
     @Autowired
     private TestRestTemplate restTemplate;
 
@@ -56,17 +56,14 @@ public class DocumentDataControllerTest {
         map.add("file", new ClassPathResource("110.pdf"));
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-
         HttpEntity<LinkedMultiValueMap<String, Object>> requestEntity =
                 new HttpEntity<LinkedMultiValueMap<String, Object>>(map, headers);
-
         ResponseEntity<String> responseEntity =
                 this.restTemplate.postForEntity("/fileUpload", requestEntity, String.class);
         String resp = responseEntity.getBody();
         JSONObject json = new JSONObject(resp);
         if(json != null)
             assertNotNull(json.getLong("documentId"));
-        // assertThat(json.getLong("documentId")).isEqualTo(documentDTO.getDocumentId());
         documentDTO.setDocumentId(json.getLong("documentId"));
         assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
     }
@@ -75,11 +72,9 @@ public class DocumentDataControllerTest {
         ResponseEntity<String> responseEntity =
                 this.restTemplate.postForEntity("/DocumentAdd", documentDTO, String.class);
         String resp = responseEntity.getBody();
-
         JSONObject json = new JSONObject(resp);
         if(json != null)
             assertNotNull(json.getLong("documentId"));
-        // assertThat(json.getLong("documentId")).isEqualTo(documentDTO.getDocumentId());
         documentDTO.setDocumentId(json.getLong("documentId"));
         assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
     }
@@ -88,7 +83,6 @@ public class DocumentDataControllerTest {
         ResponseEntity<DocumentDTO> responseEntity =
                 this.restTemplate.getForEntity("/documentListByID/"+documentDTO.getDocumentId(),
                         DocumentDTO.class);
-
         DocumentDTO documenttestDTO = responseEntity.getBody();
         assertThat(documenttestDTO.getDocumentTag().equals(documentDTO.getDocumentTag()));
         documentDTO.setDocumentId(documenttestDTO.getDocumentId());
@@ -109,8 +103,6 @@ public class DocumentDataControllerTest {
     public void test5Document_Delete(){
         ResponseEntity<DocumentDTO> responseEntity = this.restTemplate.getForEntity
                 ("/deleteDocument/"+documentDTO.getDocumentId(),DocumentDTO.class);
-        //DocumentDTO status = responseEntity.getBody();
         assertEquals(HttpStatus.NO_CONTENT, responseEntity.getStatusCode());
     }
 }
-*/
