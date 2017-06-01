@@ -248,6 +248,14 @@
 </div>
 
 <script>
+
+    document.onreadystatechange = function(){
+        if(document.readyState === 'complete'){
+            debugger;
+            alert($("#txtvalidFromDate").val());
+        }
+    }
+
     $('#txtcreationDate').datepicker({
         dateFormat: 'yy-mm-dd',
         autoclose: true,
@@ -256,12 +264,15 @@
     $('#txtvalidFromDate').datepicker({
         dateFormat: 'yy-mm-dd',
         autoclose: true,
-        minDate: 0
+        minDate: 1
     });
-    $('#txtvalidToDate').datepicker({
+
+   //alert($("#txtvalidFromDate").val());
+
+   $('#txtvalidToDate').datepicker({
         dateFormat: 'yy-mm-dd',
         autoclose: true,
-        maxDate: 0
+        minDate: $('#txtvalidFromDate').val()
     });
 
 

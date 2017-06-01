@@ -98,15 +98,18 @@
 
                                 <div class="form-group" style="width: 250px;">
                                     <label for="file">File*</label><br/>
-                                    <input class="form-control" type="file" id="file" file-upload="file" ng-model="file"
-                                           ngf-select="ctlr.validateFiles($file)"  name="file"
-                                           accept="application/pdf" ngf-max-height="1000" ngf-max-size="5MB" required>
+                                    <span style="color: red;" id="fileSize"></span>
+                                    <span style="color: red;" id="filePath"></span>
+                                    <input class="form-control" type="file" name="file" id="file" file-upload="file" ng-model="file"
+                                           ngf-select="ctlr.validateFiles(filePDF)"
+                                           accept="application/pdf"   required>
                                     </input>
                                 </div>
 
                                 <hr style="color: #CFCFCF;border: 1px solid;"/>
                                 <div class="form-group">
                                     <label for="ddlAddressScope">Address Scope<span>*</span></label>
+                                    <span style="color: red;" id="addressScope"></span>
                                     <div class="form-group">
                                         <select class="custom-style" id="ddlAddressScope" ng-model="doc.addressScope">
                                             <option selected="selected" value="None">None</option>
@@ -154,8 +157,9 @@
 
                                     <div class="col-md-3 col-lg-3">
                                         <label for="documenttype">Document type<span>*</span></label>
+                                        <span style="color: red;" id="documentType"></span>
                                         <div class="form-group">
-                                            <select class="custom-style" id="documenttype" ng-model="doc.documentType" required>
+                                            <select class="custom-style" id="ddldocumenttype" ng-model="doc.documentType" required>
                                                 <option selected="selected" value="">None</option>
                                                 <option value="Contract">Contract</option>
                                                 <option value="Account_Statement">Account_Statement</option>
@@ -167,31 +171,33 @@
 
                                     <div class="col-md-3 col-lg-3">
                                         <label for="documentStatus">Document Status</label>
+                                        <span style="color: red;" id="documentStatus"></span>
                                         <div class="form-group">
-                                            <select class="custom-style" id="documentStatus" ng-model="doc.documentStatus">
+                                            <select class="custom-style" id="ddldocumentStatus" ng-model="doc.documentStatus">
                                                 <option selected value="ForYourInformation">ForYourInformation</option>
                                             </select>
                                         </div>
                                     </div>
-
                                     <div class="col-md-3 col-lg-3">
                                         <label for="txtcreationDate">Creation date</label>
+                                        <span style="color: red;" id="creationDate"></span>
                                         <div class="form-group">
-                                            <input type="text" id="txtcreationDate" class="custom-style" placeholder="Creation date" ng-model="doc.creationDate"/>
+                                            <input type="text" id="txtcreationDate" class="custom-style" placeholder="Creation date" readonly ng-model="doc.creationDate"/>
                                         </div>
                                     </div>
-
                                     <div class="col-md-3 col-lg-3">
                                         <label for="txtvalidFromDate">Valid from</label>
+                                        <span style="color: red;" id="validFrom"></span>
                                         <div class="form-group">
-                                            <input type="text" id="txtvalidFromDate" class="custom-style" placeholder="Valid from" ng-model="doc.validFrom"/>
+                                            <input type="text" id="txtvalidFromDate" class="custom-style" placeholder="Valid from" readonly ng-model="doc.validFrom"/>
                                         </div>
                                     </div>
 
                                     <div class="col-md-3 col-lg-3">
                                         <label for="txtvalidToDate">Valid to</label>
+                                        <span style="color: red;" id="validTo"></span>
                                         <div class="form-group">
-                                            <input type="text" id="txtvalidToDate" class="custom-style" placeholder="Valid To" ng-model="doc.validTo"/>
+                                            <input type="text" id="txtvalidToDate" class="custom-style" placeholder="Valid To" readonly ng-model="doc.validTo"/>
                                         </div>
                                     </div>
                                 </div>
@@ -200,6 +206,7 @@
 
                                 <div class="form-group">
                                     <label for="txtName">Document Name</label>
+                                    <span style="color: red;" id="documentName"></span>
                                     <div class="form-group">
                                         <input  type="text" class="custom-style"  name="docName" ng-model="doc.documentName" data-ng-pattern="/^[a-zA-Z0-9]*$/" id="txtName" placeholder="Document Name" data-ng-minlength="0" data-ng-maxlength="255" maxlength="255">
                                     </div>
@@ -207,14 +214,16 @@
 
                                 <div class="form-group">
                                     <label for="txtDescription">Description</label>
+                                    <span style="color: red;" id="documentDescription"></span>
                                     <div class="form-group">
                                         <input type="text" style="width: 100%;" name="docName" ng-model="doc.documentDescription" id="txtDescription" placeholder="Description" data-ng-minlength="0" data-ng-maxlength="1000" maxlength="1000"></input>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="documentTag">Document Tags</label>
+                                    <span style="color: red;" id="documentTag"></span>
                                     <div class="form-group">
-                                        <select kendo-multi-select id="documentTag" k-ng-model="list.documentTags" data-placeholder="Please select ..." multiple="multiple">
+                                        <select kendo-multi-select id="ddldocumentTag" k-ng-model="list.documentTags" data-placeholder="Please select ..." multiple="multiple">
                                             <option value="ProjectA" >ProjectA</option>
                                             <option value="ProjectB">ProjectB</option>
                                             <option value="ProjectC">ProjectC</option>
@@ -239,7 +248,7 @@
     $('#txtvalidFromDate').datepicker({
         dateFormat: 'yy-mm-dd',
         autoclose: true,
-        minDate: 0,
+        minDate: 1,
         onClose: function( selectedDate ) {
             $( "#txtvalidToDate" ).datepicker( "option", "minDate", selectedDate );
         }
