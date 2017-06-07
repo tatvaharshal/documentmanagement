@@ -5,9 +5,6 @@ import java.util.Date;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.validator.constraints.NotEmpty;
-
 @Entity
 @Table(name = "DocumentData")
 public class DocumentData {

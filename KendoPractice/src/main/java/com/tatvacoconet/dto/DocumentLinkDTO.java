@@ -1,14 +1,8 @@
 package com.tatvacoconet.dto;
 
-import com.tatvacoconet.entity.AddressScope;
 import com.tatvacoconet.entity.DocumentData;
-import com.tatvacoconet.entity.UserId;
 
-/**
- * Created by pca48 on 5/10/2017.
- */
 public class DocumentLinkDTO {
-
     private long documentLinkId;
     private String userId;
     private String groupDetails;
@@ -16,8 +10,7 @@ public class DocumentLinkDTO {
     private DocumentData documentData;
 
     public DocumentLinkDTO(){}
-    public DocumentLinkDTO(String userId,String groupDetails,
-                           String roleDetails) {
+    public DocumentLinkDTO(String userId,String groupDetails,String roleDetails) {
         this.userId=userId;
         this.groupDetails=groupDetails;
         this.roleDetails=roleDetails;
@@ -38,9 +31,7 @@ public class DocumentLinkDTO {
         return groupDetails;
     }
 
-    public void setGroupDetails(String groupDetails) {
-        this.groupDetails = groupDetails;
-    }
+    public void setGroupDetails(String groupDetails) { this.groupDetails = groupDetails; }
 
     public String getRoleDetails() {
         return roleDetails;

@@ -22,10 +22,7 @@ public class DocumentLinkServiceImpl implements DocumentLinkService {
     public DocumentLink addDocument(DocumentLink documentLink) {
         return linkRepository.save(documentLink);
     }
-    @Override
-    public void updateDocumentLink(DocumentLink documentLink) {
-        linkRepository.save(documentLink);
-    }
+
     @Override
     public void deleteAll(long documentId) {
         List<DocumentLink> list=linkRepository.findByID(documentId);

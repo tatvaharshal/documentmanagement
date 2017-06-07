@@ -20,7 +20,7 @@ public class DocumentMapper {
         documentDTO.setDocumentId(document.getDocumentId());
         documentDTO.setValidFrom(document.getValidFrom());
         documentDTO.setValidTo(document.getValidTo());
-        documentDTO.setImportDate(document.getCreationDate());
+        documentDTO.setImportDate(document.getImportDate());
         documentDTO.setDocumentTag(document.getDocumentTag());
         documentDTO.setDocumentName(document.getDocumentName());
         documentDTO.setDocumentDescription(document.getDocumentDescription());
@@ -46,7 +46,7 @@ public class DocumentMapper {
         document.setDocumentTag(documentDTO.getDocumentTag());
         document.setFilePath(documentDTO.getFilePath());
         document.setFileSize(documentDTO.getFileSize());
-        document.setImportDate(document.getCreationDate());
+        document.setImportDate(document.getImportDate());
         document.setDocumentId(documentDTO.getDocumentId());
         document.setVerticalData(documentDTO.getVerticalData());
         return document;
@@ -61,7 +61,7 @@ public class DocumentMapper {
         documentLinkDTO.setGroupDetails(documentLink.getGroupDetails());
         documentLinkDTO.setRoleDetails(documentLink.getRoleDetails());
         documentLinkDTO.setUserId(documentLink.getUserId());
-        documentLinkDTO.setDocumentData(documentLink.getDocumentData());
+       // documentLinkDTO.setDocumentData(documentLink.getDocumentData());
         return documentLinkDTO;
     }
     /**

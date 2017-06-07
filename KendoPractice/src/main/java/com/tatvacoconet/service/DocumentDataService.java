@@ -6,15 +6,15 @@ import com.tatvacoconet.entity.DocumentData;
 
 public interface DocumentDataService {
 
-    public DocumentData RegisterOrUpdate(DocumentData document);
+    DocumentData RegisterOrUpdate(DocumentData document);
 
-    public List<DocumentData> getAllDocs();
+    List<DocumentData> getAllDocs();
 
-    public void updateDocument(DocumentData document);
+    void updateDocument(DocumentData document);
 
     DocumentData getDocumentByID(long documentId);
 
-    public void delete(long documentId);
+    void delete(long documentId);
 
 
 }

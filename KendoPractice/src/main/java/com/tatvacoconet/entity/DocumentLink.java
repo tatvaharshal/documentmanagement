@@ -1,9 +1,7 @@
 package com.tatvacoconet.entity;
 
-import org.hibernate.validator.constraints.NotEmpty;
-
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+
 
 @Entity
 @Table(name = "DocumentLink")
@@ -13,7 +11,6 @@ public class DocumentLink {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "documentLinkId", unique = true, nullable = false)
     private long documentLinkId;
-
 
     @Column(name = "userId")
     private String userId;

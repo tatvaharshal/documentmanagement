@@ -10,8 +10,6 @@ public interface DocumentLinkService {
 
     List<DocumentLink> getAllDocumentsLink(long documentId);
 
-    void updateDocumentLink(DocumentLink documentLink);
-
     void deleteAll(long documentId);
 
     DocumentLink getAllDocumentsById(long documentId);

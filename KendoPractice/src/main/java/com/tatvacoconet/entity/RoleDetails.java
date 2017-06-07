@@ -1,7 +1,6 @@
 package com.tatvacoconet.entity;
 
 public enum RoleDetails {
-
     ALLUsers,
     Attentionwidget,
     Balancewidget,

@@ -1,10 +1,9 @@
 package com.tatvacoconet.controller;
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -37,7 +36,7 @@ import com.tatvacoconet.service.DocumentDataService;
 import com.tatvacoconet.service.DocumentLinkService;
 
 @RestController
-/* @RequestMapping("/document") */
+
 public class DocumentDataController {
     final static Logger logger = Logger.getLogger(DocumentDataController.class);
     @Autowired
@@ -50,6 +49,9 @@ public class DocumentDataController {
     DocumentLinkValidator documentLinkValidator;
     @Autowired
     DocumentMapper documentMapper;
+
+    DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+    Date date = new Date();
     /**
      *  List Of all Document Method
      * @return DocumentDTO with List Of all Document
@@ -60,17 +62,18 @@ public class DocumentDataController {
         mav.setViewName("DocumentList");
         return mav;
     }
-
     @RequestMapping(value = "/documentList", method = RequestMethod.GET,
             headers = "Accept=application/json")
     public ResponseEntity<List<DocumentDTO>> getAllDocuments() {
-        /** *   DocumentData List method first   */
+        /*
+         DocumentData List method first
+         */
         List<DocumentData> document = dataService.getAllDocs();
-        List<DocumentDTO> documentDTO = new ArrayList<DocumentDTO>();
+        List<DocumentDTO> documentDTO = new ArrayList<>();
         for (DocumentData doc : document) {
             DocumentDTO dto = documentMapper.convertToDocumentDto(doc);
-            /**
-             * DocumentLink Table Data from Perticular DocumentData Id
+            /*
+              DocumentLink Table Data from Perticular DocumentData Id
              */
             List<DocumentLink> documentlist = linkService.getAllDocumentsLink(doc.getDocumentId());
             for (DocumentLink doclist : documentlist) {
@@ -81,12 +84,12 @@ public class DocumentDataController {
         }
         if (documentDTO.isEmpty()) {
             logger.debug("document does not exists");
-            return new ResponseEntity<List<DocumentDTO>>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         else {
             logger.debug("Found " + documentDTO.size() + " document");
             logger.debug(Arrays.toString(documentDTO.toArray()));
-            return new ResponseEntity<List<DocumentDTO>>(documentDTO,HttpStatus.OK);
+            return new ResponseEntity<>(documentDTO,HttpStatus.OK);
         }
     }
     /**
@@ -102,23 +105,35 @@ public class DocumentDataController {
     @RequestMapping(value = "/DocumentAdd", method = RequestMethod.POST)
     public ResponseEntity<DocumentDTO> addDocument(@RequestBody DocumentDTO documentDTO,
                                                    @ModelAttribute DocumentData document,
-                                                   @ModelAttribute DocumentLink documentLink,
-                                                   Model model, HttpServletRequest request)
-            throws ParseException {
+                                                   @ModelAttribute DocumentLink documentLink)
+                                                   throws ParseException {
         logger.debug("Received request to add new record");
         DocumentLinkDTO docLinkDTO =new DocumentLinkDTO();
         DocumentDTO documentErrorDTO= new DocumentDTO();
         DocumentDTO documentIdDTO= new DocumentDTO();
         DocumentDTO documentLinkErrorDTO= new DocumentDTO();
-        /**
-         *  Validation Check For DocumentData Table
+        String currentDate=dateFormat.format(date);
+
+        if(documentDTO.getValidFrom()!=null){
+            String validFrom=dateFormat.format(documentDTO.getValidFrom());
+            Date validFromDate=new SimpleDateFormat("yyyy/MM/dd").parse(validFrom);
+            documentDTO.setValidFrom(validFromDate);
+        }
+        if(documentDTO.getValidTo()!=null){
+            String vaidTo=dateFormat.format(documentDTO.getValidTo());
+            Date vaidToDate=new SimpleDateFormat("yyyy/MM/dd").parse(vaidTo);
+            documentDTO.setValidTo(vaidToDate);
+        }
+        Date todayDate=new SimpleDateFormat("yyyy/MM/dd").parse(currentDate);
+        /*
+          Validation Check For DocumentData Table
          */
         List<FieldErrorDTO> fieldErrors=documentValidator.validateDocument(documentDTO);
         if (fieldErrors.size()>0) {
             dataService.delete(documentDTO.getDocumentId());
             documentErrorDTO.setFieldErrorDTO(fieldErrors);
             logger.info("Validation Error in DocumentData"+documentErrorDTO);
-            return new ResponseEntity<DocumentDTO>(documentErrorDTO,HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(documentErrorDTO,HttpStatus.BAD_REQUEST);
         }
         else {
             document = dataService.getDocumentByID(documentDTO.getDocumentId());
@@ -128,10 +143,15 @@ public class DocumentDataController {
                 fieldErrors.add(error);
                 documentIdDTO.setFieldErrorDTO(fieldErrors);
                 logger.info("Unable to Save.DocumentData with id " + documentDTO.getDocumentId() + " not found");
-                return new ResponseEntity<DocumentDTO>(documentIdDTO,HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(documentIdDTO,HttpStatus.NOT_FOUND);
             }
-            document.setCreationDate(documentDTO.getCreationDate());
-            document.setImportDate(documentDTO.getCreationDate());
+            if(documentDTO.getCreationDate()!=null){
+                document.setCreationDate(documentDTO.getCreationDate());
+            }
+            else{
+                document.setCreationDate(todayDate);
+            }
+            document.setImportDate(todayDate);
             document.setDocumentDescription(documentDTO.getDocumentDescription());
             if(documentDTO.getDocumentName()!=null) {
                 document.setDocumentName(documentDTO.getDocumentName());
@@ -141,14 +161,19 @@ public class DocumentDataController {
             document.setDocumentType(documentDTO.getDocumentType());
             document.setValidFrom(documentDTO.getValidFrom());
             document.setValidTo(documentDTO.getValidTo());
-            document.setAddressScope(documentDTO.getAddressScope());
+            if(documentDTO.getAddressScope()==null) {
+                document.setAddressScope(AddressScope.None);
+            }
+            else{
+                document.setAddressScope(documentDTO.getAddressScope());
+            }
             document.setVerticalData(VerticalData.BOI);
             dataService.updateDocument(document);
             logger.info("DocumentData created successfully"+document);
         }
         DocumentLinkDTO documentlinkdto = documentDTO.getDocumentLinkDTO();
-        /**
-         * Validation Check For DocumentLink Table
+        /*
+          Validation Check For DocumentLink Table
          */
         if(documentlinkdto!=null){
             List<FieldErrorDTO> fieldError=documentLinkValidator.validateDocumentLink(documentlinkdto);
@@ -156,7 +181,7 @@ public class DocumentDataController {
                 dataService.delete(document.getDocumentId());
                 documentLinkErrorDTO.setFieldErrorDTO(fieldError);
                 logger.info("Validation Error in DocumentLink"+documentLinkErrorDTO);
-                return new ResponseEntity<DocumentDTO>(documentLinkErrorDTO,HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(documentLinkErrorDTO,HttpStatus.BAD_REQUEST);
             }
             else {
                 documentlinkdto.setDocumentData(document);
@@ -172,19 +197,18 @@ public class DocumentDataController {
             logger.info("DocumentLink Data created successfully"+documentLink);
         }
         logger.info("Data created successfully");
-        return new ResponseEntity<DocumentDTO>(documentDTO, HttpStatus.CREATED);
+        return new ResponseEntity<>(documentDTO, HttpStatus.CREATED);
     }
-    /**
-     *  File Upload Method
-     * @return DocumentDTO saved FileData
+    /*File Upload Method
+      @return DocumentDTO saved FileData
      */
     @RequestMapping(value = "/fileUpload", produces = "application/json",consumes = "multipart/*",
-            method = RequestMethod.POST)
+                                                                      method = RequestMethod.POST)
     public ResponseEntity<DocumentDTO> uploadDocument(FileUpload file) throws IOException {
         DocumentDTO documentDTO = new DocumentDTO();
         DocumentDTO fileErrorDTO = new DocumentDTO();
-        DocumentDTO documentFileDTO = new DocumentDTO();
-        DocumentData document = new DocumentData();
+        DocumentDTO documentFileDTO;new DocumentDTO();
+        DocumentData document ;new DocumentData();
         List<FieldErrorDTO> fieldErrors = new ArrayList<>();
 
         MultipartFile multipartFile = file.getFile();
@@ -194,14 +218,14 @@ public class DocumentDataController {
             documentDTO.setDocumentName(random+"-"+multipartFile.getOriginalFilename());
             documentDTO.setFileSize(multipartFile.getSize() / 1024);
             documentDTO.setFilePath(multipartFile.getBytes());
-            /**
-             * Validation Check For Uploaded File
+            /*
+              Validation Check For Uploaded File
              */
             List<FieldErrorDTO> FilefieldErrors=documentValidator.validateFileDetails(documentDTO);
             if (FilefieldErrors.size()>0) {
                 fileErrorDTO.setFieldErrorDTO(FilefieldErrors);
                 logger.info("Validation Error in FileUpload"+fileErrorDTO);
-                return new ResponseEntity<DocumentDTO>(fileErrorDTO,HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(fileErrorDTO,HttpStatus.BAD_REQUEST);
             }
             document = documentMapper.convertToDocumentEntity(documentDTO);
             DocumentData documentUpload = dataService.RegisterOrUpdate(document);
@@ -213,10 +237,10 @@ public class DocumentDataController {
             fieldErrors.add(error);
             documentDTO.setFieldErrorDTO(fieldErrors);
             logger.info("Proper Pdf File Not Found");
-            return new ResponseEntity<DocumentDTO>(documentDTO,HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(documentDTO,HttpStatus.NOT_FOUND);
         }
         logger.info("File Uploaded successfully");
-        return new ResponseEntity<DocumentDTO>(documentFileDTO, HttpStatus.CREATED);
+        return new ResponseEntity<>(documentFileDTO, HttpStatus.CREATED);
     }
     /**
      *  List Of Document By Id Method
@@ -228,13 +252,12 @@ public class DocumentDataController {
         mav.setViewName("DocumentDetail");
         return mav;
     }
-
     @RequestMapping(value = "/documentListByID/{documentId}", method = RequestMethod.GET,
             headers = "Accept=application/json")
     public ResponseEntity<DocumentDTO> getDocumentsByID(@PathVariable("documentId") long documentId) {
         List<FieldErrorDTO> fieldErrors = new ArrayList<>();
         if (documentId=='\0') {
-            return new ResponseEntity<DocumentDTO>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         DocumentDTO documentDTO = new DocumentDTO();
         DocumentData document = dataService.getDocumentByID(documentId);
@@ -244,7 +267,7 @@ public class DocumentDataController {
             fieldErrors.add(error);
             documentDTO.setFieldErrorDTO(fieldErrors);
             logger.info("Unable to FindDetails. DocumentData with id " + documentId + " not found");
-            return new ResponseEntity<DocumentDTO>(documentDTO,HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(documentDTO,HttpStatus.NOT_FOUND);
         }
         else{
             documentDTO = documentMapper.convertToDocumentDto(document);
@@ -254,7 +277,7 @@ public class DocumentDataController {
                 documentDTO.setDocumentLinkDTO(documentlinkdto);
             }
         }
-        return new ResponseEntity<DocumentDTO>(documentDTO, HttpStatus.OK);
+        return new ResponseEntity<>(documentDTO, HttpStatus.OK);
     }
     /**
      * FileDownload method
@@ -262,12 +285,11 @@ public class DocumentDataController {
      */
     @RequestMapping(value = "/download/{documentId}", method = RequestMethod.GET)
     public ResponseEntity <DocumentDTO> download(@PathVariable("documentId") int documentId,
-                                                 HttpServletRequest request,
                                                  HttpServletResponse response)throws IOException {
         List<FieldErrorDTO> fieldErrors = new ArrayList<>();
         DocumentDTO documentDTO = new DocumentDTO();
         if (documentId=='\0') {
-            return new ResponseEntity<DocumentDTO>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         DocumentData document = dataService.getDocumentByID(documentId);
         if(document==null){
@@ -276,7 +298,7 @@ public class DocumentDataController {
             fieldErrors.add(error);
             documentDTO.setFieldErrorDTO(fieldErrors);
             logger.info("Unable to FindDetails. DocumentData with id " + documentId + " not found");
-            return new ResponseEntity<DocumentDTO>(documentDTO,HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(documentDTO,HttpStatus.NOT_FOUND);
         }
         else {
             String filename=document.getDocumentName();
@@ -292,29 +314,42 @@ public class DocumentDataController {
             outputStream.close();
             logger.info("File Downloaded successfully");
         }
-        return new ResponseEntity<DocumentDTO>(HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
-    /**
-     * Document Update method
-     * @return Updated DocumentDTO.
+    /*
+      Document Update method
+      @return Updated DocumentDTO.
+      @throws ParseException
      */
     @RequestMapping(value = "/updateDocument", method = RequestMethod.POST,
             headers = "Accept=application/json")
     public ResponseEntity<DocumentDTO> updateDocument(@RequestBody DocumentDTO documentDTO,
                                                       @ModelAttribute DocumentData document,
-                                                      @ModelAttribute DocumentLink documentLink) {
+                                                      @ModelAttribute DocumentLink documentLink) throws ParseException {
         DocumentDTO documentUpdateErrorDTO=new DocumentDTO();
         DocumentDTO documentLinkUpdateErrorDTO=new DocumentDTO();
+        String importDate=dateFormat.format(documentDTO.getImportDate());
+        if(documentDTO.getValidFrom()!=null){
+            String validFrom=dateFormat.format(documentDTO.getValidFrom());
+            Date validFromDate=new SimpleDateFormat("yyyy/MM/dd").parse(validFrom);
+            documentDTO.setValidFrom(validFromDate);
+        }
+        if(documentDTO.getValidTo()!=null){
+            String vaidTo=dateFormat.format(documentDTO.getValidTo());
+            Date vaidToDate=new SimpleDateFormat("yyyy/MM/dd").parse(vaidTo);
+            documentDTO.setValidTo(vaidToDate);
+        }
+        Date importDateData=new SimpleDateFormat("yyyy/MM/dd").parse(importDate);
+
         List<FieldErrorDTO> fieldErrors=documentValidator.validateUpdateDocument(documentDTO);
         if (fieldErrors.size()>0) {
             documentUpdateErrorDTO.setFieldErrorDTO(fieldErrors);
             logger.info("Validation Error in UpdateDocument"+documentUpdateErrorDTO);
-            return new ResponseEntity<DocumentDTO>(documentUpdateErrorDTO,HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(documentUpdateErrorDTO,HttpStatus.BAD_REQUEST);
         }
         document = dataService.getDocumentByID(documentDTO.getDocumentId());
         if (document.getAddressScope() == AddressScope.None) {
-            document.setCreationDate(documentDTO.getCreationDate());
-            document.setImportDate(documentDTO.getImportDate());
+            document.setImportDate(importDateData);
             document.setDocumentDescription(documentDTO.getDocumentDescription());
             document.setDocumentName(documentDTO.getDocumentName());
             document.setDocumentStatus(documentDTO.getDocumentStatus());
@@ -333,7 +368,7 @@ public class DocumentDataController {
             if (fieldErrors.size()>0) {
                 documentLinkUpdateErrorDTO.setFieldErrorDTO(fieldErrorsDTO);
                 logger.info("Validation Error in UpdateDocumentLink "+documentLinkUpdateErrorDTO);
-                return new ResponseEntity<DocumentDTO>(documentLinkUpdateErrorDTO,HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(documentLinkUpdateErrorDTO,HttpStatus.BAD_REQUEST);
             }
             documentLink = documentMapper.convertToDocumentLinkEntity(documentlinkdto);
             documentLinkById.setGroupDetails(documentLink.getGroupDetails());
@@ -354,7 +389,7 @@ public class DocumentDataController {
             logger.info("DocumentData Updated successfully");
         }
         logger.info("DocumentUpdated successfully");
-        return new ResponseEntity<DocumentDTO>(documentDTO, HttpStatus.CREATED);
+        return new ResponseEntity<>(documentDTO, HttpStatus.CREATED);
     }
 
     /**
@@ -366,8 +401,8 @@ public class DocumentDataController {
         logger.debug("Received request to delete record");
         List<FieldErrorDTO> fieldErrors = new ArrayList<>();
         DocumentDTO documentDTO = new DocumentDTO();
-        if (documentId == '\0') {
-            return new ResponseEntity<DocumentDTO>(HttpStatus.BAD_REQUEST);
+       if (documentId == '\0') {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         DocumentData document = dataService.getDocumentByID(documentId);
         if (document != null) {
@@ -378,13 +413,12 @@ public class DocumentDataController {
             FieldErrorDTO error = new FieldErrorDTO("documentId",
                     "Unable to delete. DocumentData with id " + documentId + " not found");
             fieldErrors.add(error);
-
             documentDTO.setFieldErrorDTO(fieldErrors);
             logger.info("Unable to delete. DocumentData with id " + documentId + " not found");
-            return new ResponseEntity<DocumentDTO>(documentDTO,HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(documentDTO,HttpStatus.NOT_FOUND);
         }
         logger.info("Document Deleted successfully");
-        return new ResponseEntity<DocumentDTO>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
 
