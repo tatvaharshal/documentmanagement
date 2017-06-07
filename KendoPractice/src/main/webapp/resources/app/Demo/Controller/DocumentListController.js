@@ -27,6 +27,13 @@ var DocumentList;
             _this.$filter = $filter;
             _this.fileUploadService = fileUploadService;
             _this.isUploaded = false;
+            //uloadPDF Validation
+            _this.validateFiles = function (file) {
+                debugger;
+                if (file.size > 5242880) {
+                    alert("File Size Should Not bE greter then 5 MB");
+                }
+            };
             $scope.vm = _this;
             _this.DocumentListService.GetDocumentList(_this.$scope).then(function (data) {
                 $scope.mainGridOptions = {
@@ -69,8 +76,25 @@ var DocumentList;
                                 if (dataitem.creationDate == null) {
                                     return "";
                                 }
+                                /* var d = new Date(dataitem.creationDate);
+                                 var formattedDate = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear();
+                                 return formattedDate;*/
                                 var d = new Date(dataitem.creationDate);
-                                var formattedDate = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear();
+                                if (d.getMonth() < 9) {
+                                    var curMonth = d.getMonth() + 1;
+                                    var month = "0" + curMonth;
+                                }
+                                else {
+                                    var month = d.getMonth() + 1;
+                                }
+                                if (d.getDate() < 9) {
+                                    var curDay = d.getDate();
+                                    var day = "0" + curDay;
+                                }
+                                else {
+                                    var day = d.getDate();
+                                }
+                                var formattedDate = d.getFullYear() + "-" + month + "-" + day;
                                 return formattedDate;
                             }
                         }, {
@@ -90,8 +114,25 @@ var DocumentList;
                                 if (dataitem.importDate == null) {
                                     return "";
                                 }
+                                /* var d = new Date(dataitem.importDate);
+                                 var formattedDate = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear();
+                                 return formattedDate;*/
                                 var d = new Date(dataitem.importDate);
-                                var formattedDate = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear();
+                                if (d.getMonth() < 9) {
+                                    var curMonth = d.getMonth() + 1;
+                                    var month = "0" + curMonth;
+                                }
+                                else {
+                                    var month = d.getMonth() + 1;
+                                }
+                                if (d.getDate() < 9) {
+                                    var curDay = d.getDate();
+                                    var day = "0" + curDay;
+                                }
+                                else {
+                                    var day = d.getDate();
+                                }
+                                var formattedDate = d.getFullYear() + "-" + month + "-" + day;
                                 return formattedDate;
                             }
                         }, {
@@ -138,8 +179,25 @@ var DocumentList;
                                 if (dataitem.validFrom == null) {
                                     return "";
                                 }
+                                /*  var d = new Date(dataitem.validFrom);
+                                  var formattedDate = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear();
+                                  return formattedDate;*/
                                 var d = new Date(dataitem.validFrom);
-                                var formattedDate = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear();
+                                if (d.getMonth() < 9) {
+                                    var curMonth = d.getMonth() + 1;
+                                    var month = "0" + curMonth;
+                                }
+                                else {
+                                    var month = d.getMonth() + 1;
+                                }
+                                if (d.getDate() < 9) {
+                                    var curDay = d.getDate();
+                                    var day = "0" + curDay;
+                                }
+                                else {
+                                    var day = d.getDate();
+                                }
+                                var formattedDate = d.getFullYear() + "-" + month + "-" + day;
                                 return formattedDate;
                             }
                         }, {
@@ -159,8 +217,27 @@ var DocumentList;
                                 if (dataitem.validTo == null) {
                                     return "";
                                 }
+                                /*  var d = new Date(dataitem.validTo);
+                                 var formattedDate = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear();
+                                 return formattedDate;*/
+                                //this.dataitem.validTo= this.convertDate(dataitem.validTo);
+                                //  convertDate(dataitem.validTo)
                                 var d = new Date(dataitem.validTo);
-                                var formattedDate = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear();
+                                if (d.getMonth() < 9) {
+                                    var curMonth = d.getMonth() + 1;
+                                    var month = "0" + curMonth;
+                                }
+                                else {
+                                    var month = d.getMonth() + 1;
+                                }
+                                if (d.getDate() < 9) {
+                                    var curDay = d.getDate();
+                                    var day = "0" + curDay;
+                                }
+                                else {
+                                    var day = d.getDate();
+                                }
+                                var formattedDate = d.getFullYear() + "-" + month + "-" + day;
                                 return formattedDate;
                             }
                         },
@@ -180,6 +257,10 @@ var DocumentList;
             debugger;
             this.DocumentListService.GetDocumentByID(id).then(function (data) {
                 debugger;
+                if (data.documentId == 0) {
+                    //   alert("No data found for this ID");
+                    _this.$window.location.href = "./DocumentList";
+                }
                 _this.doc = data;
                 _this.$scope.doc = data;
                 if (_this.doc.creationDate == null) {
@@ -200,8 +281,10 @@ var DocumentList;
                 else {
                     _this.$scope.validTo = _this.convertDate(_this.doc.validTo);
                 }
-                var temp = _this.$scope.doc.documentTag.split(",");
-                _this.$scope.documentTags = _this.$scope.doc.documentTag.split(",");
+                if (_this.$scope.doc.documentTag != null) {
+                    var temp = _this.$scope.doc.documentTag.split(",");
+                    _this.$scope.documentTags = _this.$scope.doc.documentTag.split(",");
+                }
                 if (_this.doc.addressScope == "None") {
                     _this.$scope.flag = false;
                 }
@@ -221,25 +304,34 @@ var DocumentList;
                     var fileData = JSON.parse(data);
                     _this.doc = _this.$scope.doc;
                     _this.docLink = _this.$scope.docLink;
+                    _this.$scope.creationDate = _this.convertDate(_this.$scope.doc.creationDate);
                     _this.doc.documentId = fileData.documentId;
                     _this.doc.filePath = fileData.filePath;
                     _this.doc.fileSize = fileData.fileSize;
                     if (_this.$scope.doc.addressScope == "UserId") {
-                        _this.docLink.userId = _this.$scope.docLink.userId;
-                        var objToString = JSON.stringify(_this.docLink);
-                        _this.doc.documentLinkDTO = JSON.parse(objToString);
+                        if (_this.$scope.docLink != undefined) {
+                            _this.docLink.userId = _this.$scope.docLink.userId;
+                            var objToString = JSON.stringify(_this.docLink);
+                            _this.doc.documentLinkDTO = JSON.parse(objToString);
+                        }
                     }
                     if (_this.$scope.doc.addressScope == "Group") {
-                        _this.docLink.groupDetail = _this.$scope.docLink.groupDetails.join(",");
-                        var something = _this.docLink.groupDetail;
-                        var formated = "{" + '"groupDetails"' + ":" + '"' + something + '"' + "}";
-                        _this.doc.documentLinkDTO = JSON.parse(formated);
+                        //alert(this.$scope.docLink);
+                        //alert(this.$scope.docLink.groupDetails);
+                        if (_this.$scope.docLink != undefined) {
+                            _this.docLink.groupDetail = _this.$scope.docLink.groupDetails.join(",");
+                            var something = _this.docLink.groupDetail;
+                            var formated = "{" + '"groupDetails"' + ":" + '"' + something + '"' + "}";
+                            _this.doc.documentLinkDTO = JSON.parse(formated);
+                        }
                     }
                     if (_this.$scope.doc.addressScope == "Role") {
-                        _this.docLink.roleDetail = _this.$scope.docLink.roleDetails.join(",");
-                        var something = _this.docLink.roleDetail;
-                        var formated = "{" + '"roleDetails"' + ":" + '"' + something + '"' + "}";
-                        _this.doc.documentLinkDTO = JSON.parse(formated);
+                        if (_this.$scope.docLink != undefined) {
+                            _this.docLink.roleDetail = _this.$scope.docLink.roleDetails.join(",");
+                            var something = _this.docLink.roleDetail;
+                            var formated = "{" + '"roleDetails"' + ":" + '"' + something + '"' + "}";
+                            _this.doc.documentLinkDTO = JSON.parse(formated);
+                        }
                     }
                     if (_this.$scope.list != undefined) {
                         _this.doc.documentTag = _this.$scope.list.documentTags.join(",");
@@ -287,6 +379,7 @@ var DocumentList;
             var creationDate = new Date(this.$scope.creationDate);
             var validFrom = new Date(this.$scope.validFrom);
             var validTo = new Date(this.$scope.validTo);
+            //name and descriptiom
             this.doc.creationDate = creationDate;
             this.doc.validFrom = validFrom;
             this.doc.validTo = validTo;
@@ -310,27 +403,38 @@ var DocumentList;
             if (this.documentTags != undefined) {
                 this.doc.documentTag = this.$scope.documentTags.join(",");
             }
-            this.DocumentListService.UpdateDocument(this.$scope, this.doc).then(function (data) {
+            this.DocumentListService.UpdateDocument(this.$scope, this.doc).then(function (response) {
+                // debugger;
+                // if(data != undefined){
+                //     alert("Changes updated succesesfully");
+                //     this.$window.location.href="./DocumentList";
+                // } else{alert("Something went wrong");
                 debugger;
-                if (data != undefined) {
-                    alert("Changes updated succesesfully");
+                if (response.status != undefined) {
+                    alert("Error Code : " + response.error);
+                    return false;
+                }
+                if (response.fieldErrorDTO != null) {
+                    debugger;
+                    for (var i = 0; i < response.fieldErrorDTO.length; i++) {
+                        var field = response.fieldErrorDTO[i].field.toString();
+                        var message = response.fieldErrorDTO[i].message.toString();
+                        var id = "#" + field;
+                        alert(id);
+                        $(id).html(message);
+                    }
+                }
+                if (response.documentId != 0) {
+                    alert("Data Submitted Succsesfully!");
                     _this.$window.location.href = "./DocumentList";
                 }
                 else {
-                    alert("Something went wrong");
+                    alert("Somwthing Went Wrong");
                 }
             })["catch"](function (err) {
-                debugger;
                 alert("erro ocured : " + err);
             });
         };
-        //uloadPDF Validation
-        // public validateFiles = function (file) {
-        //     debugger;
-        //     if(file.size>5242880) {
-        //         alert("File Size Should Not bE greter then 5 MB")
-        //     }
-        // }
         //onDelete
         DocumentListController.prototype.onDelete = function (id, name) {
             var _this = this;
@@ -345,9 +449,28 @@ var DocumentList;
         };
         DocumentListController.prototype.onConfirm = function (item) { };
         //convert date
+        /*   public convertDate(timestamp: any) {
+               var d = new Date(timestamp);
+               var formattedDate =  d.getFullYear()+ "-" + (d.getMonth() + 1) + "-" + d.getDate();
+               return formattedDate;
+           }*/
         DocumentListController.prototype.convertDate = function (timestamp) {
             var d = new Date(timestamp);
-            var formattedDate = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+            if (d.getMonth() < 9) {
+                var curMonth = d.getMonth() + 1;
+                var month = "0" + curMonth;
+            }
+            else {
+                var month = d.getMonth() + 1;
+            }
+            if (d.getDate() < 9) {
+                var curDay = d.getDate();
+                var day = "0" + curDay;
+            }
+            else {
+                var day = d.getDate();
+            }
+            var formattedDate = d.getFullYear() + "-" + month + "-" + day;
             return formattedDate;
         };
         //handle Click Event on grid raw
