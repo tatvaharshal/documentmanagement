@@ -4,13 +4,13 @@ module DocumentList {
     export class DocumentLinkDTO {
         public documentLinkId:Number;
 
-        public userId:string;
+        public userId:any;
 
-        public groupDetails: string[];
-        public groupDetail: string;
+      //  public groupDetails: string[];
+        public groupDetails: any;
 
-        public roleDetails: string[];
-        public roleDetail: string;
+       // public roleDetails: string[];
+        public roleDetails: any;
         constructor() { }
     }
 }

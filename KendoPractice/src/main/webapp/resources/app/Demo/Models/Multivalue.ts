@@ -4,7 +4,7 @@
 module DocumentList {
     'use strict';
     export class Multivalue {
-        public documentTags: string[];
+        public documentTag: string[];
         public userId:string;
         public groupDetails: string[];
         public groupDetail: string;

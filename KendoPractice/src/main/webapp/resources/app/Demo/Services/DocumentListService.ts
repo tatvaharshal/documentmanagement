@@ -8,6 +8,7 @@ module DocumentList {
         constructor(http: ng.IHttpService, $q: ng.IQService) {
             this._http = http;
             this.$q = $q;
+
         }
 
         //Getting The list
@@ -29,6 +30,7 @@ module DocumentList {
         //Saving The document
         public SaveDocument($scope: IDocumentListScope, documentMaster : MasterDocumentDTO): ng.IHttpPromise<MasterDocumentDTO> {
             debugger;
+
             return this._http.post("./DocumentAdd/", documentMaster)
                 .then(this.success)
                 .catch(this.fail);
