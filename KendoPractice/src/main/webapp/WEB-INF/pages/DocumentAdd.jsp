@@ -2,15 +2,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-<style>
 
-</style>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>Document Add</title>
     <%--Load css--%>
-    <link href="${pageContext.request.contextPath}/resources/content/Document/css//jquery-ui.css" rel="stylesheet" />
+
     <link href="${pageContext.request.contextPath}/resources/content/Document/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="${pageContext.request.contextPath}/resources/content/Document/css/bootstrap-select.css" rel="stylesheet"/>
     <link href="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker3.css" rel="stylesheet"/>
@@ -20,6 +18,12 @@
     <link href="${pageContext.request.contextPath}/resources/content/Document/css/custom.css" rel="stylesheet"/>
     <link href="${pageContext.request.contextPath}/resources/content/Document/css/font-awesome.css" rel="stylesheet"/>
     <%--Load Js--%>
+    <link href="http://cdn.kendostatic.com/2013.3.1119/styles/kendo.common.min.css" rel="stylesheet" type="text/css" />
+    <link href="http://cdn.kendostatic.com/2013.3.1119/styles/kendo.default.min.css" rel="stylesheet" type="text/css" />
+
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="http://cdn.kendostatic.com/2013.3.1119/js/kendo.all.min.js"></script>
+
 
     <script src="${pageContext.request.contextPath}/resources/app/Demo/Document/jquery-1.10.2.js"></script>
     <script src="${pageContext.request.contextPath}/resources/app/angular.js"></script>
@@ -33,8 +37,6 @@
     <script src="${pageContext.request.contextPath}/resources/app/Chart.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/app/angular-chart.js"></script>
     <script src="${pageContext.request.contextPath}/resources/scripts/angular-route.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/scripts/jquery.min.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/scripts/jquery-ui.js"></script>
 
     <script src="${pageContext.request.contextPath}/resources/app/Demo/Document/ng-file-upload.js"></script>
     <script src="${pageContext.request.contextPath}/resources/app/Demo/Document/ng-file-upload-shim.js"></script>
@@ -47,16 +49,28 @@
     <script src="${pageContext.request.contextPath}/resources/app/Demo/Services/FileUploadService.js"></script>
     <script src="${pageContext.request.contextPath}/resources/app/Demo/Controller/BaseDocumentListController.js"></script>
     <script src="${pageContext.request.contextPath}/resources/app/Demo/Controller/DocumentListController.js"></script>
+    <%-- <script src="${pageContext.request.contextPath}/resources/scripts/validation.js"></script>--%>
 
-
+    <%-- <script src="${pageContext.request.contextPath}/resources/scripts/validate.js"></script>--%>
+    <%-- <script src="${pageContext.request.contextPath}/resources/scripts/jquery.min.js"></script>
+     <script src="${pageContext.request.contextPath}/resources/scripts/jquery-ui.js"></script>
+     <script src="${pageContext.request.contextPath}/resources/scripts/validation.js"></script>--%>
 </head>
-<body>
-<div id="wrapper" ng-app="DocumentList">
+<body  ng-app="DocumentList">
+<%--<%
+    String documentId = request.getParameter("documentId");
+    int flag = 1;
+    if(documentId!=null && documentId!=""){
+        flag = 0;
+    }
+%>--%>
+<div id="wrapper">
     <header id="header1"></header>
     <section id="content">
         <div class="page-content">
-            <div class="page-padding" ng-controller="DocumentListController as ctlr">
-                <form ng-submit="Documentform.$valid && ctlr.saveDocument()" name="Documentform">
+            <div class="page-padding" ng-controller="DocumentListController as ctlr" ng-init="ctlr.Init()">
+                <%-- <form ng-submit="Documentform.$valid && ctlr.saveDocument()" name="Documentform">--%>
+                <form ng-submit="ctlr.validateFile(this.file) && Documentform.$valid && ctlr.saveDocument()" name="Documentform" id="submit">
                     <div class="row">
                         <div class="col-md-12">
                             <%--back discard and import portion--%>
@@ -77,33 +91,29 @@
                                                                     src="${pageContext.request.contextPath}/resources/content/Document/Images/delete-icon.png"
                                                                     class="doc-import-button"/></span>
                                                         </span>
-                                                    <button class="form-control" type="reset" style="height:100%;width:100%;background-color:#F0F0F0;padding-left:25px;" value="Reset">Discard</button>
+                                                    <button class="form-control" type="reset" style="height:100%;width:100%;background-color:#F0F0F0;padding-left:120px;" value="Reset">Discard</button>
                                                 </div>
                                             </div>
 
-                                <div class="col-md-6">
-                                    <div class="input-group form-group" style="height:48px;"
-                                         ng-class="{'disable-btn': !(ctlr.Isvalid)}">
+                                            <div class="col-md-6">
+                                                <div class="input-group form-group" style="height:48px;"
+                                                     ng-class="{'disable-btn': !(ctlr.Isvalid)}">
                                                         <span class="input-group-btn">
                                                             <span style="height:48px;background-color:#E6E6E6;"><img src="${pageContext.request.contextPath}/resources/content/Document/Images/Tick.png" class="doc-import-button"/></span>
                                                         </span>
-                                        <span>{{ctlr.Isvalid}}</span>
-                                        <button class="form-control"
-                                                style="height:100%;width:100%;background-color:#F0F0F0;padding-left:25px;"
-                                                type="submit" ng-disabled="Documentform.$invalid">Import
-                                        </button>
+                                                    <span>{{ctlr.Isvalid}}</span>
+                                                    <button class="form-control"
+                                                            style="height:100%;width:100%;background-color:#F0F0F0;padding-left:120px;"
+                                                            type="submit" ng-disabled="Documentform.$invalid">Import
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+
                             </div>
-                        </div>
-                    </div>
 
-
-
-
-
-            </div>
-                                <span style="color: #2d672d">alert</span>
                             <%--headerline--%>
                             <div class="col-md-2 col-md-offset-10 doc-tab">
                                 <h6 class="doc-header" style="font-size:1.1rem">Document data</h6>
@@ -114,81 +124,55 @@
                                 <div class="form-group" style="width: 250px;">
                                     <label for="file">File*</label><br/>
                                     <span style="color: red;" id="fileSize"></span>
-                                    <span style="color: red;" id="filePath"></span>
-                                    <input class="form-control" type="file" name="file" id="file" file-upload="file" ng-model="file"
-                                           ngf-select="ctlr.validateFiles(file)"
-                                           accept="application/pdf"   required="required" data-ng-hide="EditMode" onchange="angular.element(this).scope().uploadFile(this.file)">
-                                    </input>
-                                    <div class="has-error" data-ng-show="Documentform.$dirty">
-                                        <span style="color: red;" data-ng-show="Documentform.file.$error.required">This is a required field</span>
+                                    <div>
+                                        <input class="form-control" type="file" name="file" id="file" file-upload="file" ng-model="file"
+                                               ngf-select="ctlr.validateFile(file)" ng-required="isImageRequired"  ng-accept="application/pdf/*">
+                                        </input>
+                                        <div class="has-error" data-ng-show="Documentform.$dirty" >
+                                            <span style="color: red;" data-ng-show="Documentform.file.$error.required">This is a required field</span>
+                                        </div>
+                                        <div class="errorFile" style="color: red;" >   </div>
                                     </div>
+
                                 </div>
 
                                 <hr style="color: #CFCFCF;border: 1px solid;"/>
-                               <%-- <div class="form-group">
-                                    <label for="ddlAddressScope">Address Scope</label>
-                                    <span style="color: red;" id="addressScope"></span>
-                                    <div class="form-group">
-                                        <select class="custom-style" id="ddlAddressScope" ng-model="doc.addressScope">
-                                            <option selected="selected" value="None">None</option>
-                                            <option value="UserId">UserId</option>
-                                            <option value="Group">Group</option>
-                                            <option value="Role">Role</option>
-                                        </select>
-                                    </div>
-                                </div>
 
---%>
-
-                                <div class="form-group">
+                                <div class="form-group" id="divAddressScope">
                                     <label for="ddlAddressScope">Address Scope<span>*</span></label>
                                     <span style="color: red;" id="addressScope"></span>
                                     <div class="form-group">
                                         <select class="custom-style" id="ddlAddressScope" ng-model="doc.addressScope">
-                                            <option selected="selected" value="">None</option>
-                                            <option value="UserId">UserId</option>
-                                            <option value="Group">Group</option>
-                                            <option value="Role">Role</option>
-
+                                           <option value="" selected="selected">None</option>
+                                            <option value="{{item.value}}" ng-repeat="item in scopeOption">{{item.text}}</option>
                                         </select>
+                                        <div class="errorAddressScope"></div>
                                     </div>
                                 </div>
 
-
-
-
                                 <div class="row">
-                                    <div class="col-md-3 col-lg-3" id="divUserid" style="display: none" required>
+                                    <div class="col-md-3 col-lg-3" id="divUserid" style="display: none" >
                                         <label for="txtUserId">UserID<span>*</span></label>
                                         <div class="form-group">
-                                            <input type="text" id="txtUserId" class="custom-style" placeholder="Please Enter.." ng-model="docLink.userId" />
+                                            <input type="text" id="txtUserId" name="userId" class="custom-style" placeholder="Please Enter.." ng-model="docLink.userId" />
                                         </div>
+
                                     </div>
 
-                                    <div class="col-md-3 col-lg-3" id="divGroup" style="display: none"required>
+                                    <div class="col-md-3 col-lg-3" id="divGroup" style="display: none">
                                         <label for="groupDetails">Groups<span>*</span></label>
                                         <div class="form-group">
-                                            <select kendo-multi-select id="groupDetails" k-ng-model="docLink.groupDetails" data-placeholder="Please select ..."  multiple="multiple" >
-                                                <option value="GermanyCards">GermanyCards</option>
-                                                <option value="ItalyMULTIVERSAIFP">ItalyMULTIVERSAIFP</option>
-                                                <option value="FranceCards">FranceCards</option>
-                                                <option value="GrermanyMULTIVERSAIFP">GrermanyMULTIVERSAIFP</option>
-                                                <option value="AustriaMULTIVERSAIFP">AustriaMULTIVERSAIFP</option>
+                                            <select kendo-multi-select id="groupDetails" name="groupDetails" k-ng-model="docLink.groupDetails" data-placeholder="Please select ..." multiple="multiple">
+                                                <option value="{{item.value}}" ng-repeat="item in groupOption">{{item.text}}</option>
                                             </select>
                                         </div>
                                     </div>
 
-                                    <div class="col-md-3 col-lg-3" id="divRole" style="display: none" required>
+                                    <div class="col-md-3 col-lg-3" id="divRole" style="display: none" >
                                         <label for="roleDetails">Role<span>*</span></label>
                                         <div class="form-group">
-                                            <select kendo-multi-select id="roleDetails" k-ng-model="docLink.roleDetails" data-placeholder="Please select ..." multiple="multiple" >
-                                                <option value="ALLUsers">ALLUsers</option>
-                                                <option value="Attentionwidget">Attentionwidget</option>
-                                                <option value="Balancewidget">Balancewidget</option>
-                                                <option value="Favouritewidget">Favouritewidget</option>
-                                                <option value="Liquiditywidget">Liquiditywidget</option>
-                                                <option value="Paymentcreation">Paymentcreation</option>
-                                                <option value="Paymentwidget">Paymentwidget</option>
+                                            <select kendo-multi-select id="roleDetails" name="roleDetails" k-ng-model="docLink.roleDetails" data-placeholder="Please select ..." multiple="multiple">
+                                                <option value="{{item.value}}" ng-repeat="item in roleOption">{{item.text}}</option>
                                             </select>
                                         </div>
                                     </div>
@@ -199,58 +183,56 @@
                                         <div class="form-group">
                                             <select class="custom-style" id="ddldocumenttype" name="documentType" ng-model="doc.documentType" required>
                                                 <option selected="selected" value="">None</option>
-                                                <option value="Contract">Contract</option>
-                                                <option value="Account_Statement">Account_Statement</option>
-                                                <option value="Information">Information</option>
-                                                <option value="Offer">Offer</option>
+                                                <option value="{{item.value}}" ng-repeat="item in docTypeOption">{{item.text}}</option>
                                             </select>
                                             <div class="has-error" data-ng-show="Documentform.$dirty">
                                                 <span style="color: red;" data-ng-show="Documentform.documentType.$error.required">This is a required field</span>
                                             </div>
+                                            <div class="errorDocType" style="color: red;"></div>
                                         </div>
 
                                     </div>
-
-
 
                                     <div class="col-md-3 col-lg-3">
                                         <label for="documentStatus">Document Status<span>*</span></label>
                                         <span style="color: red;" id="documentStatus"></span>
                                         <div class="form-group">
                                             <select class="custom-style" id="ddldocumentStatus" ng-model="doc.documentStatus">
-                                             <%--   <option value="">--Select--</option>
-                                                <option value="ForYourInformation" selected>ForYourInformation</option>--%>
-
-                                                 <option selected="selected" value="">None</option>
-                                                 <option value="ForYourInformation">ForYourInformation</option>
-
-
+                                                <%--   <option value="">--Select--</option>
+                                                   <option value="ForYourInformation" selected>ForYourInformation</option>--%>
+                                                <option selected="selected" value="">None</option>
+                                                <option value="ForYourInformation">ForYourInformation</option>
                                             </select>
+                                            <div class="errorDocStatus" style="color: red;"></div>
                                         </div>
                                     </div>
-                              <%--
-                                    <div class="col-md-3 col-lg-3">
-                                        <label for="documentStatus">Document Status</label>
-                                        <span style="color: red;" id="documentStatus"></span>
-                                        <div class="form-group">
-                                            <select class="custom-style" id="ddldocumentStatus" ng-model="doc.documentStatus">
-                                                <option selected value="ForYourInformation">ForYourInformation</option>
-                                            </select>
-                                        </div>
-                                    </div>--%>
+                                    <%--
+                                          <div class="col-md-3 col-lg-3">
+                                              <label for="documentStatus">Document Status</label>
+                                              <span style="color: red;" id="documentStatus"></span>
+                                              <div class="form-group">
+                                                  <select class="custom-style" id="ddldocumentStatus" ng-model="doc.documentStatus">
+                                                      <option selected value="ForYourInformation">ForYourInformation</option>
+                                                  </select>
+                                              </div>
+                                          </div>--%>
                                     <div class="col-md-3 col-lg-3">
                                         <label for="txtcreationDate">Creation date</label>
                                         <span style="color: red;" id="creationDate"></span>
                                         <div class="form-group">
-                                            <input type="text" id="txtcreationDate" class="custom-style" placeholder="Creation date" readonly ng-model="doc.creationDate"/>
+                                            <input type="text" id="txtcreationDate" class="custom-style"  placeholder="Creation date" readonly ng-model="doc.creationDate"/>
+                                            <div class="errorCreationDate"></div>
                                         </div>
                                     </div>
+
                                     <div class="col-md-3 col-lg-3">
                                         <label for="txtvalidFromDate">Valid from</label>
                                         <span style="color: red;" id="validFrom"></span>
                                         <div class="form-group">
                                             <input type="text" id="txtvalidFromDate" class="custom-style" placeholder="Valid from" readonly ng-model="doc.validFrom"/>
+                                            <div class="errorValidFrom"></div>
                                         </div>
+
                                     </div>
 
                                     <div class="col-md-3 col-lg-3">
@@ -262,6 +244,7 @@
                                         </div>
 
                                     </div>
+
                                 </div>
 
                                 <hr style="color: #CFCFCF;border: 1px solid;"/>
@@ -269,139 +252,48 @@
                                     <label for="txtName">Document Name</label>
                                     <span style="color: red;" id="documentName"></span>
                                     <div class="form-group">
-                                        <input  type="text" class="custom-style"  name="docName" ng-model="doc.documentName" data-ng-pattern="/^[a-zA-Z0-9-.\s]*$/" id="txtName" placeholder="Document Name" data-ng-minlength="0" data-ng-maxlength="255" maxlength="255">
+                                        <input  type="text" class="custom-style"  name="docName" ng-model="doc.documentName" data-ng-pattern="/^[a-zA-Z0-9-.\s]*$/" id="txtName" placeholder="Document Name" data-ng-minlength="0" data-ng-maxlength="255">
+
+                                        <div class="has-error" data-ng-show="Documentform.$dirty">
+                                            <span style="color: red;" data-ng-show="Documentform.docName.$error.maxlength">Maximun length required is 255</span>
+                                        </div>
+                                        <div class="errorDocName"></div>
                                     </div>
+
+
                                 </div>
 
                                 <div class="form-group">
                                     <label for="txtDescription">Description</label>
                                     <span style="color: red;" id="documentDescription"></span>
                                     <div class="form-group">
-                                        <input type="text" style="width: 100%;" name="docName" ng-model="doc.documentDescription"  data-ng-pattern="/^[a-zA-Z0-9-.\s]*$/" id="txtDescription" placeholder="Description" data-ng-minlength="0" data-ng-maxlength="1000" maxlength="1000"></input>
+                                        <input type="text" style="width: 100%;" name="docDesc" ng-model="doc.documentDescription"  data-ng-pattern="/^[a-zA-Z0-9-.\s]*$/" id="txtDescription" placeholder="Description" data-ng-minlength="0" data-ng-maxlength="1000"></input>
+
+                                        <div class="has-error"   data-ng-show="Documentform.$dirty">
+                                            <span  style="color: red;"  data-ng-show="Documentform.docDesc.$error.maxlength">Maximun length required is 1000</span>
+                                        </div>
+                                        <div class="errorDocDescription"></div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="documentTag">Document Tags</label>
                                     <span style="color: red;" id="documentTag"></span>
                                     <div class="form-group">
-                                        <select kendo-multi-select id="ddldocumentTag" k-ng-model="list.documentTags" data-placeholder="Please select ..." multiple="multiple">
-                                            <option value="ProjectA" >ProjectA</option>
-                                            <option value="ProjectB">ProjectB</option>
-                                            <option value="ProjectC">ProjectC</option>
+                                        <select kendo-multi-select id="ddldocumentTag" name="documentTag" k-ng-model="doc.documentTag" data-placeholder="Please select ..." multiple="multiple">
+                                            <option value="{{item.value}}" ng-repeat="item in docTagOption">{{item.text}}</option>
                                         </select>
+                                        <div class="errorDocTag"></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-            </form>
+                </form>
+            </div>
         </div>
+    </section>
 </div>
-</section>
-</div>
-<script>
-    $('#txtcreationDate').datepicker({
-        dateFormat: 'yy-mm-dd',
-        autoclose: true,
-        maxDate: 0,
-       /* onSelect: function(datetext){
-            var d = new Date(); // for now
-            var h = d.getHours();
-            h = (h < 10) ? ("0" + h) : h ;
-            var m = d.getMinutes();
-            m = (m < 10) ? ("0" + m) : m ;
-            var s = d.getSeconds();
-            s = (s < 10) ? ("0" + s) : s ;
-            datetext = datetext + " " + h + ":" + m + ":" + s;
-            $('#txtcreationDate').val(datetext);
-        }*/
-    });
-
-    $('#txtvalidFromDate').datepicker({
-        dateFormat: 'yy-mm-dd',
-        autoclose: true,
-        minDate: 0,
-        onClose: function( selectedDate ) {
-            $( "#txtvalidToDate" ).datepicker( "option", "minDate", selectedDate );
-        },
-       /* onSelect: function(datetext){
-            var d = new Date(); // for now
-            var h = d.getHours();
-            h = (h < 10) ? ("0" + h) : h ;
-            var m = d.getMinutes();
-            m = (m < 10) ? ("0" + m) : m ;
-            var s = d.getSeconds();
-            s = (s < 10) ? ("0" + s) : s ;
-            datetext = datetext + " " + h + ":" + m + ":" + s;
-            $('#txtvalidFromDate').val(datetext);
-        }*/
-    });
-
-    $('#txtvalidToDate').datepicker({
-        dateFormat: 'yy-mm-dd',
-        autoclose: true
-        /*onSelect: function(datetext){
-            var d = new Date(); // for now
-            var h = d.getHours();
-            h = (h < 10) ? ("0" + h) : h ;
-            var m = d.getMinutes();
-            m = (m < 10) ? ("0" + m) : m ;
-            var s = d.getSeconds();
-            s = (s < 10) ? ("0" + s) : s ;
-            datetext = datetext + " " + h + ":" + m + ":" + s;
-            $('#txtvalidToDate').val(datetext);
-        }*/
-    });
-/*
-    $("#txtvalidFromDate").on('click', function(){
-        if($('#txtcreationDate').val()=="") {
-            alert("Please Select creation date first");
-            $('#txtcreationDate').focus();
-        }
-    });*/
-
-    $("#txtvalidToDate").on('click', function(){
-       /* if($('#txtcreationDate').val()=="" || $('#txtvalidFromDate').val() =="") {
-            if($('#txtcreationDate').val()=="") {
-                alert("Please Select creation date first");
-                $('#txtcreationDate').focus();
-                return false;
-            }*/
-            if($('#txtvalidFromDate').val()=="") {
-               /* alert("Please Select ValidFrom date first");*/
-                $(this).addClass("error");
-                $(".errorValidTo").text("Enter ValidFromDate First");
-                $('#txtvalidFromDate').focus();
-                return false;
-            }
-
-    });
-
-
-    $("#ddlAddressScope").change(function () {
-        $("select option:selected").each(function () {
-            if ($(this).attr("value") == "UserId") {
-                $("#divUserid").show();
-                $("#divGroup").hide();
-                $("#divRole").hide();
-            }
-            if ($(this).attr("value") == "Group") {
-                $("#divUserid").hide();
-                $("#divGroup").show();
-                $("#divRole").hide();
-            }
-            if ($(this).attr("value") == "Role") {
-                $("#divUserid").hide();
-                $("#divGroup").hide();
-                $("#divRole").show();
-            }
-            if ($(this).attr("value") == "None") {
-                $("#divUserid").hide();
-                $("#divGroup").hide();
-                $("#divRole").hide();
-            }
-        } );
-    }).change();
-</script>
+<script src="${pageContext.request.contextPath}/resources/scripts/validate.js"></script>
 </body>
 </html>
+
