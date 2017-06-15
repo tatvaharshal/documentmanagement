@@ -1,3 +1,39 @@
 .errorValidTo {
     color: red;
 }
+.errorGroup {
+    color: red;
+}
+.errorRole {
+    color: red;
+}
+.errorUserId {
+    color: red;
+}
+.errorValidFrom {
+    color: red;
+}
+.errorAddressScope {
+    color: red;
+}
+.errorDocName {
+    color: red;
+}
+.errorDocDescription {
+    color: red;
+}
+.errorFile {
+    color: red;
+}
+.errorCreationDate{
+    color: red;
+}
+.errorDocType{
+    color: red;
+}
+.errorDocStatus{
+    color: red;
+}
+.errorDocTag{
+    color: red;
+}
