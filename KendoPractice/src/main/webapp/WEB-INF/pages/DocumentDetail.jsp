@@ -6,9 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>Document Details</title>
-
     <%--Load css--%>
-
     <link href="${pageContext.request.contextPath}/resources/content/Document/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="${pageContext.request.contextPath}/resources/content/Document/css/bootstrap-select.css" rel="stylesheet"/>
     <link href="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker3.css" rel="stylesheet"/>
@@ -20,16 +18,12 @@
     <%--Load Js--%>
     <link href="http://cdn.kendostatic.com/2013.3.1119/styles/kendo.common.min.css" rel="stylesheet" type="text/css" />
     <link href="http://cdn.kendostatic.com/2013.3.1119/styles/kendo.default.min.css" rel="stylesheet" type="text/css" />
-
     <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
     <script src="http://cdn.kendostatic.com/2013.3.1119/js/kendo.all.min.js"></script>
-
-
     <script src="${pageContext.request.contextPath}/resources/app/Demo/Document/jquery-1.10.2.js"></script>
     <script src="${pageContext.request.contextPath}/resources/app/angular.js"></script>
     <script src="${pageContext.request.contextPath}/resources/app/Demo/Document/Kendo.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
-
     <script src="${pageContext.request.contextPath}/resources/app/ui-bootstrap-tpls-0.13.4.js"></script>
     <script src="${pageContext.request.contextPath}/resources/app/Chart.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/app/angular-chart.js"></script>
@@ -37,10 +31,8 @@
     <script src="${pageContext.request.contextPath}/resources/app/Chart.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/app/angular-chart.js"></script>
     <script src="${pageContext.request.contextPath}/resources/scripts/angular-route.js"></script>
-
     <script src="${pageContext.request.contextPath}/resources/app/Demo/Document/ng-file-upload.js"></script>
     <script src="${pageContext.request.contextPath}/resources/app/Demo/Document/ng-file-upload-shim.js"></script>
-
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <%--Load App JS Files--%>
@@ -49,13 +41,6 @@
     <script src="${pageContext.request.contextPath}/resources/app/Demo/Services/FileUploadService.js"></script>
     <script src="${pageContext.request.contextPath}/resources/app/Demo/Controller/BaseDocumentListController.js"></script>
     <script src="${pageContext.request.contextPath}/resources/app/Demo/Controller/DocumentListController.js"></script>
-   <%-- <script src="${pageContext.request.contextPath}/resources/scripts/validate.js"></script>--%>
-
-    <%-- <script src="${pageContext.request.contextPath}/resources/scripts/validate.js"></script>--%>
-    <%-- <script src="${pageContext.request.contextPath}/resources/scripts/jquery.min.js"></script>
-     <script src="${pageContext.request.contextPath}/resources/scripts/jquery-ui.js"></script>
-     <script src="${pageContext.request.contextPath}/resources/scripts/validation.js"></script>--%>
-
 </head>
 <body ng-app="DocumentList">
 <%
@@ -102,7 +87,6 @@
                                                         <span class="input-group-btn">
                                                             <span style="height:48px;background-color:#E6E6E6;"><img src="${pageContext.request.contextPath}/resources/content/Document/Images/Download.png" class="doc-import-button" /></span>
                                                         </span>
-                                                    <%--<input type="button" class="form-control" style="height:100%;width:100%;background-color:#F0F0F0;padding-left:25px;"><a style="text-decoration:none;color: black" ng-href="./download/{{doc.documentId}}">Download</a></input>--%>
                                                     <a class="form-control" style="text-decoration:none;color: black;padding-left:50px" ng-href="./download/{{doc.documentId}}">Download</a>
                                                 </div>
                                             </div>
@@ -117,18 +101,6 @@
                             </div>
 
                             <div class="doc-form-div">
-                           <%--     <div class="form-group">
-                                    <label for="ddlAddressScope">Address Scope<span>*</span></label>
-                                    <span style="color: red;" id="addressScope"></span>
-                                    <div class="form-group">
-                                        <select class="custom-style" id="ddlAddressScope" ng-model="doc.addressScope"  ng-disabled="flag">
-                                            <option value="" selected="selected">None</option>
-                                            <option value="{{item.value}}" ng-repeat="item in scopeOptionEdit">{{item.text}}</option>
-                                        </select>
-                                        <div class="errorAddressScope"></div>
-                                    </div>
-                                </div>--%>
-
                                 <div class="form-group" id="divAddressScope">
                                     <label for="ddlAddressScope">Address Scope<span>*</span></label>
                                     <span style="color: red;" id="addressScope"></span>
@@ -183,17 +155,6 @@
                                             <div class="errorDocType" style="color: red;"></div>
                                         </div>
                                     </div>
-
-                                  <%--  <div class="col-md-3 col-lg-3">
-                                        <label for="documentstauts">Document Status</label>
-                                        <span style="color: red;" id="documentStatus"></span>
-                                        <div class="form-group">
-                                            <select class="custom-style" id="documentstauts" ng-model="doc.stauts">
-                                                <option selected="selected" value="">ForYourInformation</option>
-                                            </select>
-                                        </div>
-                                    </div>--%>
-
                                     <div class="col-md-3 col-lg-3">
                                         <label for="documentStatus">Document Status<span>*</span></label>
                                         <span style="color: red;" id="documentStatus"></span>
@@ -207,8 +168,6 @@
                                             <div class="errorDocStatus" style="color: red;"></div>
                                         </div>
                                     </div>
-
-
                                     <div class="col-md-3 col-lg-3" >
                                         <label for="txtcreationDate">Creation date</label>
                                         <span style="color: red;" id="creationDate"></span>
@@ -217,21 +176,6 @@
                                             <div class="errorCreationDate"></div>
                                         </div>
                                     </div>
-
-
-                            <%--
-
-
-
-
-                                    <div class="col-md-3 col-lg-3">
-                                        <label for="txtcreationDate">Creation date</label>
-                                        <span style="color: red;" id="creationDate"></span>
-                                        <div class="form-group">
-                                            <input type="text" id="txtcreationDate" class="custom-style" placeholder="Creation date" ng-model="creationDate" ng-disabled="true" />
-                                        </div>
-                                    </div>--%>
-
                                     <div class="col-md-3 col-lg-3">
                                         <label for="txtvalidFromDate">Valid from</label>
                                         <span style="color: red;" id="validFrom"></span>
@@ -269,7 +213,6 @@
                                             <span style="color: red;" data-ng-show="Documentform.docName.$error.maxlength">Maximun length required is 255</span>
                                         </div>
                                         <div class="errorDocName"></div>
-                                        <%--ng-class="{'doc-red-btn': !(Documentform.docName.$valid)}"--%>
                                     </div>
                                 </div>
 
@@ -284,10 +227,6 @@
                                         <div class="errorDocDescription"></div>
                                     </div>
                                 </div>
-
-
-
-
                                 <div class="form-group">
                                     <label for="documentTag">Document tags</label>
                                     <span style="color: red;" id="documentTags"></span>
@@ -298,21 +237,14 @@
                                         <div class="errorDocTag"></div>
                                     </div>
                                 </div>
-
                             </div>
-
                         </div>
                     </div>
                 </form>
             </div>
-
         </div>
-
     </section>
-
-
 </div>
 <script src="${pageContext.request.contextPath}/resources/scripts/updateValidation.js"></script>
-<%--    <script src="${pageContext.request.contextPath}/resources/scripts/validate.js"></script>--%>
 </body>
 </html>

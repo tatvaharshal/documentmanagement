@@ -2,13 +2,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>Document Add</title>
     <%--Load css--%>
-
     <link href="${pageContext.request.contextPath}/resources/content/Document/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="${pageContext.request.contextPath}/resources/content/Document/css/bootstrap-select.css" rel="stylesheet"/>
     <link href="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker3.css" rel="stylesheet"/>
@@ -20,16 +18,12 @@
     <%--Load Js--%>
     <link href="http://cdn.kendostatic.com/2013.3.1119/styles/kendo.common.min.css" rel="stylesheet" type="text/css" />
     <link href="http://cdn.kendostatic.com/2013.3.1119/styles/kendo.default.min.css" rel="stylesheet" type="text/css" />
-
     <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
     <script src="http://cdn.kendostatic.com/2013.3.1119/js/kendo.all.min.js"></script>
-
-
     <script src="${pageContext.request.contextPath}/resources/app/Demo/Document/jquery-1.10.2.js"></script>
     <script src="${pageContext.request.contextPath}/resources/app/angular.js"></script>
     <script src="${pageContext.request.contextPath}/resources/app/Demo/Document/Kendo.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
-
     <script src="${pageContext.request.contextPath}/resources/app/ui-bootstrap-tpls-0.13.4.js"></script>
     <script src="${pageContext.request.contextPath}/resources/app/Chart.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/app/angular-chart.js"></script>
@@ -37,10 +31,8 @@
     <script src="${pageContext.request.contextPath}/resources/app/Chart.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/app/angular-chart.js"></script>
     <script src="${pageContext.request.contextPath}/resources/scripts/angular-route.js"></script>
-
     <script src="${pageContext.request.contextPath}/resources/app/Demo/Document/ng-file-upload.js"></script>
     <script src="${pageContext.request.contextPath}/resources/app/Demo/Document/ng-file-upload-shim.js"></script>
-
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <%--Load App JS Files--%>
@@ -49,27 +41,15 @@
     <script src="${pageContext.request.contextPath}/resources/app/Demo/Services/FileUploadService.js"></script>
     <script src="${pageContext.request.contextPath}/resources/app/Demo/Controller/BaseDocumentListController.js"></script>
     <script src="${pageContext.request.contextPath}/resources/app/Demo/Controller/DocumentListController.js"></script>
-    <%-- <script src="${pageContext.request.contextPath}/resources/scripts/validation.js"></script>--%>
 
-    <%-- <script src="${pageContext.request.contextPath}/resources/scripts/validate.js"></script>--%>
-    <%-- <script src="${pageContext.request.contextPath}/resources/scripts/jquery.min.js"></script>
-     <script src="${pageContext.request.contextPath}/resources/scripts/jquery-ui.js"></script>
-     <script src="${pageContext.request.contextPath}/resources/scripts/validation.js"></script>--%>
 </head>
 <body  ng-app="DocumentList">
-<%--<%
-    String documentId = request.getParameter("documentId");
-    int flag = 1;
-    if(documentId!=null && documentId!=""){
-        flag = 0;
-    }
-%>--%>
+
 <div id="wrapper">
     <header id="header1"></header>
     <section id="content">
         <div class="page-content">
             <div class="page-padding" ng-controller="DocumentListController as ctlr" ng-init="ctlr.Init()">
-                <%-- <form ng-submit="Documentform.$valid && ctlr.saveDocument()" name="Documentform">--%>
                 <form ng-submit="ctlr.validateFile(this.file) && Documentform.$valid && ctlr.saveDocument()" name="Documentform" id="submit">
                     <div class="row">
                         <div class="col-md-12">
@@ -206,16 +186,6 @@
                                             <div class="errorDocStatus" style="color: red;"></div>
                                         </div>
                                     </div>
-                                    <%--
-                                          <div class="col-md-3 col-lg-3">
-                                              <label for="documentStatus">Document Status</label>
-                                              <span style="color: red;" id="documentStatus"></span>
-                                              <div class="form-group">
-                                                  <select class="custom-style" id="ddldocumentStatus" ng-model="doc.documentStatus">
-                                                      <option selected value="ForYourInformation">ForYourInformation</option>
-                                                  </select>
-                                              </div>
-                                          </div>--%>
                                     <div class="col-md-3 col-lg-3">
                                         <label for="txtcreationDate">Creation date</label>
                                         <span style="color: red;" id="creationDate"></span>
@@ -296,4 +266,3 @@
 <script src="${pageContext.request.contextPath}/resources/scripts/validate.js"></script>
 </body>
 </html>
-
