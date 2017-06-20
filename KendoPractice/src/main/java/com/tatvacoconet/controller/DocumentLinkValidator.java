@@ -19,6 +19,7 @@ public class DocumentLinkValidator{
     public List<FieldErrorDTO> validateDocumentLink(Object obj) {
         List<FieldErrorDTO> fieldErrors = new ArrayList<>();
         DocumentLinkDTO documentLinkDTO = (DocumentLinkDTO) obj;
+
         if(documentLinkDTO.getGroupDetails()==null &&
                 (documentLinkDTO.getRoleDetails()==null && documentLinkDTO.getUserId()==null)){
             fieldErrors.add(new FieldErrorDTO("groupDetails","groupDetails can not be blank"));

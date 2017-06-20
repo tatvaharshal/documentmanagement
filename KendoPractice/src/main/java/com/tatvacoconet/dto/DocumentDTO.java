@@ -144,7 +144,7 @@ public class DocumentDTO {
 
     public void setFieldErrorDTO(List<FieldErrorDTO> fieldErrorDTO) { this.fieldErrorDTO = fieldErrorDTO;}
 
-    public DocumentLinkDTO getDocumentLinkDTO() { return documentLinkDTO; }
+    public DocumentLinkDTO  getDocumentLinkDTO() { return documentLinkDTO; }
 
     public void setDocumentLinkDTO(DocumentLinkDTO documentLinkDTO) { this.documentLinkDTO = documentLinkDTO; }
 

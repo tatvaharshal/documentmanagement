@@ -1,3 +1,4 @@
+/*
 package com.tatvacoconet.dto;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,3 +17,4 @@ public class ValidationErrorDTO {
         this.fieldErrors = fieldErrors;
     }
 }
+*/
