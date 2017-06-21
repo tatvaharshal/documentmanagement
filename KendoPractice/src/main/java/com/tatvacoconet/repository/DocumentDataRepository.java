@@ -11,8 +11,8 @@ import com.tatvacoconet.entity.DocumentData;
 
 @Repository
 public interface DocumentDataRepository extends JpaRepository<DocumentData, Long>{
-    @Query( "select n from DocumentData n where n.documentId =:documentId")
+  /*  @Query( "select n from DocumentData n where n.documentId =:documentId")
     List<DocumentData> findByID(@Param("documentId")long documentId);
-
+*/
 
 }

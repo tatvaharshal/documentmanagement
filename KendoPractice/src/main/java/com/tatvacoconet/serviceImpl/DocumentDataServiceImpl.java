@@ -3,6 +3,7 @@ package com.tatvacoconet.serviceImpl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.tatvacoconet.entity.DocumentData;
@@ -21,7 +22,10 @@ public class DocumentDataServiceImpl implements DocumentDataService {
     }
     @Override
     public List<DocumentData> getAllDocs() {
-        return dataRepository.findAll();
+        return dataRepository.findAll(sortByIdAsc());
+    }
+    private Sort sortByIdAsc() {
+        return new Sort(Sort.Direction.DESC, "documentId");
     }
     @Override
     public void updateDocument(DocumentData document) {

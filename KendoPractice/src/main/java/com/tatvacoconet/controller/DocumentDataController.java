@@ -4,7 +4,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
@@ -103,7 +102,7 @@ public class DocumentDataController {
     public ResponseEntity<DocumentDTO> addDocument(@RequestBody DocumentDTO documentDTO,
                                                    @ModelAttribute DocumentData document,
                                                    @ModelAttribute DocumentLink documentLink)
-                                                   throws ParseException {
+            throws ParseException {
         logger.debug("Received request to add new record");
         DocumentLinkDTO docLinkDTO =new DocumentLinkDTO();
         DocumentDTO documentErrorDTO= new DocumentDTO();
@@ -200,7 +199,7 @@ public class DocumentDataController {
       @return DocumentDTO saved FileData
      */
     @RequestMapping(value = "/fileUpload", produces = "application/json",consumes = "multipart/*",
-                                                                      method = RequestMethod.POST)
+            method = RequestMethod.POST)
     public ResponseEntity<DocumentDTO> uploadDocument(FileUpload file) throws IOException {
         DocumentDTO documentDTO = new DocumentDTO();
         DocumentDTO fileErrorDTO = new DocumentDTO();
@@ -398,7 +397,7 @@ public class DocumentDataController {
         logger.debug("Received request to delete record");
         List<FieldErrorDTO> fieldErrors = new ArrayList<>();
         DocumentDTO documentDTO = new DocumentDTO();
-       if (documentId == '\0') {
+        if (documentId == '\0') {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         DocumentData document = dataService.getDocumentByID(documentId);

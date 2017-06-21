@@ -109,7 +109,8 @@ public class DocumentValidator{
                     fieldErrors.add(new FieldErrorDTO("addressScope","Select proper from option"));
             }
             if(!documentDTO.getAddressScope().name().equals(AddressScope.None.name()) && documentDTO.getDocumentLinkDTO()==null){
-                fieldErrors.add(new FieldErrorDTO("addressScope","Select proper group or Role or UserId from option"));
+                fieldErrors.add(new FieldErrorDTO("addressScope",
+                                                  "Select proper group or Role or UserId from option"));
 
             }
         }
@@ -188,7 +189,8 @@ public class DocumentValidator{
                && (documentUpdateDTO.getDocumentLinkDTO().getRoleDetails()==null
                && documentUpdateDTO.getDocumentLinkDTO().getGroupDetails()==null
                && documentUpdateDTO.getDocumentLinkDTO().getUserId()==null)){
-                fieldErrors.add(new FieldErrorDTO("addressScope","Select proper group or Role or UserId from option"));
+                fieldErrors.add(new FieldErrorDTO("addressScope",
+                                                  "Select proper group or Role or UserId from option"));
 
             }
         }
