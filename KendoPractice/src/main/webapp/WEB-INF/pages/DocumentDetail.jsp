@@ -6,16 +6,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>Document Details</title>
-    <%--Load css--%>
+
     <link href="${pageContext.request.contextPath}/resources/content/Document/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="${pageContext.request.contextPath}/resources/content/Document/css/bootstrap-select.css" rel="stylesheet"/>
+   <%-- <link href="https://bootswatch.com/cerulean/bootstrap.min.css" rel="stylesheet" />--%>
     <link href="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker3.css" rel="stylesheet"/>
+
     <link href="${pageContext.request.contextPath}/resources/content/style.css" rel="stylesheet" />
+     <link href="https://bootswatch.com/cerulean/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="//cdn.kendostatic.com/2014.2.716/styles/kendo.common.min.css">
     <link rel="stylesheet" href="//cdn.kendostatic.com/2014.2.716/styles/kendo.default.min.css">
     <link href="${pageContext.request.contextPath}/resources/content/Document/css/custom.css" rel="stylesheet"/>
     <link href="${pageContext.request.contextPath}/resources/content/Document/css/font-awesome.css" rel="stylesheet"/>
-    <%--Load Js--%>
     <link href="http://cdn.kendostatic.com/2013.3.1119/styles/kendo.common.min.css" rel="stylesheet" type="text/css" />
     <link href="http://cdn.kendostatic.com/2013.3.1119/styles/kendo.default.min.css" rel="stylesheet" type="text/css" />
     <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
@@ -35,22 +37,25 @@
     <script src="${pageContext.request.contextPath}/resources/app/Demo/Document/ng-file-upload-shim.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <%--Load App JS Files--%>
     <script src="${pageContext.request.contextPath}/resources/app/Demo/DocumentListApp.js"></script>
     <script src="${pageContext.request.contextPath}/resources/app/Demo/Services/DocumentListService.js"></script>
     <script src="${pageContext.request.contextPath}/resources/app/Demo/Services/FileUploadService.js"></script>
     <script src="${pageContext.request.contextPath}/resources/app/Demo/Controller/BaseDocumentListController.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/app/Demo/Controller/DocumentPopupController.js"></script>
     <script src="${pageContext.request.contextPath}/resources/app/Demo/Controller/DocumentListController.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
 <body ng-app="DocumentList">
 <%
     String DocumentId = request.getParameter("DocumentId");
 %>
+
 <div id="wrapper">
     <header id="header1"></header>
     <section id="content">
         <div class="page-content">
-                <div class="page-padding" ng-controller="DocumentListController as ctlr" ng-init="ctlr.initialiseEditPage(<%=DocumentId%>)">
+          <%--  <div id="success_message" style="color:green;float:right; margin: 0 1000px 0 0";></div>--%>
+            <div class="page-padding" ng-controller="DocumentListController as ctlr" ng-init="ctlr.initialiseEditPage(<%=DocumentId%>)">
                 <form  name="Documentform" ng-submit="ctlr.updateDocument()&& Documentform.$valid" name="Documentform" id="submit">
                     <div class="row">
                         <div class="col-md-12">
@@ -87,7 +92,7 @@
                                                         <span class="input-group-btn">
                                                             <span style="height:48px;background-color:#E6E6E6;"><img src="${pageContext.request.contextPath}/resources/content/Document/Images/Download.png" class="doc-import-button" /></span>
                                                         </span>
-                                                    <a class="form-control" style="text-decoration:none;color: black;padding-left:50px" ng-href="./download/{{doc.documentId}}">Download</a>
+                                                    <a class="form-control" style="text-decoration:none;background-color:#F0F0F0;padding-left:50px" ng-href="./download/{{doc.documentId}}">Download</a>
                                                 </div>
                                             </div>
 
@@ -110,7 +115,7 @@
                                             <option value="{{item.value}}" ng-repeat="item in scopeOptionEdit">{{item.text}}</option>
                                         </select>
 
-                                            <div class="errorAddressScope"></div>
+                                        <div class="errorAddressScope"></div>
                                     </div>
                                 </div>
                                 <hr style="color: #CFCFCF;border: 1px solid;" />
@@ -172,7 +177,7 @@
                                         <label for="txtcreationDate">Creation date</label>
                                         <span style="color: red;" id="creationDate"></span>
                                         <div class="form-group">
-                                            <input type="text" id="txtcreationDate" class="custom-style" placeholder="Creation date" readonly ng-model="creationDate" ng-disabled="true"/>
+                                            <input type="text" id="txtcreationDate" class="custom-style" placeholder="Creation date" readonly ng-model="doc.creationDate" ng-disabled="true"/>
                                             <div class="errorCreationDate"></div>
                                         </div>
                                     </div>
@@ -180,7 +185,7 @@
                                         <label for="txtvalidFromDate">Valid from</label>
                                         <span style="color: red;" id="validFrom"></span>
                                         <div class="form-group">
-                                            <input type="text" id="txtvalidFromDate" class="custom-style" placeholder="Valid from" readonly  ng-model="validFrom"/>
+                                            <input type="text" id="txtvalidFromDate" class="custom-style" placeholder="Valid from" readonly  ng-model="doc.validFrom"/>
                                             <div class="errorValidFrom"></div>
                                         </div>
                                     </div>
@@ -189,7 +194,7 @@
                                         <label for="txtvalidToDate">Valid to</label>
                                         <span style="color: red;" id="validTo"></span>
                                         <div class="form-group">
-                                            <input type="text" id="txtvalidToDate" class="custom-style" placeholder="Valid To" readonly ng-model="validTo"/>
+                                            <input type="text" id="txtvalidToDate" class="custom-style" placeholder="Valid To" readonly ng-model="doc.validTo"/>
                                             <div class="errorValidTo"></div>
                                         </div>
                                     </div>
@@ -245,6 +250,7 @@
         </div>
     </section>
 </div>
+
 <script src="${pageContext.request.contextPath}/resources/scripts/updateValidation.js"></script>
 </body>
 </html>

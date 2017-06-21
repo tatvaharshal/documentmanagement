@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,8 +8,9 @@
     <link href="${pageContext.request.contextPath}/resources/content/GridUI.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/kendo-ui-core/2014.1.416/styles/kendo.default.min.css">
     <link rel="stylesheet" href="//cdn.kendostatic.com/2014.2.716/styles/kendo.common.min.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="http://kendo.cdn.telerik.com/2017.2.504/styles/kendo.default.mobile.min.css">
-
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/app/jquery.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/app/angular.js"></script>
     <script src="${pageContext.request.contextPath}/resources/app/angular-sanitize.js"></script>
@@ -26,16 +28,29 @@
     <script src="${pageContext.request.contextPath}/resources/app/Demo/Controller/BaseDocumentListController.js"></script>
     <script src="${pageContext.request.contextPath}/resources/app/Demo/Controller/DocumentListController.js"></script>
     <script src="https://kendo.cdn.telerik.com/2017.1.223/js/kendo.all.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
 <body ng-app="DocumentList">
-<header id="header1"></header>
+
+<header id="header1">
+
+    <div id="success_message" style="color:green;float:left; margin:0 0 0 1000px;" ></div>
+</header>
+
 <div  ng-controller="DocumentListController as ctrl" >
+
+
     <h2 style="color:#2d4265">Documents
+
+
         <a href="./DocumentAdd" class="btn">+ Document Upload</a>
+
     </h2>
     <br>
     <kendo-grid id="kGrid" options="mainGridOptions"  k-on-change="ctrl.onRawClick({ selected : selected })">
+     <%--   <div id="success_message" style="color: red;"></div>--%>
     </kendo-grid>
+
 </div>
 </body>
 </html>

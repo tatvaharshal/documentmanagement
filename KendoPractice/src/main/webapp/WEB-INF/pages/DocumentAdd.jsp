@@ -41,16 +41,19 @@
     <script src="${pageContext.request.contextPath}/resources/app/Demo/Services/FileUploadService.js"></script>
     <script src="${pageContext.request.contextPath}/resources/app/Demo/Controller/BaseDocumentListController.js"></script>
     <script src="${pageContext.request.contextPath}/resources/app/Demo/Controller/DocumentListController.js"></script>
-
 </head>
 <body  ng-app="DocumentList">
 
 <div id="wrapper">
     <header id="header1"></header>
+
     <section id="content">
         <div class="page-content">
+           <%-- <div id="success_message" style="color:green;float:right; margin: 0 1000px 0 0";></div>
+            <div id="error_message" style="color:red;float:right; margin: 0 1000px 0 0";></div>--%>
             <div class="page-padding" ng-controller="DocumentListController as ctlr" ng-init="ctlr.Init()">
                 <form ng-submit="ctlr.validateFile(this.file) && Documentform.$valid && ctlr.saveDocument()" name="Documentform" id="submit">
+
                     <div class="row">
                         <div class="col-md-12">
                             <%--back discard and import portion--%>
@@ -84,7 +87,7 @@
                                                     <span>{{ctlr.Isvalid}}</span>
                                                     <button class="form-control"
                                                             style="height:100%;width:100%;background-color:#F0F0F0;padding-left:120px;"
-                                                            type="submit" ng-disabled="Documentform.$invalid">Import
+                                                            type="submit"  ng-disabled="Documentform.$invalid">Import
                                                     </button>
                                                 </div>
                                             </div>
@@ -106,7 +109,7 @@
                                     <span style="color: red;" id="fileSize"></span>
                                     <div>
                                         <input class="form-control" type="file" name="file" id="file" file-upload="file" ng-model="file"
-                                               ngf-select="ctlr.validateFile(file)" ng-required="isImageRequired"  ng-accept="application/pdf/*">
+                                               ngf-select="ctlr.validateFile(file)" ng-required="isImageRequired"  accept="application/pdf">
                                         </input>
                                         <div class="has-error" data-ng-show="Documentform.$dirty" >
                                             <span style="color: red;" data-ng-show="Documentform.file.$error.required">This is a required field</span>
@@ -225,7 +228,7 @@
                                         <input  type="text" class="custom-style"  name="docName" ng-model="doc.documentName" data-ng-pattern="/^[a-zA-Z0-9-.\s]*$/" id="txtName" placeholder="Document Name" data-ng-minlength="0" data-ng-maxlength="255">
 
                                         <div class="has-error" data-ng-show="Documentform.$dirty">
-                                            <span style="color: red;" data-ng-show="Documentform.docName.$error.maxlength">Maximun length required is 255</span>
+                                            <span style="color: red;" data-ng-show="Documentform.docName.$error.maxlength">Maximun documentname length required is 255 letters only</span>
                                         </div>
                                         <div class="errorDocName"></div>
                                     </div>
@@ -240,7 +243,7 @@
                                         <input type="text" style="width: 100%;" name="docDesc" ng-model="doc.documentDescription"  data-ng-pattern="/^[a-zA-Z0-9-.\s]*$/" id="txtDescription" placeholder="Description" data-ng-minlength="0" data-ng-maxlength="1000"></input>
 
                                         <div class="has-error"   data-ng-show="Documentform.$dirty">
-                                            <span  style="color: red;"  data-ng-show="Documentform.docDesc.$error.maxlength">Maximun length required is 1000</span>
+                                            <span  style="color: red;"  data-ng-show="Documentform.docDesc.$error.maxlength">Maximun documentDescription length required is 1000 letters only</span>
                                         </div>
                                         <div class="errorDocDescription"></div>
                                     </div>
@@ -264,5 +267,42 @@
     </section>
 </div>
 <script src="${pageContext.request.contextPath}/resources/scripts/validate.js"></script>
+<%--<script>
+    var data_save = false;  /* set this to true if the login was a success */
+
+if(data_save == false)
+{
+document.getElementById("data_save").innerHTML = "Error in Data Save.";
+}
+if(data_save == true)
+{
+document.getElementById("data_save").innerHTML = "Data Save successfully";
+}
+
+
+    $("#submit").submit(function(e) {
+        e.preventDefault();
+        var name = $("#name").val();
+        var comment = $("#comment").val();
+
+        if(name == "" || comment == "" ) {
+            $("#error_message").show().html("All Fields are Required");
+        } else {
+            $("#error_message").html("").hide();
+            $.ajax({
+                type: "POST",
+                url: "post-form.php",
+                data: "name="+name+"&comment="+comment,
+                success: function(data){
+                    $('#success_message').fadeIn().html(data);
+                    setTimeout(function() {
+                        $('#success_message').fadeOut("slow");
+                    }, 2000 );
+
+                }
+            });
+        }
+    })
+</script>--%>
 </body>
 </html>
