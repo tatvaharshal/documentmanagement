@@ -48,10 +48,13 @@ $("#txtvalidFromDate").change(function () {
         return true;
     }
 });
+
+
+
 $("#txtvalidToDate").on('click', function(){
 
     if($('#txtvalidFromDate').val()=="") {
-        alert("Please Select ValidFrom date first");
+     /*   alert("Please Select ValidFrom date first");*/
         $(this).addClass("error");
         $(".errorValidTo").text("Enter ValidFromDate First");
         $('#txtvalidFromDate').focus();
@@ -84,7 +87,7 @@ $("#txtcreationDate").on('change', function(){
         return true;
     }
     else {
-        alert("CreationDate  should be <=today's date");
+       /* alert("CreationDate  should be <=today's date");*/
         $(this).addClass("error");
         $(".errorCreationDate").text("CreationDate  should be <=today's date");
         $('#txtcreationDate').focus();
@@ -112,7 +115,7 @@ $("#txtvalidFromDate").on('change', function(){
         return true;
     }
     else {
-        alert("ValidFrom Date should be >=today's date");
+       /* alert("ValidFrom Date should be >=today's date");*/
         $(this).addClass("error");
         $(".errorValidFrom").text("ValidFrom Date should be >=today's date");
         $('#txtvalidFromDate').focus();
@@ -126,7 +129,7 @@ $("#txtName").on("change", function() {
         $(this).removeClass("error");
         $(".errorDocName").text("");
     } else {
-        alert("Enter Valid DocumentName");
+        /*alert("Enter Valid DocumentName");*/
         $(this).addClass("error");
         $(".errorDocName").text("Enter Valid DocumentName");
         return false;
@@ -141,7 +144,7 @@ $("#txtDescription").on("change", function() {
         $(this).removeClass("error");
         $(".errorDocDescription").text("");
     } else {
-        alert("Enter Valid DocumentDescription");
+      /*  alert("Enter Valid DocumentDescription");*/
         $(this).addClass("error");
         $(".errorDocDescription").text("Enter Valid DocumentDescription");
         return false;
@@ -156,7 +159,7 @@ $("#submit").on("click", function() {
             $(this).removeClass("error");
             $(".errorDocName").text("");
         } else {
-            alert("Enter Valid DocumentName");
+           /* alert("Enter Valid DocumentName");*/
             $(this).addClass("error");
             $(".errorDocName").text("Enter Valid DocumentName");
             return false;
@@ -171,7 +174,7 @@ $("#submit").on("click", function() {
             $(this).removeClass("error");
             $(".errorDocDescription").text("");
         } else {
-            alert("Enter Valid DocumentDescription");
+           /* alert("Enter Valid DocumentDescription");*/
             $(this).addClass("error");
             $(".errorDocDescription").text("Enter Valid DocumentDescription");
             return false;
@@ -182,7 +185,7 @@ $("#submit").on("click", function() {
 $("#submit").on("click", function() {
     if($("#txtvalidToDate").val()!="") {
         if($('#txtvalidFromDate').val()=="") {
-            alert("Enter ValidFromDate First");
+            /*alert("Enter ValidFromDate First");*/
             $(this).addClass("error");
             $(".errorValidTo").text("Enter ValidFromDate First");
             $('#txtvalidFromDate').focus();
@@ -204,7 +207,7 @@ $("#submit").on("click", function() {
             return true;
         }
         else{
-            alert("Select Group Details");
+            /*alert("Select Group Details");*/
             $(this).addClass("error");
             $(".errorAddressScope").text("Select Group Details");
             return false;
@@ -218,7 +221,7 @@ $("#submit").on("click", function() {
             return true;
         }
         else{
-            alert("Select Role Details");
+            /*alert("Select Role Details");*/
             $(this).addClass("error");
             $(".errorAddressScope").text("Select Role Details");
             return false;
@@ -243,7 +246,7 @@ $("#submit").on("click", function() {
                     return true;
                 }
                 else {
-                    alert("Select any User from Bhavin,Harshal,Vimal,Savan only");
+                /*    alert("Select any User from Bhavin,Harshal,Vimal,Savan only");*/
                     $(this).addClass("error");
                     $(".errorAddressScope").text("Select any User from Bhavin,Harshal,Vimal,Savan only");
                     return false;
@@ -251,7 +254,7 @@ $("#submit").on("click", function() {
             }
         }
         else {
-            alert("Select any User from Bhavin,Harshal,Vimal,Savan only");
+           /* alert("Select any User from Bhavin,Harshal,Vimal,Savan only");*/
             $(this).addClass("error");
             $(".errorAddressScope").text("Select any User from Bhavin,Harshal,Vimal,Savan only");
             return false;

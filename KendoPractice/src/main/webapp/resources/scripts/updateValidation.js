@@ -46,7 +46,7 @@
     $("#txtvalidToDate").on('click', function(){
 
     if($('#txtvalidFromDate').val()=="") {
-        alert("Enter ValidFromDate First");
+       /* alert("Enter ValidFromDate First");*/
         $(this).addClass("error");
         $(".errorValidTo").text("Enter ValidFromDate First");
         $('#txtvalidFromDate').focus();
@@ -70,9 +70,9 @@
     $("#txtvalidToDate").on('change', function(){
 
     if($('#txtvalidFromDate').val()!="" && $('#txtvalidToDate').val()< $('#txtvalidFromDate').val()) {
-        alert("Enter ValidFromDate First");
+       // alert("ValidToDate sholud be >=ValidFromDate");
         $(this).addClass("error");
-        $(".errorValidTo").text("Enter ValidFromDate First");
+        $(".errorValidTo").text("ValidToDate sholud be >=ValidFromDate");
         $('#txtvalidFromDate').focus();
         return false;
 
