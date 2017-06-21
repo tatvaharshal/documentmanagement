@@ -15,7 +15,6 @@ module DocumentList
         groupDetails:string[];
         roleDetails:string[];
         flag:boolean;
-        isImageRequired: boolean;
         addressScope:any;
         status:any;
         scopeOption:any;
@@ -28,6 +27,8 @@ module DocumentList
         docTag:any;
         user:any;
         scopeOptionEdit:any;
+        success_message:boolean;
+        statusMessage:string;
 
     }
 

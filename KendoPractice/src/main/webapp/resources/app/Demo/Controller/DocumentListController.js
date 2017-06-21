@@ -28,7 +28,17 @@ var DocumentList;
             _this.fileUploadService = fileUploadService;
             _this.isUploaded = false;
             $scope.vm = _this;
-            $scope.isImageRequired = true;
+            _this.$scope.success_message = false;
+            var msg = localStorage.getItem("success");
+            if (msg != "null") {
+                localStorage.setItem("success", "null");
+                _this.$scope.statusMessage = msg;
+                _this.$scope.success_message = true;
+                setTimeout(function () {
+                    this.$scope.success_message = false;
+                    this.$scope.$apply();
+                }.bind(_this), 2000);
+            }
             _this.status = _this.$location.search().status;
             if (!angular.isUndefined(_this.status) && _this.status != null && _this.status != "") {
                 _this.$scope.status = _this.status.trim();
@@ -708,11 +718,7 @@ var DocumentList;
                             }
                         }
                         if (response.documentId != 0) {
-                            var msg = "Data created successfully";
-                            $('#success_message').fadeIn().html(msg);
-                            setTimeout(function () {
-                                $('#success_message').fadeOut("slow");
-                            }, 80000);
+                            localStorage.setItem("success", "Data added successfully");
                             _this.$window.location.href = "./DocumentList";
                         }
                         else {
@@ -720,7 +726,7 @@ var DocumentList;
                             $('#error_message').fadeIn().html(msg);
                             setTimeout(function () {
                                 $('#error_message').fadeOut("slow");
-                            }, 80000);
+                            }, 9000);
                             alert("Something Went Wrong");
                         }
                     })["catch"](function (error) {
@@ -818,11 +824,7 @@ var DocumentList;
                     }
                 }
                 if (response.documentId != 0) {
-                    var msg = "Data Updated successfully";
-                    $('#success_message').fadeIn().html(msg);
-                    setTimeout(function () {
-                        $('#success_message').fadeOut("slow");
-                    }, 80000);
+                    localStorage.setItem("success", "Data Updted successfully");
                     _this.$window.location.href = "./DocumentList";
                 }
                 else {
@@ -830,7 +832,7 @@ var DocumentList;
                     $('#error_message').fadeIn().html(msg);
                     setTimeout(function () {
                         $('#error_message').fadeOut("slow");
-                    }, 80000);
+                    }, 9000);
                     alert("Something Went Wrong");
                 }
             })["catch"](function (err) {
@@ -869,7 +871,7 @@ var DocumentList;
             this.$window.location.href = "DocumentDetail?DocumentId=" + docId + "";
         };
         return DocumentListController;
-    }(BaseDocumentListController));
+    }(DocumentList.BaseDocumentListController));
     DocumentListController.$inject = [
         '$scope',
         '$location',

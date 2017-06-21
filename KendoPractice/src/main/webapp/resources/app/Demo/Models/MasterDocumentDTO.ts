@@ -16,9 +16,6 @@ module DocumentList {
         public documentType: any;
         public documentTag: any;
         public documentLinkId: Number;
-       /* public userId: string;
-        public groupDetails:string;
-        public roleDetails: string;*/
         public addressScope: any;
         public importDate: any;
         public documentLinkDTO:string ;

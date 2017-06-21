@@ -32,7 +32,19 @@ module DocumentList {
         constructor(private $scope: IDocumentListScope, private $location: ng.ILocationService, private $window: ng.IWindowService, private $modal: ng.ui.bootstrap.IModalService, private DocumentListService: IDocumentListService, private $filter: ng.IFilterService, private fileUploadService: IFileUploadService) {
             super($scope);
             $scope.vm = this;
-            $scope.isImageRequired = true;
+
+            this.$scope.success_message = false;
+
+            var msg = localStorage.getItem("success");
+            if (msg != "null") {
+                localStorage.setItem("success", "null");
+                this.$scope.statusMessage = msg;
+                this.$scope.success_message = true;
+                setTimeout(function() {
+                    this.$scope.success_message = false;
+                    this.$scope.$apply();
+                }.bind(this), 2000);
+            }
             this.status = this.$location.search().status;
             if (!angular.isUndefined(this.status) && this.status != null && this.status != "") {
                 this.$scope.status = this.status.trim();
@@ -726,12 +738,7 @@ module DocumentList {
                             }
                         }
                         if(response.documentId != 0) {
-
-                            var msg="Data created successfully"
-                            $('#success_message').fadeIn().html(msg);
-                              setTimeout(function() {
-                              $('#success_message').fadeOut("slow");
-                                }, 80000 );
+                            localStorage.setItem("success", "Data added successfully");
                             this.$window.location.href="./DocumentList";
 
                         }else {
@@ -739,7 +746,7 @@ module DocumentList {
                             $('#error_message').fadeIn().html(msg);
                             setTimeout(function() {
                                 $('#error_message').fadeOut("slow");
-                            }, 80000 );
+                            }, 9000 );
                             alert("Something Went Wrong");
                         }
                     }).catch((error) =>{
@@ -848,12 +855,7 @@ module DocumentList {
                     }
                 }
                 if(response.documentId != 0) {
-
-                    var msg="Data Updated successfully"
-                    $('#success_message').fadeIn().html(msg);
-                    setTimeout(function() {
-                        $('#success_message').fadeOut("slow");
-                    }, 80000 );
+                    localStorage.setItem("success", "Data Updted successfully");
                     this.$window.location.href="./DocumentList";
 
                 }else {
@@ -861,7 +863,7 @@ module DocumentList {
                     $('#error_message').fadeIn().html(msg);
                     setTimeout(function() {
                         $('#error_message').fadeOut("slow");
-                    }, 80000 );
+                    }, 9000 );
                     alert("Something Went Wrong");
                 }
             }).catch(err =>{
