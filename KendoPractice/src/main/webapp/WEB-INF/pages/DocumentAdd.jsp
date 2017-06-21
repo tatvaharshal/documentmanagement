@@ -49,8 +49,8 @@
 
     <section id="content">
         <div class="page-content">
-           <%-- <div id="success_message" style="color:green;float:right; margin: 0 1000px 0 0";></div>
-            <div id="error_message" style="color:red;float:right; margin: 0 1000px 0 0";></div>--%>
+    <%--  <div id="success_message" style="color:green;float:right; margin: 0 1000px 0 0";></div>--%>
+         <div id="error_message" style="color:red;float:right; margin: 0 1000px 0 0";></div>
             <div class="page-padding" ng-controller="DocumentListController as ctlr" ng-init="ctlr.Init()">
                 <form ng-submit="ctlr.validateFile(this.file) && Documentform.$valid && ctlr.saveDocument()" name="Documentform" id="submit">
 
