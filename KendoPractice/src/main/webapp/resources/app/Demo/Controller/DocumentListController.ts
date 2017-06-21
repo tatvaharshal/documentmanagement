@@ -3,7 +3,7 @@
  */
 /// <reference path='../../_allDocumentList.ts' />
 module DocumentList {
-    //import Upload = kendo.ui.Upload;
+    import Upload = kendo.ui.Upload;
     export class DocumentListController extends BaseDocumentListController {
         //variables
         'use strict';
@@ -81,21 +81,12 @@ module DocumentList {
                                 return "";
                             }
                             var d = new Date(dataitem.creationDate);
-                            if (d.getMonth() <= 9) {
-                                var curMonth = d.getMonth() + 1;
-                                var month = "0" + curMonth;
-                            }
-                            else {
-                                var month = d.getMonth() + 1;
-                            }
-                            if (d.getDate() <= 9) {
-                                var curDay = d.getDate();
-                                var day = "0" + curDay;
-                            }
-                            else {
-                                var day = d.getDate();
-                            }
-                            var formattedDate = d.getFullYear() + "-" + month + "-" + day;
+                            var year = d.getFullYear();
+                            var month = (1 + d.getMonth()).toString();
+                            month = month.length > 1 ? month : '0' + month;
+                            var day = d.getDate().toString();
+                            day = day.length > 1 ? day : '0' + day;
+                            var formattedDate =  year+ "-" + month + "-" + day;
                             return formattedDate;
                         }
                     }, {
@@ -116,21 +107,12 @@ module DocumentList {
                                 return "";
                             }
                             var d = new Date(dataitem.importDate);
-                            if (d.getMonth() <= 9) {
-                                var curMonth = d.getMonth() + 1;
-                                var month = "0" + curMonth;
-                            }
-                            else {
-                                var month = d.getMonth() + 1;
-                            }
-                            if (d.getDate() <= 9) {
-                                var curDay = d.getDate();
-                                var day = "0" + curDay;
-                            }
-                            else {
-                                var day = d.getDate();
-                            }
-                            var formattedDate = d.getFullYear() + "-" + month + "-" + day;
+                            var year = d.getFullYear();
+                            var month = (1 + d.getMonth()).toString();
+                            month = month.length > 1 ? month : '0' + month;
+                            var day = d.getDate().toString();
+                            day = day.length > 1 ? day : '0' + day;
+                            var formattedDate =  year+ "-" + month + "-" + day;
                             return formattedDate;
                         }
                     }, {
@@ -178,21 +160,12 @@ module DocumentList {
                                     return "";
                                 }
                                 var d = new Date(dataitem.validFrom);
-                                if (d.getMonth() <= 9) {
-                                    var curMonth = d.getMonth() + 1;
-                                    var month = "0" + curMonth;
-                                }
-                                else {
-                                    var month = d.getMonth() + 1;
-                                }
-                                if (d.getDate() <= 9) {
-                                    var curDay = d.getDate();
-                                    var day = "0" + curDay;
-                                }
-                                else {
-                                    var day = d.getDate();
-                                }
-                                var formattedDate = d.getFullYear() + "-" + month + "-" + day;
+                                var year = d.getFullYear();
+                                var month = (1 + d.getMonth()).toString();
+                                month = month.length > 1 ? month : '0' + month;
+                                var day = d.getDate().toString();
+                                day = day.length > 1 ? day : '0' + day;
+                                var formattedDate =  year+ "-" + month + "-" + day;
                                 return formattedDate;
                             }
                         }, {
@@ -213,21 +186,12 @@ module DocumentList {
                                     return "";
                                 }
                                 var d = new Date(dataitem.validTo);
-                                if (d.getMonth() <= 9) {
-                                    var curMonth = d.getMonth() + 1;
-                                    var month = "0" + curMonth;
-                                }
-                                else {
-                                    var month = d.getMonth() + 1;
-                                }
-                                if (d.getDate() <= 9) {
-                                    var curDay = d.getDate();
-                                    var day = "0" + curDay;
-                                }
-                                else {
-                                    var day = d.getDate();
-                                }
-                                var formattedDate = d.getFullYear() + "-" + month + "-" + day;
+                                var year = d.getFullYear();
+                                var month = (1 + d.getMonth()).toString();
+                                month = month.length > 1 ? month : '0' + month;
+                                var day = d.getDate().toString();
+                                day = day.length > 1 ? day : '0' + day;
+                                var formattedDate =  year+ "-" + month + "-" + day;
                                 return formattedDate;
                             }
                         },
@@ -346,24 +310,24 @@ module DocumentList {
                 this.$scope.doc = data;
 
                 if (this.doc.creationDate == null) {
-                    this.$scope.creationDate = "";
+                    this.$scope.doc.creationDate = "";
                 } else {
-                    this.$scope.creationDate = this.convertDate(this.doc.creationDate);
+                    this.$scope.doc.creationDate = this.convertDate(this.doc.creationDate);
                 }
                 if (this.doc.importDate == null) {
-                    this.$scope.importDate = "";
+                    this.$scope.doc.importDate = "";
                 } else {
-                    this.$scope.importDate = this.convertDate(this.doc.importDate);
+                    this.$scope.doc.importDate = this.convertDate(this.doc.importDate);
                 }
                 if (this.doc.validFrom == null) {
-                    this.$scope.validFrom = "";
+                    this.$scope.doc.validFrom = "";
                 } else {
-                    this.$scope.validFrom = this.convertDate(this.doc.validFrom);
+                    this.$scope.doc.validFrom = this.convertDate(this.doc.validFrom);
                 }
                 if (this.doc.validTo == null) {
-                    this.$scope.validTo = "";
+                    this.$scope.doc.validTo = "";
                 } else {
-                    this.$scope.validTo = this.convertDate(this.doc.validTo);
+                    this.$scope.doc.validTo = this.convertDate(this.doc.validTo);
                     // this.doc.validTo = this.$filter('date')(data.validTo, 'yyyy-MM-dd');
                 }
                 if (this.$scope.doc.documentTag != null) {
@@ -574,20 +538,17 @@ module DocumentList {
                     }
                 }
             }
-            var creationDate = doc.creationDate;
-            if (creationDate!="" && creationDate!=undefined) {
+            var creationDate = this.doc.creationDate;
+            if (creationDate!=null && creationDate!=undefined) {
+
                 var today = new Date();
-                var dd = today.getDate();
-                var mm = today.getMonth()+1; //January is 0!
-                var yyyy = today.getFullYear();
-                if(dd<10){
-                    dd='0'+dd;
-                }
-                if(mm<10){
-                    mm='0'+mm;
-                }
-                var today = yyyy+'-'+mm+'-'+dd;
-                if(creationDate!="" && creationDate <=today) {
+                var year = today.getFullYear();
+                var month = (1 + today.getMonth()).toString();
+                month = month.length > 1 ? month : '0' + month;
+                var day = today.getDate().toString();
+                day = day.length > 1 ? day : '0' + day;
+                var todayDate =  year+ "-" + month + "-" + day;
+                if(creationDate!=null && creationDate <=todayDate) {
                     $(this).removeClass("error");
                     $(".errorCreationDate").text("");
                 }
@@ -600,11 +561,11 @@ module DocumentList {
                     return false;
                 }
             }
-            var validFrom = doc.validFrom;
-            if (validFrom!="" && validFrom!=undefined) {
-                var importDate = doc.importDate;
+            var validFrom = this.doc.validFrom;
+            if (validFrom!=null && validFrom!=undefined) {
+                var importDate = this.doc.importDate;
 
-                if(validFrom!="" && validFrom >=importDate) {
+                if(validFrom!=null && validFrom >=importDate) {
                     $(this).removeClass("error");
                     $(".errorValidFrom").text("");
                 }
@@ -617,8 +578,8 @@ module DocumentList {
                     return false;
                 }
             }
-            var validTo = doc.validTo;
-            if (validTo!="" && validTo!=undefined) {
+            var validTo = this.doc.validTo;
+            if (validTo!=null && validTo!=undefined) {
                     if(validFrom!=null && validTo>=validFrom){
                     $(this).removeClass("error");
                     $(".errorValidTo").text("");
@@ -695,9 +656,13 @@ module DocumentList {
               {
                   this.doc.addressScope="None";
               }
+            if(this.$scope.doc.creationDate ==null || this.$scope.doc.creationDate==undefined)
+            {
+                this.doc.creationDate=this.convertDate(new Date());
+            }
             if(this.$scope.doc.importDate ==null || this.$scope.doc.importDate==undefined)
             {
-                this.doc.importDate=this.doc.creationDate;
+                this.doc.importDate=this.convertDate(new Date());
             }
             if(this.doc!=null){
                 var bcd = this.docvalidcheck(this.doc);
@@ -714,7 +679,7 @@ module DocumentList {
                     let fileData:MasterDocumentDTO = JSON.parse(data);
                     this.doc = this.$scope.doc;
                     this.docLink =this.$scope.docLink;
-                    this.$scope.creationDate = this.convertDate(this.$scope.doc.creationDate);
+                    this.$scope.doc.creationDate = this.convertDate(this.$scope.doc.creationDate);
                     this.doc.documentId = fileData.documentId;
                     this.doc.filePath = fileData.filePath;
                     this.doc.fileSize = fileData.fileSize;
@@ -761,9 +726,20 @@ module DocumentList {
                             }
                         }
                         if(response.documentId != 0) {
-                            alert("Data Submitted Succsesfully!");
+
+                            var msg="Data created successfully"
+                            $('#success_message').fadeIn().html(msg);
+                              setTimeout(function() {
+                              $('#success_message').fadeOut("slow");
+                                }, 80000 );
                             this.$window.location.href="./DocumentList";
+
                         }else {
+                            var msg="Error in Data save"
+                            $('#error_message').fadeIn().html(msg);
+                            setTimeout(function() {
+                                $('#error_message').fadeOut("slow");
+                            }, 80000 );
                             alert("Something Went Wrong");
                         }
                     }).catch((error) =>{
@@ -777,21 +753,35 @@ module DocumentList {
             }
         }
         //updateDocument
-        updateDocument(){
+        updateDocument() {
             debugger;
 
             this.doc = this.$scope.doc;
             this.doc.documentLinkDTO = this.$scope.doc.documentLinkDTO;
             this.doc.documentTag = this.$scope.documentTag;
-            this.doc.creationDate= this.convertDate(new Date(this.$scope.creationDate));
-            this.doc.importDate= this.convertDate(new Date(this.$scope.importDate));
-            this.doc.validFrom= this.convertDate(new Date(this.$scope.validFrom));
+            this.doc.creationDate = this.convertDate(this.$scope.doc.creationDate);
+            this.doc.importDate = this.convertDate(this.$scope.doc.importDate);
 
-           if(this.$scope.validTo<this.$scope.validFrom)
+            if(this.$scope.doc.validFrom==""){
+             this.$scope.doc.validFrom=null;
+            }
+           // this.doc.validFrom=new Date(this.$scope.validFrom);
+           // this.$scope.validFrom=this.convertDate(this.$scope.doc.validFrom);
+          /*  this.$scope.doc.validFrom=new Date(this.$scope.validFrom);
+            this.doc.validFrom=this.$scope.doc.validFrom;*/
+
+           // this.doc.validFrom=this.$scope.validFrom;
+            this.doc.validFrom=this.$scope.doc.validFrom;
+
+            if(this.$scope.doc.validTo==""){
+                this.$scope.doc.validTo=null;
+            }
+            this.doc.validTo=this.$scope.doc.validTo;
+
+           if(this.doc.validTo<this.doc.validFrom)
            {
-               this.$scope.validTo=this.$scope.validFrom;
+               this.doc.validTo=this.doc.validFrom;
            }
-            this.doc.validTo= this.convertDate(new Date(this.$scope.validTo));
             this.doc = this.$scope.doc;
             this.docLink =this.$scope.docLink;
             if(this.$scope.doc.addressScope=="" || this.$scope.doc.addressScope==undefined)
@@ -858,15 +848,27 @@ module DocumentList {
                     }
                 }
                 if(response.documentId != 0) {
-                    alert("Data Submitted Succsesfully!");
+
+                    var msg="Data Updated successfully"
+                    $('#success_message').fadeIn().html(msg);
+                    setTimeout(function() {
+                        $('#success_message').fadeOut("slow");
+                    }, 80000 );
                     this.$window.location.href="./DocumentList";
+
                 }else {
-                    alert("Somwthing Went Wrong");
+                    var msg="Error in Data Update"
+                    $('#error_message').fadeIn().html(msg);
+                    setTimeout(function() {
+                        $('#error_message').fadeOut("slow");
+                    }, 80000 );
+                    alert("Something Went Wrong");
                 }
             }).catch(err =>{
                 alert("error ocured : "+err);
             });
         }
+
         //onDelete
         onDelete(id,name) {
             var options: ng.ui.bootstrap.IModalSettings = {
@@ -879,23 +881,15 @@ module DocumentList {
                 .then(updatedItem => this.onConfirm(updatedItem));
         }
         onConfirm(item:any):void {}
+
         public convertDate(timestamp: any) {
             var d = new Date(timestamp);
-            if(d.getMonth()<=9) {
-                var curMonth = d.getMonth() +1;
-                var month = "0"+ curMonth;
-            }
-            else{
-                var  month = d.getMonth() +1;
-            }
-            if(d.getDate()<=9) {
-                var curDay = d.getDate();
-                var day = "0"+ curDay;
-            }
-            else{
-                var  day =d.getDate();
-            }
-            var formattedDate =  d.getFullYear()+ "-" + month + "-" + day;
+            var year = d.getFullYear();
+            var month = (1 + d.getMonth()).toString();
+            month = month.length > 1 ? month : '0' + month;
+            var day = d.getDate().toString();
+            day = day.length > 1 ? day : '0' + day;
+            var formattedDate =  year+ "-" + month + "-" + day;
             return formattedDate;
         }
         //handle Click Event on grid raw

@@ -19,7 +19,11 @@ module DocumentList {
         save(id:number) {
             debugger;
             this._http.get("./deleteDocument/"+id.toString());
-            alert("File deleted..!");
+            var msg="File Deleted successfully"
+            $('#file_delete').fadeIn().html(msg);
+            setTimeout(function() {
+                $('#file_delete').fadeOut("slow");
+            }, 80000 );
             this.$window.location.href="./DocumentList";
         }
 

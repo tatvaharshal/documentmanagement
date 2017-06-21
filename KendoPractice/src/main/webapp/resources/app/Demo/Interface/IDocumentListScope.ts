@@ -17,9 +17,6 @@ module DocumentList
         flag:boolean;
         isImageRequired: boolean;
         addressScope:any;
-        creationDate:string;
-        validFrom:string;
-        validTo:string;
         status:any;
         scopeOption:any;
         groupOption:any;
@@ -31,7 +28,6 @@ module DocumentList
         docTag:any;
         user:any;
         scopeOptionEdit:any;
-        importDate:string;
 
     }
 

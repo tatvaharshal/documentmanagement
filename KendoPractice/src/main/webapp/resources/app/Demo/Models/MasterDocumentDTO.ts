@@ -8,9 +8,9 @@ module DocumentList {
         public documentDescription: string;
         public filePath: Array<any>;
         public fileSize: Number;
-        public creationDate:Date ;
-        public validFrom: Date;
-        public validTo: Date;
+        public creationDate:any ;
+        public validFrom: any;
+        public validTo: any;
         public verticalData: string;
         public documentStatus: any;
         public documentType: any;
@@ -20,7 +20,7 @@ module DocumentList {
         public groupDetails:string;
         public roleDetails: string;*/
         public addressScope: any;
-        public importDate: Date;
+        public importDate: any;
         public documentLinkDTO:string ;
         constructor() { }
     }
