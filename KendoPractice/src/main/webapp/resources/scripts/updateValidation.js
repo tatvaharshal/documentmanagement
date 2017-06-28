@@ -48,7 +48,7 @@
     if($('#txtvalidFromDate').val()=="") {
        /* alert("Enter ValidFromDate First");*/
         $(this).addClass("error");
-        $(".errorValidTo").text("Enter ValidFromDate First");
+        $(".errorValidTo").text("Enter Valid From Date First");
         $('#txtvalidFromDate').focus();
         return false;
     }
@@ -72,7 +72,7 @@
     if($('#txtvalidFromDate').val()!="" && $('#txtvalidToDate').val()< $('#txtvalidFromDate').val()) {
        // alert("ValidToDate sholud be >=ValidFromDate");
         $(this).addClass("error");
-        $(".errorValidTo").text("ValidToDate sholud be >=ValidFromDate");
+        $(".errorValidTo").text("Valid To Date sholud be >=Valid From Date");
         $('#txtvalidFromDate').focus();
         return false;
 
@@ -85,30 +85,30 @@
 });
     $("#txtDescription").on("change", function() {
 
-    var regExAlphabetic = /^[a-zA-Z0-9-.\s]*$/;
+        var regExAlphabetic = /^[a-zA-Z0-9]+(([.-][a-zA-Z0-9])?[a-zA-Z0-9\s]*)*$/;
     var docDesc = $("#txtDescription").val();
-    if (docDesc.match(regExAlphabetic)) {
+        if (docDesc.match(regExAlphabetic) || docDesc=="") {
         $(this).removeClass("error");
         $(".errorDocDescription").text("");
     } else {
-        alert("Enter Valid DocumentDescription");
+       /* alert("Enter Valid DocumentDescription");*/
         $(this).addClass("error");
-        $(".errorDocDescription").text("Enter Valid DocumentDescription");
+        $(".errorDocDescription").text("Enter Valid Document Description using A-Z,a-z,0-9,.,- characters only");
         return false;
     }
 
 });
     $("#submit").on("click", function() {
     if($("#txtDescription").val()!="") {
-        var regExAlphabetic = /^[a-zA-Z0-9-.\s]*$/;
+        var regExAlphabetic = /^[a-zA-Z0-9]+(([.-][a-zA-Z0-9])?[a-zA-Z0-9\s]*)*$/;
         var docDesc = $("#txtDescription").val();
-        if (docDesc.match(regExAlphabetic)) {
+        if (docDesc.match(regExAlphabetic) || docDesc=="") {
             $(this).removeClass("error");
             $(".errorDocDescription").text("");
         } else {
-            alert("Enter Valid DocumentDescription");
+           /* alert("Enter Valid DocumentDescription");*/
             $(this).addClass("error");
-            $(".errorDocDescription").text("Enter Valid DocumentDescription");
+            $(".errorDocDescription").text("Enter Valid Document Description using A-Z,a-z,0-9,.,- characters only");
             return false;
         }
     }
@@ -116,9 +116,9 @@
     $("#submit").on("click", function() {
     if($("#txtvalidToDate").val()!="") {
         if($('#txtvalidFromDate').val()=="") {
-            alert("Enter ValidFromDate First");
+           /* alert("Enter ValidFromDate First");*/
             $(this).addClass("error");
-            $(".errorValidTo").text("Enter ValidFromDate First");
+            $(".errorValidTo").text("Enter Valid From Date First");
             $('#txtvalidFromDate').focus();
             return false;
 
@@ -128,6 +128,19 @@
             $(".errorValidTo").text("");
             return true;
         }
+    }
+});
+    $("#documentType").on("change", function() {
+
+    if($('#documentType').val()=="") {
+        $(this).addClass("error");
+        $(".errorDocType").text("DocumentType is required");
+        return false;
+    }
+    else {
+        $(this).removeClass("error");
+        $(".errorDocType").text("");
+        return true;
     }
 });
     $("#txtvalidFromDate").on('change', function(){
@@ -151,27 +164,28 @@
         return true;
     }
     else {
-        alert("ValidFrom Date should be >=today's date");
+        /*alert("ValidFrom Date should be >=today's date");*/
         $(this).addClass("error");
-        $(".errorValidFrom").text("ValidFrom Date should be >=today's date");
+        $(".errorValidFrom").text("Valid From Date should be >=today's date");
         $('#txtvalidFromDate').focus();
         return false;
     }
 });
     $("#txtName").on("change", function() {
-
-    var regExAlphabetic = /^[a-zA-Z0-9-.\s]*$/;
+    var regExAlphabetic = /^[a-zA-Z0-9]+(([.-][a-zA-Z0-9])?[a-zA-Z0-9\s]*)*$/;
     var docname = $("#txtName").val();
     if (docname.match(regExAlphabetic)) {
         $(this).removeClass("error");
         $(".errorDocName").text("");
     } else {
-        alert("Enter Valid DocumentName");
+       /* alert("Enter Valid DocumentName");*/
         $(this).addClass("error");
-        $(".errorDocName").text("Enter Valid DocumentName");
+        $(".errorDocName").text("Enter Valid Document Name using A-Z,a-z,0-9,.,- characters only");
         return false;
     }
 });
+
+
     $("#groupDetails").on("change", function() {
     if ($('#groupDetails').val() != null) {
         $(this).removeClass("error");
@@ -197,7 +211,7 @@
                 return true;
             }
             else {
-                alert("Select any User from Bhavin,Harshal,Vimal,Savan only");
+             /*   alert("Select any User from Bhavin,Harshal,Vimal,Savan only");*/
                 $(this).addClass("error");
                 $(".errorAddressScope").text("Select any User from Bhavin,Harshal,Vimal,Savan only");
                 // this.$scope.docLink.userId = null;
@@ -215,7 +229,7 @@
             return true;
         }
         else{
-            alert("Select Group Details");
+           /* alert("Select Group Details");*/
             $(this).addClass("error");
             $(".errorAddressScope").text("Select Group Details");
             return false;
@@ -229,7 +243,7 @@
             return true;
         }
         else{
-            alert("Select Role Details");
+           /* alert("Select Role Details");*/
             $(this).addClass("error");
             $(".errorAddressScope").text("Select Role Details");
             return false;
@@ -252,7 +266,7 @@
                     return true;
                 }
                 else {
-                    alert("Select any User from Bhavin,Harshal,Vimal,Savan only");
+                   /* alert("Select any User from Bhavin,Harshal,Vimal,Savan only");*/
                     $(this).addClass("error");
                     $(".errorAddressScope").text("Select any User from Bhavin,Harshal,Vimal,Savan only");
                     return false;
@@ -260,7 +274,7 @@
             }
         }
         else {
-            alert("Select any User from Bhavin,Harshal,Vimal,Savan only");
+           /* alert("Select any User from Bhavin,Harshal,Vimal,Savan only");*/
             $(this).addClass("error");
             $(".errorAddressScope").text("Select any User from Bhavin,Harshal,Vimal,Savan only");
             return false;

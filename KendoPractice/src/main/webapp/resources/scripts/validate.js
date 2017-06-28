@@ -1,9 +1,9 @@
-$('#txtcreationDate').datepicker({
+    $('#txtcreationDate').datepicker({
     dateFormat: 'yy-mm-dd',
     autoclose: true,
     maxDate: 0,
 });
-$('#txtvalidFromDate').datepicker({
+    $('#txtvalidFromDate').datepicker({
     dateFormat: 'yy-mm-dd',
     autoclose: true,
     minDate: 0,
@@ -11,11 +11,11 @@ $('#txtvalidFromDate').datepicker({
         $("#txtvalidToDate").datepicker("option", "minDate", selectedDate);
     },
 });
-$('#txtvalidToDate').datepicker({
+    $('#txtvalidToDate').datepicker({
     dateFormat: 'yy-mm-dd',
     autoclose: true
 });
-$("#ddlAddressScope").change(function () {
+    $("#ddlAddressScope").change(function () {
     $("select option:selected").each(function () {
         if ($(this).attr("value") == "UserId") {
             $("#divUserid").show();
@@ -40,7 +40,7 @@ $("#ddlAddressScope").change(function () {
         }
     } );
 }).change();
-$("#txtvalidFromDate").change(function () {
+    $("#txtvalidFromDate").change(function () {
 
     if($('#txtvalidFromDate').val()!="") {
         $(this).removeClass("error");
@@ -49,14 +49,23 @@ $("#txtvalidFromDate").change(function () {
     }
 });
 
+    $("#documentType").change(function () {
+
+    if($('#documentType').val()=="") {
+        $(this).addClass("error");
+        $(".errorDocType").text("DocumentType is required");
+        $('#documentType').focus();
+        return false;
+    }
+});
 
 
-$("#txtvalidToDate").on('click', function(){
+    $("#txtvalidToDate").on('click', function(){
 
     if($('#txtvalidFromDate').val()=="") {
-     /*   alert("Please Select ValidFrom date first");*/
+        /*   alert("Please Select ValidFrom date first");*/
         $(this).addClass("error");
-        $(".errorValidTo").text("Enter ValidFromDate First");
+        $(".errorValidTo").text("Enter Valid From Date First");
         $('#txtvalidFromDate').focus();
         return false;
     }
@@ -66,7 +75,15 @@ $("#txtvalidToDate").on('click', function(){
         return true;
     }
 });
-$("#txtcreationDate").on('change', function(){
+    $("#txtvalidToDate").on('mouseleave', function(){
+
+    if($('#txtvalidFromDate').val()=="" && $('#txtvalidToDate').val()=="" ) {
+        $(this).removeClass("error");
+        $(".errorValidTo").text("");
+        return true;
+    }
+});
+    $("#txtcreationDate").on('change', function(){
     var today = new Date();
     var dd = today.getDate();
     var mm = today.getMonth()+1; //January is 0!
@@ -87,14 +104,14 @@ $("#txtcreationDate").on('change', function(){
         return true;
     }
     else {
-       /* alert("CreationDate  should be <=today's date");*/
+        /* alert("CreationDate  should be <=today's date");*/
         $(this).addClass("error");
-        $(".errorCreationDate").text("CreationDate  should be <=today's date");
+        $(".errorCreationDate").text("Creation Date  should be <=today's date");
         $('#txtcreationDate').focus();
         return false;
     }
 });
-$("#txtvalidFromDate").on('change', function(){
+    $("#txtvalidFromDate").on('change', function(){
     var today = new Date();
     var dd = today.getDate();
     var mm = today.getMonth()+1; //January is 0!
@@ -115,79 +132,82 @@ $("#txtvalidFromDate").on('change', function(){
         return true;
     }
     else {
-       /* alert("ValidFrom Date should be >=today's date");*/
+        /* alert("ValidFrom Date should be >=today's date");*/
         $(this).addClass("error");
-        $(".errorValidFrom").text("ValidFrom Date should be >=today's date");
+        $(".errorValidFrom").text("Valid From Date should be >=today's date");
         $('#txtvalidFromDate').focus();
         return false;
     }
 });
-$("#txtName").on("change", function() {
-    var regExAlphabetic = /^[a-zA-Z0-9-.\s]*$/;
+    $("#txtName").on("change", function() {
+    var regExAlphabetic = /^[a-zA-Z0-9]+(([.-][a-zA-Z0-9])?[a-zA-Z0-9\s]*)*$/;
     var docname = $("#txtName").val();
-    if (docname.match(regExAlphabetic)) {
+    if (docname.match(regExAlphabetic) || docname=="") {
         $(this).removeClass("error");
         $(".errorDocName").text("");
     } else {
         /*alert("Enter Valid DocumentName");*/
         $(this).addClass("error");
-        $(".errorDocName").text("Enter Valid DocumentName");
+        $(".errorDocName").text("Enter Valid Document Name using A-Z,a-z,0-9,.,- characters only");
         return false;
     }
 
 });
-$("#txtDescription").on("change", function() {
+    $("#txtDescription").on("change", function() {
 
-    var regExAlphabetic = /^[a-zA-Z0-9-.\s]*$/;
+   // var regExAlphabetic = /^[a-zA-Z0-9-.\s]*$/;
+   // var regExAlphabetic = /^[A-Za-z0-9-.]*$/;
+    var regExAlphabetic = /^[a-zA-Z0-9]+(([.-][a-zA-Z0-9])?[a-zA-Z0-9\s]*)*$/;
     var docDesc = $("#txtDescription").val();
-    if (docDesc.match(regExAlphabetic)) {
+    if (docDesc.match(regExAlphabetic) || docDesc=="") {
         $(this).removeClass("error");
         $(".errorDocDescription").text("");
     } else {
-      /*  alert("Enter Valid DocumentDescription");*/
+        /*  alert("Enter Valid DocumentDescription");*/
         $(this).addClass("error");
-        $(".errorDocDescription").text("Enter Valid DocumentDescription");
+        $(".errorDocDescription").text("Enter Valid Document Description using A-Z,a-z,0-9,.,- characters only");
         return false;
     }
 
 });
-$("#submit").on("click", function() {
+    $("#submit").on("click", function() {
     if($("#txtName").val()!="") {
-        var regExAlphabetic = /^[a-zA-Z0-9-.\s]*$/;
+        var regExAlphabetic = /^[a-zA-Z0-9]+(([.-][a-zA-Z0-9])?[a-zA-Z0-9\s]*)*$/;
         var docname = $("#txtName").val();
-        if (docname.match(regExAlphabetic)) {
+        if (docname.match(regExAlphabetic)|| docname=="") {
             $(this).removeClass("error");
             $(".errorDocName").text("");
         } else {
-           /* alert("Enter Valid DocumentName");*/
+            /* alert("Enter Valid DocumentName");*/
             $(this).addClass("error");
-            $(".errorDocName").text("Enter Valid DocumentName");
+            $(".errorDocName").text("Enter Valid Document Name using A-Z,a-z,0-9,.,- characters only");
             return false;
         }
     }
 });
-$("#submit").on("click", function() {
+    $("#submit").on("click", function() {
     if($("#txtDescription").val()!="") {
-        var regExAlphabetic = /^[a-zA-Z0-9-.\s]*$/;
+        var regExAlphabetic = /^[a-zA-Z0-9]+(([.-][a-zA-Z0-9])?[a-zA-Z0-9\s]*)*$/;
+       // var regExAlphabetic =  /\s*^[-.\w\s]*\s*$/;
         var docDesc = $("#txtDescription").val();
-        if (docDesc.match(regExAlphabetic)) {
+        if (docDesc.match(regExAlphabetic)|| docDesc=="") {
             $(this).removeClass("error");
             $(".errorDocDescription").text("");
         } else {
-           /* alert("Enter Valid DocumentDescription");*/
+            /* alert("Enter Valid DocumentDescription");*/
             $(this).addClass("error");
-            $(".errorDocDescription").text("Enter Valid DocumentDescription");
+            $(".errorDocDescription").text("Enter Valid Document Description using A-Z,a-z,0-9,.,- characters only ");
             return false;
         }
     }
 
 });
-$("#submit").on("click", function() {
+    $("#submit").on("click", function() {
     if($("#txtvalidToDate").val()!="") {
         if($('#txtvalidFromDate').val()=="") {
             /*alert("Enter ValidFromDate First");*/
             $(this).addClass("error");
-            $(".errorValidTo").text("Enter ValidFromDate First");
+            $(".errorValidTo").text("Enter Valid From Date First");
             $('#txtvalidFromDate').focus();
             return false;
         }
@@ -198,7 +218,7 @@ $("#submit").on("click", function() {
         }
     }
 });
-$("#submit").on("click", function() {
+    $("#submit").on("click", function() {
     if($("#ddlAddressScope").val()!="None" && $("#ddlAddressScope").val()=="Group" ) {
 
         if ($('#groupDetails').val() != null) {
@@ -228,14 +248,12 @@ $("#submit").on("click", function() {
         }
     }
     if($("#ddlAddressScope").val()=="") {
-            $(this).removeClass("error");
-            $(".errorAddressScope").text("");
-            return true;
+        $(this).removeClass("error");
+        $(".errorAddressScope").text("");
+        return true;
     }
 
     if($("#ddlAddressScope").val()!="None" && $("#ddlAddressScope").val()=="UserId" ) {
-
-
         if ($('#txtUserId').val() != "") {
             var userId = ['Bhavin', 'Harshal', 'Savan', 'Vimal'];
             var check = $('#txtUserId').val();
@@ -246,7 +264,7 @@ $("#submit").on("click", function() {
                     return true;
                 }
                 else {
-                /*    alert("Select any User from Bhavin,Harshal,Vimal,Savan only");*/
+                    /*    alert("Select any User from Bhavin,Harshal,Vimal,Savan only");*/
                     $(this).addClass("error");
                     $(".errorAddressScope").text("Select any User from Bhavin,Harshal,Vimal,Savan only");
                     return false;
@@ -254,7 +272,7 @@ $("#submit").on("click", function() {
             }
         }
         else {
-           /* alert("Select any User from Bhavin,Harshal,Vimal,Savan only");*/
+            /* alert("Select any User from Bhavin,Harshal,Vimal,Savan only");*/
             $(this).addClass("error");
             $(".errorAddressScope").text("Select any User from Bhavin,Harshal,Vimal,Savan only");
             return false;
