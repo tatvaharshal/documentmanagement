@@ -32,8 +32,10 @@ module DocumentList {
         constructor(private $scope: IDocumentListScope, private $location: ng.ILocationService, private $window: ng.IWindowService, private $modal: ng.ui.bootstrap.IModalService, private DocumentListService: IDocumentListService, private $filter: ng.IFilterService, private fileUploadService: IFileUploadService) {
             super($scope);
             $scope.vm = this;
-
+            $scope.isImageRequired = true;
+            /*  _http = $http = ng.IHttpService;*/
             this.$scope.success_message = false;
+            this.$scope.failure_message = false;
 
             var msg = localStorage.getItem("success");
             if (msg != "null") {
@@ -45,6 +47,19 @@ module DocumentList {
                     this.$scope.$apply();
                 }.bind(this), 2000);
             }
+
+            var msg = localStorage.getItem("failure");
+            if (msg != "null") {
+                localStorage.setItem("failure", "null");
+                this.$scope.statusMessage = msg;
+                this.$scope.failure_message = true;
+                setTimeout(function() {
+                    this.$scope.failure_message = false;
+                    this.$scope.$apply();
+                }.bind(this), 5000);
+            }
+
+
             this.status = this.$location.search().status;
             if (!angular.isUndefined(this.status) && this.status != null && this.status != "") {
                 this.$scope.status = this.status.trim();
@@ -315,12 +330,18 @@ module DocumentList {
                     { text: "Paymentwidget", value: "Paymentwidget" },
                 ];
                 if (data.documentId == 0) {
-                       alert("No data found for this ID");
+                    //alert("No data found for this ID");
+                    localStorage.setItem("success", "No Data Found For This Id");
                     this.$window.location.href = "./DocumentList";
                 }
                 this.doc = data;
                 this.$scope.doc = data;
-
+                if (this.doc.documentName!= null) {
+                    this.$scope.doc.documentName = this.$scope.doc.documentName;
+                }
+                if (this.doc.documentDescription!= null) {
+                    this.$scope.doc.documentDescription = this.$scope.doc.documentDescription;
+                }
                 if (this.doc.creationDate == null) {
                     this.$scope.doc.creationDate = "";
                 } else {
@@ -382,7 +403,7 @@ module DocumentList {
                         $(".errorAddressScope").text("");
                     }
                     else
-                    {   alert("Group Details are not as per options");
+                    {  /* alert("Group Details are not as per options");*/
                         $(this).addClass("error");
                         $(".errorAddressScope").text("Group Details are not as per options");
                         this.$scope.docLink.groupDetails=null;
@@ -400,7 +421,7 @@ module DocumentList {
                     }
                     else
                     {
-                        alert("Role Details are not as per options");
+                        /*  alert("Role Details are not as per options");*/
                         $(this).addClass("error");
                         $(".errorAddressScope").text("Role Details are not as per options");
                         this.$scope.docLink.roleDetails=null;
@@ -418,7 +439,7 @@ module DocumentList {
                     }
                     else
                     {
-                        alert("Select any User from Bhavin,Harshal,Vimal,Savan only");
+                        /* alert("Select any User from Bhavin,Harshal,Vimal,Savan only");*/
                         $(this).addClass("error");
                         $(".errorAddressScope").text("Select any User from Bhavin,Harshal,Vimal,Savan only");
                         this.$scope.docLink.userId=null;
@@ -443,7 +464,7 @@ module DocumentList {
                     }
                     else
                     {
-                        alert("Group Details are not as per options");
+                        /*alert("Group Details are not as per options");*/
                         $(this).addClass("error");
                         $(".errorAddressScope").text("Group Details are not as per options");
                         this.$scope.docLink.groupDetails=null;
@@ -462,7 +483,7 @@ module DocumentList {
                     }
                     else
                     {
-                        alert("Role Details are not as per options");
+                        /*alert("Role Details are not as per options");*/
                         $(this).addClass("error");
                         $(".errorAddressScope").text("Role Details are not as per options");
                         this.$scope.docLink.roleDetails=null;
@@ -481,7 +502,7 @@ module DocumentList {
                     }
                     else
                     {
-                        alert("Select any User from Bhavin,Harshal,Vimal,Savan only");
+                        /*alert("Select any User from Bhavin,Harshal,Vimal,Savan only");*/
                         $(this).addClass("error");
                         $(".errorAddressScope").text("Select any User from Bhavin,Harshal,Vimal,Savan only");
                         this.$scope.docLink.userId=null;
@@ -494,6 +515,14 @@ module DocumentList {
         public docvalidcheck(Doc) {
             var doc = Doc;
             var documentType = doc.documentType;
+
+            if (documentType == "") {
+                $(this).addClass("error");
+                $(".errorDocType").text("DocumentType is required ");
+                return false;
+            }
+
+
             if (documentType != "" && documentType !=undefined) {
                 var type = ['None', 'Contract', 'Account_Statement', 'Information', 'Offer'];
                 var check = documentType;
@@ -504,9 +533,9 @@ module DocumentList {
                     }
                     else
                     {
-                        alert("Select DocumentType from option");
+                        /*alert("Select DocumentType from option");*/
                         $(this).addClass("error");
-                        $(".errorDocType").text("Select DocumentType from option");
+                        $(".errorDocType").text("Select Proper DocumentType from option");
                         this.$scope.doc.documentType=null;
                         return false;
                     }
@@ -523,9 +552,9 @@ module DocumentList {
                     }
                     else
                     {
-                        alert("Select Addressscope from option");
+                        /*alert("Select Addressscope from option");*/
                         $(this).addClass("error");
-                        $(".errorAddressScope").text("Select Addressscope  from option");
+                        $(".errorAddressScope").text("Select Proper Addressscope  from option");
                         this.$scope.doc.addressScope=null;
                         return false;
                     }
@@ -542,9 +571,9 @@ module DocumentList {
                     }
                     else
                     {
-                        alert("Select Document Status from option");
+                        /* alert("Select Document Status from option");*/
                         $(this).addClass("error");
-                        $(".errorDocStatus").text("Select Document Status  from option");
+                        $(".errorDocStatus").text("Select Proper Document Status  from option");
                         this.$scope.doc.documentStatus=null;
                         return false;
                     }
@@ -565,7 +594,7 @@ module DocumentList {
                     $(".errorCreationDate").text("");
                 }
                 else {
-                    alert("CreationDate  should be <=today's date");
+                    /*alert("CreationDate  should be <=today's date");*/
                     $(this).addClass("error");
                     $(".errorCreationDate").text("CreationDate  should be <=today's date");
                     this.$scope.doc.creationDate=null;
@@ -582,7 +611,7 @@ module DocumentList {
                     $(".errorValidFrom").text("");
                 }
                 else {
-                     alert("ValidFrom Date should be >=importDate or today");
+                    /* alert("ValidFrom Date should be >=importDate or today");*/
                     $(this).addClass("error");
                     $(".errorValidFrom").text("ValidFrom Date should be >=importDate or today");
                     this.$scope.doc.validFrom=null;
@@ -592,12 +621,12 @@ module DocumentList {
             }
             var validTo = this.doc.validTo;
             if (validTo!=null && validTo!=undefined) {
-                    if(validFrom!=null && validTo>=validFrom){
+                if(validFrom!=null && validTo>=validFrom){
                     $(this).removeClass("error");
                     $(".errorValidTo").text("");
                 }
                 else {
-                    alert("Enter ValidFromDate First & validTo must be >=validFrom");
+                    /*alert("Enter ValidFromDate First & validTo must be >=validFrom");*/
                     $(this).addClass("error");
                     $(".errorValidTo").text("Enter ValidFromDate First & validTo must be >=validFrom");
                     this.$scope.doc.validTo=null;
@@ -616,7 +645,7 @@ module DocumentList {
                     }
                     else
                     {
-                        alert("DocumentTag Details are not as per options");
+                        /* alert("DocumentTag Details are not as per options");*/
                         $(this).addClass("error");
                         $(".errorDocTag").text("DocumentTag Details are not as per options");
                         this.$scope.doc.documentTag=null;
@@ -627,11 +656,11 @@ module DocumentList {
             var documentName = doc.documentName;
             if (documentName!="" && documentName!=undefined) {
                 var regExAlphabetic = /^[a-zA-Z0-9-.\s]*$/;
-                if (documentName.match(regExAlphabetic)) {
+                if (documentName.match(regExAlphabetic) && documentName!="") {
                     $(this).removeClass("error");
                     $(".errorDocName").text("");
                 } else {
-                    alert("Enter Valid DocumentName");
+                    /*alert("Enter Valid DocumentName");*/
                     $(this).addClass("error");
                     $(".errorDocName").text("Enter Valid DocumentName");
                     return false;
@@ -640,11 +669,11 @@ module DocumentList {
             var documentDescription = doc.documentDescription;
             if (documentDescription!="" && documentDescription!=undefined) {
                 var regExAlphabetic = /^[a-zA-Z0-9-.\s]*$/;
-                if (documentDescription.match(regExAlphabetic)) {
+                if (documentDescription.match(regExAlphabetic)&& documentDescription!="") {
                     $(this).removeClass("error");
                     $(".errorDocDescription").text("");
                 } else {
-                    alert("Enter Valid DocumentDescription");
+                    /* alert("Enter Valid DocumentDescription");*/
                     $(this).addClass("error");
                     $(".errorDocDescription").text("Enter Valid DocumentDescription");
                     return false;
@@ -658,16 +687,24 @@ module DocumentList {
             this.docLink =this.$scope.docLink;
 
             if(this.docLink!=null){
-            var abc = this.validationcheck(this.docLink);
-            if(abc==false)
-              {
-                return false;
-              }
+                var abc = this.validationcheck(this.docLink);
+                if(abc==false)
+                {
+                    return false;
+                }
+            }
+            if(this.$scope.doc.documentName=="")
+            {
+                this.doc.documentName=undefined;
+            }
+            if(this.$scope.doc.documentDescription=="")
+            {
+                this.doc.documentDescription=undefined;
             }
             if(this.$scope.doc.addressScope=="" || this.$scope.doc.addressScope==undefined)
-              {
-                  this.doc.addressScope="None";
-              }
+            {
+                this.doc.addressScope="None";
+            }
             if(this.$scope.doc.creationDate ==null || this.$scope.doc.creationDate==undefined)
             {
                 this.doc.creationDate=this.convertDate(new Date());
@@ -727,6 +764,7 @@ module DocumentList {
                         debugger;
                         if(response.status != undefined) {
                             alert("Error Code : " +response.error);
+                            localStorage.setItem("failure", "Error Code : " +response.error);
                             return false;
                         }
                         if(response.fieldErrorDTO != null) {
@@ -742,21 +780,23 @@ module DocumentList {
                             this.$window.location.href="./DocumentList";
 
                         }else {
-                            var msg="Error in Data save"
+                            var msg="Error During Data save"
                             $('#error_message').fadeIn().html(msg);
                             setTimeout(function() {
                                 $('#error_message').fadeOut("slow");
                             }, 9000 );
-                            alert("Something Went Wrong");
+                            /*  alert("Something Went Wrong");*/
                         }
                     }).catch((error) =>{
                         debugger;
                         alert("error: "+error);
+                        localStorage.setItem("failure", "error : " +error);
                     });
                 });
             }
             else{
                 alert("File is undefined");
+                localStorage.setItem("failure", "File is undefined");
             }
         }
         //updateDocument
@@ -770,14 +810,14 @@ module DocumentList {
             this.doc.importDate = this.convertDate(this.$scope.doc.importDate);
 
             if(this.$scope.doc.validFrom==""){
-             this.$scope.doc.validFrom=null;
+                this.$scope.doc.validFrom=null;
             }
-           // this.doc.validFrom=new Date(this.$scope.validFrom);
-           // this.$scope.validFrom=this.convertDate(this.$scope.doc.validFrom);
-          /*  this.$scope.doc.validFrom=new Date(this.$scope.validFrom);
-            this.doc.validFrom=this.$scope.doc.validFrom;*/
+            // this.doc.validFrom=new Date(this.$scope.validFrom);
+            // this.$scope.validFrom=this.convertDate(this.$scope.doc.validFrom);
+            /*  this.$scope.doc.validFrom=new Date(this.$scope.validFrom);
+             this.doc.validFrom=this.$scope.doc.validFrom;*/
 
-           // this.doc.validFrom=this.$scope.validFrom;
+            // this.doc.validFrom=this.$scope.validFrom;
             this.doc.validFrom=this.$scope.doc.validFrom;
 
             if(this.$scope.doc.validTo==""){
@@ -785,10 +825,10 @@ module DocumentList {
             }
             this.doc.validTo=this.$scope.doc.validTo;
 
-           if(this.doc.validTo<this.doc.validFrom)
-           {
-               this.doc.validTo=this.doc.validFrom;
-           }
+            if(this.doc.validTo<this.doc.validFrom)
+            {
+                this.doc.validTo=this.doc.validFrom;
+            }
             this.doc = this.$scope.doc;
             this.docLink =this.$scope.docLink;
             if(this.$scope.doc.addressScope=="" || this.$scope.doc.addressScope==undefined)
@@ -850,7 +890,7 @@ module DocumentList {
                         var field = response.fieldErrorDTO[i].field.toString();
                         var message = response.fieldErrorDTO[i].message.toString();
                         var id ="#"+field ;
-                        alert(id);
+
                         $(id).html (message);
                     }
                 }
@@ -864,9 +904,10 @@ module DocumentList {
                     setTimeout(function() {
                         $('#error_message').fadeOut("slow");
                     }, 9000 );
-                    alert("Something Went Wrong");
+
                 }
             }).catch(err =>{
+
                 alert("error ocured : "+err);
             });
         }

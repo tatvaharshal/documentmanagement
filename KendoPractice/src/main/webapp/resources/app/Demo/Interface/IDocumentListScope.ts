@@ -11,6 +11,7 @@ module DocumentList
         docLinkList:Array<DocumentLinkDTO>;
         list:Multivalue;
         file:any;
+        isImageRequired: boolean;
         documentTag:string[];
         groupDetails:string[];
         roleDetails:string[];
@@ -28,6 +29,7 @@ module DocumentList
         user:any;
         scopeOptionEdit:any;
         success_message:boolean;
+        failure_message:boolean;
         statusMessage:string;
 
     }
