@@ -32,7 +32,6 @@ import com.tatvacoconet.service.DocumentDataService;
 import com.tatvacoconet.service.DocumentLinkService;
 
 @RestController
-
 public class DocumentDataController {
     final static Logger logger = Logger.getLogger(DocumentDataController.class);
     @Autowired
@@ -45,7 +44,6 @@ public class DocumentDataController {
     DocumentLinkValidator documentLinkValidator;
     @Autowired
     DocumentMapper documentMapper;
-
     DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
     Date date = new Date();
     /**
@@ -102,7 +100,7 @@ public class DocumentDataController {
     public ResponseEntity<DocumentDTO> addDocument(@RequestBody DocumentDTO documentDTO,
                                                    @ModelAttribute DocumentData document,
                                                    @ModelAttribute DocumentLink documentLink)
-            throws ParseException {
+        throws ParseException {
         logger.debug("Received request to add new record");
         DocumentLinkDTO docLinkDTO =new DocumentLinkDTO();
         DocumentDTO documentErrorDTO= new DocumentDTO();
@@ -135,7 +133,7 @@ public class DocumentDataController {
             document = dataService.getDocumentByID(documentDTO.getDocumentId());
             if (document == null) {
                 FieldErrorDTO error = new FieldErrorDTO("documentId","Unable to Save. "
-                        + "DocumentData with id " + documentDTO.getDocumentId() + " not found");
+                                       + "DocumentData with id " + documentDTO.getDocumentId() + " not found");
                 fieldErrors.add(error);
                 documentIdDTO.setFieldErrorDTO(fieldErrors);
                 logger.info("Unable to Save.DocumentData with id " + documentDTO.getDocumentId() + " not found");
@@ -208,7 +206,6 @@ public class DocumentDataController {
         DocumentDTO documentFileDTO;new DocumentDTO();
         DocumentData document ;new DocumentData();
         List<FieldErrorDTO> fieldErrors = new ArrayList<>();
-
         MultipartFile multipartFile = file.getFile();
         if (!multipartFile.isEmpty()) {
             Random r = new Random();
@@ -234,7 +231,6 @@ public class DocumentDataController {
             FieldErrorDTO error = new FieldErrorDTO("filePath","Proper Pdf File Not Found");
             fieldErrors.add(error);
             documentDTO.setFieldErrorDTO(fieldErrors);
-
             logger.info("Proper Pdf File Not Found");
             return new ResponseEntity<>(documentDTO,HttpStatus.NOT_FOUND);
         }
@@ -262,7 +258,7 @@ public class DocumentDataController {
         DocumentData document = dataService.getDocumentByID(documentId);
         if(document==null){
             FieldErrorDTO error = new FieldErrorDTO("documentId","Unable to FindDetails."
-                    + "DocumentData with id " + documentId + " not found");
+                                                     + "DocumentData with id " + documentId + " not found");
             fieldErrors.add(error);
             documentDTO.setFieldErrorDTO(fieldErrors);
             logger.info("Unable to FindDetails. DocumentData with id " + documentId + " not found");
@@ -293,7 +289,7 @@ public class DocumentDataController {
         DocumentData document = dataService.getDocumentByID(documentId);
         if(document==null){
             FieldErrorDTO error = new FieldErrorDTO("documentId","Unable to FindDetails."
-                    + "DocumentData with id " + documentId + " not found");
+                                                     + "DocumentData with id " + documentId + " not found");
             fieldErrors.add(error);
             documentDTO.setFieldErrorDTO(fieldErrors);
             logger.info("Unable to FindDetails. DocumentData with id " + documentId + " not found");
@@ -324,7 +320,8 @@ public class DocumentDataController {
             headers = "Accept=application/json")
     public ResponseEntity<DocumentDTO> updateDocument(@RequestBody DocumentDTO documentDTO,
                                                       @ModelAttribute DocumentData document,
-                                                      @ModelAttribute DocumentLink documentLink) throws ParseException {
+                                                      @ModelAttribute DocumentLink documentLink)
+        throws ParseException {
         DocumentDTO documentUpdateErrorDTO=new DocumentDTO();
         DocumentDTO documentLinkUpdateErrorDTO=new DocumentDTO();
         String importDate=dateFormat.format(documentDTO.getImportDate());
@@ -362,8 +359,7 @@ public class DocumentDataController {
             logger.info("DocumentData Updated successfully");
             DocumentLink documentLinkById = linkService.getAllDocumentsById(document.getDocumentId());
             DocumentLinkDTO documentlinkdto = documentDTO.getDocumentLinkDTO();
-            List<FieldErrorDTO> fieldErrorsDTO=documentLinkValidator.validateDocumentLink(documentlinkdto);
-
+        List<FieldErrorDTO> fieldErrorsDTO=documentLinkValidator.validateDocumentLink(documentlinkdto);
             if (fieldErrors.size()>0) {
                 documentLinkUpdateErrorDTO.setFieldErrorDTO(fieldErrorsDTO);
                 logger.info("Validation Error in UpdateDocumentLink "+documentLinkUpdateErrorDTO);
@@ -410,7 +406,7 @@ public class DocumentDataController {
         }
         else {
             FieldErrorDTO error = new FieldErrorDTO("documentId",
-                    "Unable to delete. DocumentData with id " + documentId + " not found");
+                                 "Unable to delete. DocumentData with id " + documentId + " not found");
             fieldErrors.add(error);
             documentDTO.setFieldErrorDTO(fieldErrors);
             logger.info("Unable to delete. DocumentData with id " + documentId + " not found");
@@ -420,4 +416,3 @@ public class DocumentDataController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
-

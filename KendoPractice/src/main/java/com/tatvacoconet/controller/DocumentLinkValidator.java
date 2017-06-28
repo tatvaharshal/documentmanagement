@@ -20,24 +20,24 @@ public class DocumentLinkValidator{
         List<FieldErrorDTO> fieldErrors = new ArrayList<>();
         DocumentLinkDTO documentLinkDTO = (DocumentLinkDTO) obj;
 
-        if(documentLinkDTO.getGroupDetails()==null &&
-                (documentLinkDTO.getRoleDetails()==null && documentLinkDTO.getUserId()==null)){
+        if(documentLinkDTO.getGroupDetails()==null && (documentLinkDTO.getRoleDetails()==null
+                                                   && documentLinkDTO.getUserId()==null)){
             fieldErrors.add(new FieldErrorDTO("groupDetails","groupDetails can not be blank"));
         }
         if(documentLinkDTO.getGroupDetails()!=null){
             String group[]= documentLinkDTO.getGroupDetails().split(",");
             List<String> groupEnums = Stream.of(GroupDetails.values())
-                                      .map(GroupDetails::name).collect(Collectors.toList());
+                                     .map(GroupDetails::name).collect(Collectors.toList());
             for(String groupdetails:group)
                 if (!groupEnums.contains(groupdetails)){
                     fieldErrors.add(new FieldErrorDTO("groupDetails",
-                                                      "Select proper groupDetails from option"));
+                                   "Select proper groupDetails from option"));
                 }
         }
         if(documentLinkDTO.getRoleDetails()==null &&
                 (documentLinkDTO.getGroupDetails()==null && documentLinkDTO.getUserId()==null)){
             fieldErrors.add(new FieldErrorDTO("roleDetails",
-                                              "roleDetails can not be blank"));
+                           "roleDetails can not be blank"));
         }
         if(documentLinkDTO.getRoleDetails()!=null){
             String role[]= documentLinkDTO.getRoleDetails().split(",");
@@ -46,7 +46,7 @@ public class DocumentLinkValidator{
             for(String roledetails:role)
                 if (!roleEnums.contains(roledetails)){
                     fieldErrors.add(new FieldErrorDTO("roleDetails",
-                                                      "Select proper roleDetails from option"));
+                                   "Select proper roleDetails from option"));
                 }
         }
         if(documentLinkDTO.getUserId()==null &&
@@ -59,7 +59,7 @@ public class DocumentLinkValidator{
                                      .map(UserId::name).collect(Collectors.toList());
             if (!userEnums.contains(user)){
                 fieldErrors.add(new FieldErrorDTO("userId",
-                                                  "Select proper from Bhavin,Harshal,Savan,Vimal"));
+                               "Select proper from Bhavin,Harshal,Savan,Vimal"));
             }
         }
         return  fieldErrors;

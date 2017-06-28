@@ -51,23 +51,23 @@ public class DocumentValidator{
         if(documentDTO.getCreationDate()!=null){
             if (documentDTO.getCreationDate().after(todayDate)) {
                 fieldErrors.add(new FieldErrorDTO("creationDate",
-                        "Future date is not allowed(<=today's date)"));
+                               "Future date is not allowed(<=today's date)"));
             }
         }
         if(documentDTO.getValidFrom()!=null){
             if (documentDTO.getValidFrom().before(todayDate)) {
                 fieldErrors.add(new FieldErrorDTO("validFrom",
-                        "Past date for ValidFrom is not allowed(>=today's date)"));
+                               "Past date for ValidFrom is not allowed(>=today's date)"));
             }
         }
         if(documentDTO.getValidTo()!=null){
             if (documentDTO.getValidFrom()==null) {
                 fieldErrors.add(new FieldErrorDTO("validTo",
-                        "Enter ValidFrom Date First"));
+                               "Enter ValidFrom Date First"));
             }
             if (documentDTO.getValidTo().before(documentDTO.getValidFrom())) {
                 fieldErrors.add(new FieldErrorDTO("validTo",
-                        "Past date is not allowed(>=valid_from date)"));
+                               "Past date is not allowed(>=valid_from date)"));
             }
         }
         if(documentDTO.getDocumentStatus()!=null && documentDTO.getDocumentStatus()!=""){
@@ -85,7 +85,7 @@ public class DocumentValidator{
             for(String tagdetails:tag)
                 if (!doctagEnums.contains(tagdetails)){
                     fieldErrors.add(new FieldErrorDTO("documentTag",
-                            "Document Tag can not be blank Or Select proper from option"));
+                                   "Document Tag can not be blank Or Select proper from option"));
                 }
         }
         if (documentDTO.getDocumentType().equals(DocumentType.None.name())){
@@ -109,29 +109,32 @@ public class DocumentValidator{
                     !documentDTO.getAddressScope().name().equals(AddressScope.None.name())) {
                 fieldErrors.add(new FieldErrorDTO("addressScope","Select proper from option"));
             }
-            if(!documentDTO.getAddressScope().name().equals(AddressScope.None.name()) && documentDTO.getDocumentLinkDTO()==null){
+            if(!documentDTO.getAddressScope().name().equals(AddressScope.None.name())
+                                           && documentDTO.getDocumentLinkDTO()==null){
                 fieldErrors.add(new FieldErrorDTO("addressScope",
-                        "Select proper group or Role or UserId from option"));
+                               "Select proper group or Role or UserId from option"));
 
             }
         }
         if(documentDTO.getDocumentDescription()!=null){
-            if (!documentDTO.getDocumentDescription().matches(prefix)|| documentDTO.getDocumentDescription()=="") {
+            if (!documentDTO.getDocumentDescription().matches(prefix)||
+                            documentDTO.getDocumentDescription()=="") {
                 fieldErrors.add(new FieldErrorDTO("documentDescription",
-                        "Enter Valid Document Description using A-Z,a-z,0-9,.,- characters only"));
+                               "Enter Valid Document Description using A-Z,a-z,0-9,.,- characters only"));
             }
             if (documentDTO.getDocumentDescription().length()>1000) {
                 fieldErrors.add(new FieldErrorDTO("documentDescription",
-                        "Document Description length should be less than 1000"));
+                               "Document Description length should be less than 1000"));
             }
         }
         if(documentDTO.getDocumentName()!=null){
             if (!documentDTO.getDocumentName().matches(prefix)|| documentDTO.getDocumentName()=="") {
-                fieldErrors.add(new FieldErrorDTO("documentName","Enter Valid Document Name using A-Z,a-z,0-9,.,- characters only"));
+                fieldErrors.add(new FieldErrorDTO("documentName",
+                               "Enter Valid Document Name using A-Z,a-z,0-9,.,- characters only"));
             }
             if (documentDTO.getDocumentName().length()>255) {
                 fieldErrors.add(new FieldErrorDTO("documentName",
-                        "Document Name length should be less than 255"));
+                               "Document Name length should be less than 255"));
             }
         }
         return fieldErrors;
@@ -144,19 +147,19 @@ public class DocumentValidator{
             fieldErrors.add(new FieldErrorDTO("documentDTO", "File Upload is mandatory"));
         }
         if (!documentDTO.getDocumentName().matches(prefix)|| documentDTO.getDocumentName()=="") {
-            fieldErrors.add(new FieldErrorDTO("documentName", "Enter Valid Document Name using A-Z,a-z,0-9,.,- characters only"));
+            fieldErrors.add(new FieldErrorDTO("documentName",
+                           "Enter Valid Document Name using A-Z,a-z,0-9,.,- characters only"));
         }
         if (documentDTO.getDocumentName().length() > 255) {
             fieldErrors.add(new FieldErrorDTO("documentName",
-                    "Document Name length should be less than 255"));
+                           "Document Name length should be less than 255"));
         }
         if (documentDTO.getFileSize() > permitedSize) {
             fieldErrors.add(new FieldErrorDTO("fileSize",
-                    "File Size is not allowed more than 5MB"));
+                           "File Size is not allowed more than 5MB"));
         }
         return fieldErrors;
     }
-
     public List<FieldErrorDTO> validateUpdateDocument(Object obj) throws ParseException {
         List<FieldErrorDTO> fieldErrors = new ArrayList<>();
         DocumentDTO documentUpdateDTO = (DocumentDTO) obj;
@@ -184,14 +187,14 @@ public class DocumentValidator{
                     && !documentUpdateDTO.getAddressScope().name().equals(AddressScope.UserId.name())
                     && !documentUpdateDTO.getAddressScope().name().equals(AddressScope.None.name())) {
                 fieldErrors.add(new FieldErrorDTO("addressScope",
-                        "addressScope can not be blank Or Select proper from option"));
+                               "addressScope can not be blank Or Select proper from option"));
             }
             if(!documentUpdateDTO.getAddressScope().name().equals(AddressScope.None.name())
                     && (documentUpdateDTO.getDocumentLinkDTO().getRoleDetails()==null
                     && documentUpdateDTO.getDocumentLinkDTO().getGroupDetails()==null
                     && documentUpdateDTO.getDocumentLinkDTO().getUserId()==null)){
                 fieldErrors.add(new FieldErrorDTO("addressScope",
-                        "Select proper group or Role or UserId from option"));
+                               "Select proper group or Role or UserId from option"));
 
             }
         }
@@ -220,17 +223,17 @@ public class DocumentValidator{
         if(documentUpdateDTO.getValidFrom()!=null){
             if (documentUpdateDTO.getValidFrom().before(importDateData)){
                 fieldErrors.add(new FieldErrorDTO("validFrom",
-                        "Past date for ValidFrom is not allowed(>=importDate)"));
+                               "Past date for ValidFrom is not allowed(>=importDate)"));
             }
         }
         if (documentUpdateDTO.getValidTo()!=null){
             if (documentUpdateDTO.getValidFrom()==null) {
                 fieldErrors.add(new FieldErrorDTO("validTo",
-                        "Enter ValidFrom Date First"));
+                               "Enter ValidFrom Date First"));
             }
             if (documentUpdateDTO.getValidTo().before(documentUpdateDTO.getValidFrom())) {
                 fieldErrors.add(new FieldErrorDTO("validTo",
-                        "Past date is not allowed(>=valid_from date)"));
+                               "Past date is not allowed(>=valid_from date)"));
             }
         }
         if (documentUpdateDTO.getDocumentTag() != null && documentUpdateDTO.getDocumentTag()!="") {
@@ -240,17 +243,18 @@ public class DocumentValidator{
             for (String tagdetails : tag)
                 if (!doctagEnums.contains(tagdetails)) {
                     fieldErrors.add(new FieldErrorDTO("documentTag",
-                            "Document Tag can not be blank Or Select proper from option"));
+                                   "Document Tag can not be blank Or Select proper from option"));
                 }
         }
         if (documentUpdateDTO.getDocumentDescription() != null) {
-            if (!documentUpdateDTO.getDocumentDescription().matches(prefix)|| documentUpdateDTO.getDocumentDescription()=="") {
+            if (!documentUpdateDTO.getDocumentDescription().matches(prefix)||
+                            documentUpdateDTO.getDocumentDescription()=="") {
                 fieldErrors.add(new FieldErrorDTO("documentDescription",
-                        "Enter Valid Document Description using A-Z,a-z,0-9,- characters only"));
+                               "Enter Valid Document Description using A-Z,a-z,0-9,- characters only"));
             }
             if (documentUpdateDTO.getDocumentDescription().length() > 1000) {
                 fieldErrors.add(new FieldErrorDTO("documentDescription",
-                        "Document Description  length should be less than 1000"));
+                               "Document Description  length should be less than 1000"));
             }
         }
         if (documentUpdateDTO.getAddressScope() == null) {
@@ -266,17 +270,17 @@ public class DocumentValidator{
             if (documentUpdateDTO.getValidFrom()!=null){
                 if (documentUpdateDTO.getValidFrom().before(importDateData)){
                     fieldErrors.add(new FieldErrorDTO("validFrom",
-                            "Past date for ValidFrom is not allowed(>=importDate)"));
+                                   "Past date for ValidFrom is not allowed(>=importDate)"));
                 }
             }
             if (documentUpdateDTO.getValidTo()!=null){
                 if (documentUpdateDTO.getValidFrom()==null) {
                     fieldErrors.add(new FieldErrorDTO("validTo",
-                            "Enter ValidFrom Date First"));
+                                  "Enter ValidFrom Date First"));
                 }
                 if (documentUpdateDTO.getValidTo().before(documentUpdateDTO.getValidFrom())) {
                     fieldErrors.add(new FieldErrorDTO("validTo",
-                            "Past date is not allowed(>=valid_from date)"));
+                                   "Past date is not allowed(>=valid_from date)"));
                 }
             }
             if (documentUpdateDTO.getDocumentTag() != null && documentUpdateDTO.getDocumentTag()!="") {
@@ -286,29 +290,33 @@ public class DocumentValidator{
                 for (String tagdetails : tag)
                     if (!doctagEnums.contains(tagdetails)) {
                         fieldErrors.add(new FieldErrorDTO("documentTag",
-                                "Document Tag can not be blank Or Select proper from option"));
+                                       "Document Tag can not be blank Or Select proper from option"));
                     }
             }
             if (documentUpdateDTO.getDocumentDescription() != null) {
-                if (!documentUpdateDTO.getDocumentDescription().matches(prefix)|| documentUpdateDTO.getDocumentDescription()=="") {
+                if (!documentUpdateDTO.getDocumentDescription().matches(prefix)||
+                                documentUpdateDTO.getDocumentDescription()=="") {
                     fieldErrors.add(new FieldErrorDTO("documentDescription",
-                            "Enter Valid Document Description using A-Z,a-z,0-9,- characters only"));
+                                   "Enter Valid Document Description using A-Z,a-z,0-9,- characters only"));
                 }
                 if (documentUpdateDTO.getDocumentDescription().length() > 1000) {
                     fieldErrors.add(new FieldErrorDTO("documentDescription",
-                            "Document Description  length should be less than 1000"));
+                                   "Document Description  length should be less than 1000"));
                 }
             }
             if(documentUpdateDTO.getDocumentName()==null){
-                fieldErrors.add(new FieldErrorDTO("documentName","Enter Valid Document Name using A-Z,a-z,0-9,.,- characters only"));
+                fieldErrors.add(new FieldErrorDTO("documentName",
+                               "Enter Valid Document Name using A-Z,a-z,0-9,.,- characters only"));
             }
             if (documentUpdateDTO.getDocumentName() != null) {
-                if (!documentUpdateDTO.getDocumentName().matches(prefix)|| documentUpdateDTO.getDocumentName()=="") {
-                    fieldErrors.add(new FieldErrorDTO("documentName","Enter Valid Document Name using A-Z,a-z,0-9,.,- characters only"));
+                if (!documentUpdateDTO.getDocumentName().matches(prefix)||
+                                documentUpdateDTO.getDocumentName()=="") {
+                    fieldErrors.add(new FieldErrorDTO("documentName",
+                                   "Enter Valid Document Name using A-Z,a-z,0-9,.,- characters only"));
                 }
                 if (documentUpdateDTO.getDocumentName().length() > 255) {
                     fieldErrors.add(new FieldErrorDTO("documentName",
-                            "Document Name length should be less than 255"));
+                                   "Document Name length should be less than 255"));
                 }
             }
 
