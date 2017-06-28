@@ -58,8 +58,6 @@ module DocumentList {
                     this.$scope.$apply();
                 }.bind(this), 5000);
             }
-
-
             this.status = this.$location.search().status;
             if (!angular.isUndefined(this.status) && this.status != null && this.status != "") {
                 this.$scope.status = this.status.trim();

@@ -13,7 +13,6 @@ module DocumentList
         public BaseInit()
         {
         }
-
     }
     angular.module("DocumentList").controller("BaseDocumentListController", BaseDocumentListController);
 }
