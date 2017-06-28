@@ -49,8 +49,9 @@
 
     <section id="content">
         <div class="page-content">
-    <%--  <div id="success_message" style="color:green;float:right; margin: 0 1000px 0 0";></div>--%>
-         <div id="error_message" style="color:red;float:right; margin: 0 1000px 0 0";></div>
+            <%--  <div id="success_message" style="color:green;float:right; margin: 0 1000px 0 0";></div>--%>
+                <div id="error_message" style="color:red;float:right; margin: 0 1000px 0 0";></div>
+                <div class="alert alert-danger"  ng-show="failure_message == true">{{statusMessage}}</div>
             <div class="page-padding" ng-controller="DocumentListController as ctlr" ng-init="ctlr.Init()">
                 <form ng-submit="ctlr.validateFile(this.file) && Documentform.$valid && ctlr.saveDocument()" name="Documentform" id="submit">
 
@@ -99,7 +100,7 @@
 
                             <%--headerline--%>
                             <div class="col-md-2 col-md-offset-10 doc-tab">
-                                <h6 class="doc-header" style="font-size:1.1rem">Document data</h6>
+                                <h6 class="doc-header" style="font-size:1.1rem">Document Data</h6>
                             </div>
                             <%--Form    --%>
                             <div class="doc-form-div">
@@ -114,7 +115,7 @@
                                         <div class="has-error" data-ng-show="Documentform.$dirty" >
                                             <span style="color: red;" data-ng-show="Documentform.file.$error.required">This is a required field</span>
                                         </div>
-                                        <div class="errorFile" style="color: red;" >   </div>
+                                        <div class="errorFile">   </div>
                                     </div>
 
                                 </div>
@@ -126,10 +127,11 @@
                                     <span style="color: red;" id="addressScope"></span>
                                     <div class="form-group">
                                         <select class="custom-style" id="ddlAddressScope" ng-model="doc.addressScope">
-                                           <option value="" selected="selected">None</option>
+                                            <option value="" selected="selected">None</option>
                                             <option value="{{item.value}}" ng-repeat="item in scopeOption">{{item.text}}</option>
                                         </select>
-                                        <div class="errorAddressScope"></div>
+
+                                      <%--  <div class="errorAddressScope"></div>--%>
                                     </div>
                                 </div>
 
@@ -138,33 +140,36 @@
                                         <label for="txtUserId">UserID<span>*</span></label>
                                         <div class="form-group">
                                             <input type="text" id="txtUserId" name="userId" class="custom-style" placeholder="Please Enter.." ng-model="docLink.userId" />
+                                            <div class="errorAddressScope"></div>
                                         </div>
 
                                     </div>
 
                                     <div class="col-md-3 col-lg-3" id="divGroup" style="display: none">
-                                        <label for="groupDetails">Groups<span>*</span></label>
+                                        <label for="groupDetails">Group Details<span>*</span></label>
                                         <div class="form-group">
                                             <select kendo-multi-select id="groupDetails" name="groupDetails" k-ng-model="docLink.groupDetails" data-placeholder="Please select ..." multiple="multiple">
                                                 <option value="{{item.value}}" ng-repeat="item in groupOption">{{item.text}}</option>
                                             </select>
+                                            <div class="errorAddressScope"></div>
                                         </div>
                                     </div>
 
                                     <div class="col-md-3 col-lg-3" id="divRole" style="display: none" >
-                                        <label for="roleDetails">Role<span>*</span></label>
+                                        <label for="roleDetails">Role Details<span>*</span></label>
                                         <div class="form-group">
                                             <select kendo-multi-select id="roleDetails" name="roleDetails" k-ng-model="docLink.roleDetails" data-placeholder="Please select ..." multiple="multiple">
                                                 <option value="{{item.value}}" ng-repeat="item in roleOption">{{item.text}}</option>
                                             </select>
+                                            <div class="errorAddressScope"></div>
                                         </div>
                                     </div>
 
                                     <div class="col-md-3 col-lg-3">
-                                        <label for="documenttype">Document type<span>*</span></label>
-                                        <span style="color: red;" id="documentType"></span>
+                                        <label for="documenttype">Document Type<span>*</span></label>
+                                     <%--   <span style="color: red;" id="documentType"></span>--%>
                                         <div class="form-group">
-                                            <select class="custom-style" id="ddldocumenttype" name="documentType" ng-model="doc.documentType" required>
+                                            <select class="custom-style" id="documentType" name="documentType" ng-model="doc.documentType" required>
                                                 <option selected="selected" value="">None</option>
                                                 <option value="{{item.value}}" ng-repeat="item in docTypeOption">{{item.text}}</option>
                                             </select>
@@ -190,7 +195,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-3 col-lg-3">
-                                        <label for="txtcreationDate">Creation date</label>
+                                        <label for="txtcreationDate">Creation Date</label>
                                         <span style="color: red;" id="creationDate"></span>
                                         <div class="form-group">
                                             <input type="text" id="txtcreationDate" class="custom-style"  placeholder="Creation date" readonly ng-model="doc.creationDate"/>
@@ -199,7 +204,7 @@
                                     </div>
 
                                     <div class="col-md-3 col-lg-3">
-                                        <label for="txtvalidFromDate">Valid from</label>
+                                        <label for="txtvalidFromDate">Valid From</label>
                                         <span style="color: red;" id="validFrom"></span>
                                         <div class="form-group">
                                             <input type="text" id="txtvalidFromDate" class="custom-style" placeholder="Valid from" readonly ng-model="doc.validFrom"/>
@@ -209,7 +214,7 @@
                                     </div>
 
                                     <div class="col-md-3 col-lg-3">
-                                        <label for="txtvalidToDate">Valid to</label>
+                                        <label for="txtvalidToDate">Valid To</label>
                                         <span style="color: red;" id="validTo"></span>
                                         <div class="form-group">
                                             <input type="text" name= "validTo" id="txtvalidToDate" class="custom-style" placeholder="Valid To" readonly ng-model="doc.validTo"/>
@@ -228,7 +233,7 @@
                                         <input  type="text" class="custom-style"  name="docName" ng-model="doc.documentName" data-ng-pattern="/^[a-zA-Z0-9-.\s]*$/" id="txtName" placeholder="Document Name" data-ng-minlength="0" data-ng-maxlength="255">
 
                                         <div class="has-error" data-ng-show="Documentform.$dirty">
-                                            <span style="color: red;" data-ng-show="Documentform.docName.$error.maxlength">Maximun documentname length required is 255 letters only</span>
+                                            <span style="color: red;" data-ng-show="Documentform.docName.$error.maxlength">Maximun Document Name length required is 255 characters only</span>
                                         </div>
                                         <div class="errorDocName"></div>
                                     </div>
@@ -237,13 +242,13 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="txtDescription">Description</label>
+                                    <label for="txtDescription">Document Description</label>
                                     <span style="color: red;" id="documentDescription"></span>
                                     <div class="form-group">
                                         <input type="text" style="width: 100%;" name="docDesc" ng-model="doc.documentDescription"  data-ng-pattern="/^[a-zA-Z0-9-.\s]*$/" id="txtDescription" placeholder="Description" data-ng-minlength="0" data-ng-maxlength="1000"></input>
 
                                         <div class="has-error"   data-ng-show="Documentform.$dirty">
-                                            <span  style="color: red;"  data-ng-show="Documentform.docDesc.$error.maxlength">Maximun documentDescription length required is 1000 letters only</span>
+                                            <span  style="color: red;"  data-ng-show="Documentform.docDesc.$error.maxlength">Maximun Document Description length required is 1000 characters only</span>
                                         </div>
                                         <div class="errorDocDescription"></div>
                                     </div>
