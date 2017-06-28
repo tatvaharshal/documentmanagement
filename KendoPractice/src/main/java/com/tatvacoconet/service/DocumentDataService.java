@@ -16,5 +16,4 @@ public interface DocumentDataService {
 
     void delete(long documentId);
 
-
 }

@@ -150,7 +150,9 @@ public class DocumentDataController {
             document.setImportDate(todayDate);
             document.setDocumentDescription(documentDTO.getDocumentDescription());
             if(documentDTO.getDocumentName()!=null) {
-                document.setDocumentName(documentDTO.getDocumentName());
+                Random r = new Random();
+                int random = r.nextInt(200);
+                document.setDocumentName(random+"-"+documentDTO.getDocumentName());
             }
             document.setDocumentStatus(documentDTO.getDocumentStatus());
             document.setDocumentTag(documentDTO.getDocumentTag());
@@ -210,7 +212,7 @@ public class DocumentDataController {
         MultipartFile multipartFile = file.getFile();
         if (!multipartFile.isEmpty()) {
             Random r = new Random();
-            int random = r.nextInt(50);
+            int random = r.nextInt(200);
             documentDTO.setDocumentName(random+"-"+multipartFile.getOriginalFilename());
             documentDTO.setFileSize(multipartFile.getSize() / 1024);
             documentDTO.setFilePath(multipartFile.getBytes());
@@ -232,6 +234,7 @@ public class DocumentDataController {
             FieldErrorDTO error = new FieldErrorDTO("filePath","Proper Pdf File Not Found");
             fieldErrors.add(error);
             documentDTO.setFieldErrorDTO(fieldErrors);
+
             logger.info("Proper Pdf File Not Found");
             return new ResponseEntity<>(documentDTO,HttpStatus.NOT_FOUND);
         }
