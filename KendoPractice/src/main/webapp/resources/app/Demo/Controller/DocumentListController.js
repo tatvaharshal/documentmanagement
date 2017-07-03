@@ -696,7 +696,6 @@ var DocumentList;
                     return false;
                 }
             }
-
             var file = this.$scope.file;
             if (file != null || file != undefined) {
                 this.fileUploadService.uploadFile(file, "./fileUpload").then(function (data) {

@@ -236,7 +236,6 @@ module DocumentList {
             var fileName=files.name.match(regExAlphabetic);
             var ext = files.name.match(/\.(.+)$/)[1];
             if (angular.lowercase(ext) === 'pdf' && files.size<5242880 && files.name.match(regExAlphabetic)) {
-
                 $(this).removeClass("error");
                 $(".errorFile").text("");
                 return true;
@@ -857,7 +856,6 @@ module DocumentList {
                     return false;
                 }
             }
-
             if(this.$scope.doc.addressScope =="UserId" && this.$scope.docLink != undefined) {
                 this.docLink.userId = this.$scope.docLink.userId;
                 var objToString= JSON.stringify(this.docLink);
@@ -922,7 +920,6 @@ module DocumentList {
                 .then(updatedItem => this.onConfirm(updatedItem));
         }
         onConfirm(item:any):void {}
-
         public convertDate(timestamp: any) {
             var d = new Date(timestamp);
             var year = d.getFullYear();
