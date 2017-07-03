@@ -1,4 +1,6 @@
 <%--<%@ page contentType="text/html;charset=UTF-8" language="java" %>--%>
+<%--<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@page session="true"%>--%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -49,6 +51,10 @@
 <%
     String DocumentId = request.getParameter("DocumentId");
 %>
+<%--<c:if test="${pageContext.request.userPrincipal.name != null}">
+    <h2>Welcome : ${pageContext.request.userPrincipal.name}
+        | <a href="<c:url value="/logout" />" > Logout</a></h2>
+</c:if>--%>
 
 <div id="wrapper">
     <header id="header1"></header>
@@ -103,7 +109,7 @@
                             </div>
 
                             <div class="doc-tab">
-                                <h6 class="doc-header" style="font-size:1.1rem">Document Data</h6>
+                                <h6 class="doc-header" style="font-size:1.8rem">Document Data</h6>
                             </div>
 
                             <div class="doc-form-div">
@@ -126,8 +132,9 @@
                                     <div class="col-md-3 col-lg-3" id="divUserid" style="display: none" required>
                                         <label for="txtUserId">UserID<span>*</span></label>
                                         <div class="form-group">
-                                            <input type="text" id="txtUserId" class="custom-style" placeholder="Please Enter.." ng-model="docLink.userId"/>
-                                            <div class="errorAddressScope"></div>
+                                            <input type="text" name ="userId" id="txtUserId" class="custom-style" placeholder="Please Enter.." ng-model="docLink.userId"/>
+                                          <div class="errorAddressScope"></div>
+
                                         </div>
 
                                     </div>
@@ -283,6 +290,7 @@
                                         <div class="errorDocTag"></div>
                                     </div>
                                 </div>
+                                <input type="hidden" name="${_csrf.parameterName}"   value="${_csrf.token}" />
                             </div>
                         </div>
                     </div>

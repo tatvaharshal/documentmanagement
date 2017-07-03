@@ -5,6 +5,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="_csrf_parameter" content="_csrf" />
+    <meta name="_csrf_header" content="X-CSRF-TOKEN" />
+    <meta name="_csrf" content="e62835df-f1a0-49ea-bce7-bf96f998119c" />
     <title>Document Add</title>
     <%--Load css--%>
     <link href="${pageContext.request.contextPath}/resources/content/Document/css/bootstrap.min.css" rel="stylesheet"/>
@@ -41,6 +44,7 @@
     <script src="${pageContext.request.contextPath}/resources/app/Demo/Services/FileUploadService.js"></script>
     <script src="${pageContext.request.contextPath}/resources/app/Demo/Controller/BaseDocumentListController.js"></script>
     <script src="${pageContext.request.contextPath}/resources/app/Demo/Controller/DocumentListController.js"></script>
+
 </head>
 <body  ng-app="DocumentList">
 
@@ -140,7 +144,9 @@
                                         <label for="txtUserId">UserID<span>*</span></label>
                                         <div class="form-group">
                                             <input type="text" id="txtUserId" name="userId" class="custom-style" placeholder="Please Enter.." ng-model="docLink.userId" />
-                                            <div class="errorAddressScope"></div>
+
+                                                <div class="errorAddressScope"></div>
+
                                         </div>
 
                                     </div>
@@ -161,7 +167,7 @@
                                             <select kendo-multi-select id="roleDetails" name="roleDetails" k-ng-model="docLink.roleDetails" data-placeholder="Please select ..." multiple="multiple">
                                                 <option value="{{item.value}}" ng-repeat="item in roleOption">{{item.text}}</option>
                                             </select>
-                                            <div class="errorAddressScope"></div>
+                                            <div class="errorAddressScope" ></div>
                                         </div>
                                     </div>
 
@@ -263,6 +269,7 @@
                                         <div class="errorDocTag"></div>
                                     </div>
                                 </div>
+                                <input type="hidden" name="${_csrf.parameterName}"   value="${_csrf.token}" />
                             </div>
                         </div>
                     </div>
@@ -272,6 +279,7 @@
     </section>
 </div>
 <script src="${pageContext.request.contextPath}/resources/scripts/validate.js"></script>
+
 <%--<script>
     var data_save = false;  /* set this to true if the login was a success */
 

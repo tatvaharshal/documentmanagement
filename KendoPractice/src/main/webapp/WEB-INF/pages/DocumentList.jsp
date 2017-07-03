@@ -34,16 +34,17 @@
 <body ng-app="DocumentList">
 
 <header id="header1">
-
+    <h3 style="margin: 0 0 0 100px;">Welcome : ${pageContext.request.userPrincipal.name}</h3>
 
 </header>
 
 <div  ng-controller="DocumentListController as ctrl" >
 
-
+    <a href ="./logout"  style="margin: 0 0 0 1540px;" ><h4 style="margin: -30px 0 0 1740px;">Logout</h4></a>
     <%--<div class ="success_message" id="success_message" style="color:green;float:left; margin:0 0 0 1000px; " ></div>--%>
     <h2 style="color:#2d4265">Documents
        <a href="./DocumentAdd" class="btn">+ Document Upload</a>
+
     </h2>
     <br>
         <div class="alert alert-success"  ng-show="success_message == true">{{statusMessage}}</div>

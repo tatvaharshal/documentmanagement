@@ -1,3 +1,4 @@
+<%@ page isELIgnored="false"%>
 <!DOCTYPE html>
 <html>
 <head>
