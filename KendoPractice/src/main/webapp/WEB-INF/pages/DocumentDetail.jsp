@@ -7,6 +7,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="_csrf_parameter" content="_csrf" />
+    <meta name="_csrf_header" content="X-CSRF-TOKEN" />
+    <meta name="_csrf" content="e62835df-f1a0-49ea-bce7-bf96f998119c" />
     <title>Document Details</title>
 
     <link href="${pageContext.request.contextPath}/resources/content/Document/css/bootstrap.min.css" rel="stylesheet"/>
